@@ -223,28 +223,7 @@ Responda ESTRITAMENTE em formato JSON:
 app.post('/api/ai/diagnose', async (req: Request, res: Response) => {
   const { idea, participants, format, durationMin, objective, programTitle } = req.body;
 
-  if (!ai) {
-    const fallbackDiagnosis: EditorialDiagnosis = {
-      centralTheme: `A jornada e os bastidores reais explorados no formato ${format || 'Produção Audiovisual'}`,
-      potentialStory: `Narrativa rica com múltiplos ângulos, destacando conflitos decisivos e superações.`,
-      primaryConflict: `Os obstáculos mais críticos e as escolhas de alto risco enfrentadas.`,
-      primaryTransformation: `A evolução dos participantes e o impacto concreto gerado.`,
-      whyWatch: `Histórias genuínas, sem floreios, com dinâmicas cativantes para o público.`,
-      whatToDiscover: `Revelações de bastidores e visões que nunca foram ditas abertamente.`,
-      researchPoints: [
-        `Verificar cronologia exata dos momentos de crise e virada`,
-        `Buscar números, marcos e histórias comprovadas`,
-        `Alinhar dinâmicas entre palco e convidados`
-      ],
-      highImpactMoments: [
-        `O relato mais vulnerável e corajoso`,
-        `A virada inesperada da narrativa`,
-        `O momento de clímax e emoção`
-      ],
-      approved: false,
-    };
-    return res.json(fallbackDiagnosis);
-  }
+  
 
   try {
     const prompt = `Você é um Produtor Executivo e Supervisor de Conteúdo Audiovisual sênior.
