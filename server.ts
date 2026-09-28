@@ -222,7 +222,7 @@ Responda ESTRITAMENTE em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<any>(response.text, {
+    const parsed = parseAIJson<any>(response.text, {
       title: 'Episódio Especial',
       suggestedFormat: programFormat || 'Entrevista',
       estimatedDurationMin: durationMin || 45,
@@ -294,7 +294,7 @@ Responda ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const diagnosis = parseGeminiJson<EditorialDiagnosis>(response.text, {
+    const diagnosis = parseAIJson<EditorialDiagnosis>(response.text, {
       centralTheme: 'Tema central do episódio',
       potentialStory: 'História potencial',
       primaryConflict: 'Conflito principal',
@@ -379,7 +379,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const research = parseGeminiJson<ResearchData>(response.text, {
+    const research = parseAIJson<ResearchData>(response.text, {
       aboutGuest: '',
       trajectory: '',
       company: '',
@@ -470,7 +470,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<{ segments: Segment[]; questions: QuestionItem[] }>(response.text, {
+    const parsed = parseAIJson<{ segments: Segment[]; questions: QuestionItem[] }>(response.text, {
       segments: [],
       questions: [],
     });
@@ -541,7 +541,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<{ script: ScriptItem[] }>(response.text, { script: [] });
+    const parsed = parseAIJson<{ script: ScriptItem[] }>(response.text, { script: [] });
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating script:', error);
@@ -604,7 +604,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<{ followUps: FollowUpItem[] }>(response.text, { followUps: [] });
+    const parsed = parseAIJson<{ followUps: FollowUpItem[] }>(response.text, { followUps: [] });
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating repiques:', error);
@@ -652,7 +652,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<{ shorts: PlannedShort[] }>(response.text, { shorts: [] });
+    const parsed = parseAIJson<{ shorts: PlannedShort[] }>(response.text, { shorts: [] });
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating shorts:', error);
@@ -706,7 +706,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseGeminiJson<{ editorScript: string }>(response.text, {
+    const parsed = parseAIJson<{ editorScript: string }>(response.text, {
       editorScript: 'Roteiro de edição sintetizado com sucesso.',
     });
     res.json(parsed);
