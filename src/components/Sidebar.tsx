@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectProgramId,
 }) => {
   const mainNav = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Início', icon: LayoutDashboard },
     { id: 'programs', label: 'Programas', icon: Tv },
     { id: 'episodes', label: 'Episódios', icon: Film },
     { id: 'agenda', label: 'Agenda', icon: Calendar },
@@ -70,25 +70,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-mono">Sistema Audiovisual</p>
           </div>
         </div>
-      </div>
-
-      {/* Program Selector */}
-      <div className="px-3 pt-3 pb-2 border-b border-zinc-800/60 bg-zinc-950/40">
-        <label className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold block mb-1">
-          Programa Ativo
-        </label>
-        <select
-          value={activeProgramId}
-          onChange={(e) => onSelectProgramId(e.target.value)}
-          aria-label="Selecionar Programa Ativo"
-          className="w-full bg-zinc-900 border border-zinc-750 text-zinc-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500/60 font-medium"
-        >
-          {programs.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.title} ({p.format})
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Main Navigation */}
@@ -178,16 +159,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
 
-      {/* Bottom CTA */}
-      <div className="p-3 border-t border-zinc-800 bg-zinc-950/60">
-        <button
-          onClick={onNewEpisodeClick}
-          className="w-full py-2.5 px-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all shadow-md shadow-amber-950/20 active:scale-98 cursor-pointer"
-        >
-          <span className="text-sm font-black">+</span>
-          <span>Novo Episódio</span>
-        </button>
-      </div>
     </aside>
   );
 };
