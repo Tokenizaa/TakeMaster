@@ -160,3 +160,7 @@ A migração será considerada concluída somente quando nenhum endpoint de prod
 - Auditoria baseada na branch `main`.
 - Esta etapa documenta o estado e a arquitetura alvo.
 - Nenhuma troca de provider foi executada nesta etapa.
+
+## 15. Modelos adotados
+
+Para o endpoint hospedado compatível com OpenAI da NVIDIA, a configuração atual usa `nvidia/nemotron-3-super-120b-a12b` como principal e `nvidia/nemotron-3-nano-30b-a3b` como fallback. Os IDs foram conferidos na documentação oficial da NVIDIA em setembro de 2026.
