@@ -576,22 +576,7 @@ Retorne em formato JSON:
 app.post('/api/ai/editor-script', async (req: Request, res: Response) => {
   const { episode } = req.body;
 
-  if (!ai) {
-    const fallbackEditorScript = `
-00:00 - ABERTURA (CAM 1 Geral)
-[Corte de abertura com trilha sonora e apresentação dos participantes]
-
-05:15 - PRIMEIRO QUADRO (CAM 2 Apresentador -> CAM 3 Convidados)
-[Inserir GC de identificação dos participantes nos primeiros 10 segundos]
-
-12:25 - MOMENTO FORTE MARCADO:
-[Manter plano fechado no convidado por 15 segundos para preservar a emoção]
-
-55:00 - ENCERRAMENTO
-[Subir créditos, trilha em fade out e encerramento geral]
-`;
-    return res.json({ editorScript: fallbackEditorScript });
-  }
+  
 
   try {
     const prompt = `Você é um Diretor de Pós-Produção e Montador de Vídeo Sênior.
