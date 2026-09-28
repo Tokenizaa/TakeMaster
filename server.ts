@@ -489,29 +489,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 app.post('/api/ai/repiques', async (req: Request, res: Response) => {
   const { questionText, targetParticipant, context, format } = req.body;
 
-  if (!ai) {
-    const fallbackFollowups: FollowUpItem[] = [
-      {
-        id: `fu-${Date.now()}-1`,
-        triggerCondition: 'SE FALAR SOBRE DINHEIRO OU PREJUÍZO',
-        actionOrQuestion: 'Quanto exatamente estava em risco naquele instante?',
-        tag: 'DINHEIRO',
-      },
-      {
-        id: `fu-${Date.now()}-2`,
-        triggerCondition: 'SE DEMONSTRAR EMOÇÃO OU HESITAR',
-        actionOrQuestion: 'NÃO INTERROMPER. Segurar silêncio e manter câmera.',
-        tag: 'NÃO INTERROMPER',
-      },
-      {
-        id: `fu-${Date.now()}-3`,
-        triggerCondition: 'SE A PLATEIA REAGIR COM APLAUSOS',
-        actionOrQuestion: 'Aguardar aplauso cessar antes de retomar.',
-        tag: 'PLATEIA',
-      }
-    ];
-    return res.json({ followUps: fallbackFollowups });
-  }
+  
 
   try {
     const prompt = `Você é um entrevistador investigativo e diretor audiovisual.
