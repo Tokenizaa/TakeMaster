@@ -164,3 +164,19 @@ A migração será considerada concluída somente quando nenhum endpoint de prod
 ## 15. Modelos adotados
 
 Para o endpoint hospedado compatível com OpenAI da NVIDIA, a configuração atual usa `nvidia/nemotron-3-super-120b-a12b` como principal e `nvidia/nemotron-3-nano-30b-a3b` como fallback. Os IDs foram conferidos na documentação oficial da NVIDIA em setembro de 2026.
+
+## 16. Implementação inicial registrada
+
+A primeira etapa da migração foi aplicada na branch `main`:
+- cliente Gemini removido de `src/server/ai.ts`;
+- NVIDIA NIM via Chat Completions implementado;
+- Nemotron 3 Super configurado como principal;
+- Nemotron 3 Nano configurado como fallback;
+- fallback automático por erro/timeout;
+- parser JSON agora falha explicitamente em resposta inválida;
+- respostas fictícias de indisponibilidade removidas dos endpoints migrados;
+- Copiloto IA deixou de retornar texto mockado e passou a usar `/api/ai/assist`;
+- dependência `@google/genai` removida;
+- `.env.example` atualizado;
+
+A validação de build/typecheck ainda precisa ser executada em ambiente com as dependências instaladas.
