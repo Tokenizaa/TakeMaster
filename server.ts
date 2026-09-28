@@ -530,9 +530,7 @@ Retorne em formato JSON:
 app.post('/api/ai/shorts', async (req: Request, res: Response) => {
   const { episode } = req.body;
 
-  if (!ai) {
-    return res.status(500).json({ error: 'Chave de API não configurada' });
-  }
+  
 
   try {
     const prompt = `Você é um Estrategista de Conteúdo Digital e Produtor de Cortes/Shorts para YouTube, TikTok e Reels.
