@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
 import { db } from './src/server/db';
-import { ai, parseGeminiJson } from './src/server/ai';
+import { ai, parseAIJson } from './src/server/ai';
 import {
   Episode,
   Program,
