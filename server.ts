@@ -278,28 +278,7 @@ Responda ESTRITAMENTE em formato JSON com o schema:
 app.post('/api/ai/research', async (req: Request, res: Response) => {
   const { participants, programTitle, format, idea, diagnosis } = req.body;
 
-  if (!ai) {
-    const fallbackResearch: ResearchData = {
-      aboutGuest: `Dossiê dos participantes e personalidades envolvidas no programa ${programTitle || ''}.`,
-      trajectory: `Histórico cronológico, marcos de relevância e pontos de destaque.`,
-      company: `Organizações, marcas ou projetos associados aos participantes.`,
-      keyDatesAndNumbers: `Marcos históricos relevantes, números de audiência ou faturamento.`,
-      previousInterviews: `Aparições em outras mídias, reportagens e declarações anteriores.`,
-      recurringThemes: `Superação, inovação, música, entretenimento e valores humanos.`,
-      contradictionsAndClarifications: `Pontos a esclarecer com respeito e profundidade.`,
-      compellingStories: `Momentos emblemáticos e relatos de bastidores.`,
-      sources: [
-        {
-          id: `src-${Date.now()}-1`,
-          title: 'Dados Públicos e Verificação de Trajetória',
-          detail: 'Informações checadas e validadas.',
-          status: 'CONFIRMADO',
-          category: 'guest'
-        }
-      ]
-    };
-    return res.json(fallbackResearch);
-  }
+  
 
   try {
     const prompt = `Você é um Pesquisador Jornalístico e de Produção Audiovisual.
