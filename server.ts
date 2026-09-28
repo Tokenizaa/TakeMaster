@@ -343,9 +343,7 @@ app.post('/api/ai/outline', async (req: Request, res: Response) => {
   const { idea, programTitle, format, targetDurationMin, participants, diagnosis, research, cameras } = req.body;
   const targetMinutes = targetDurationMin || 45;
 
-  if (!ai) {
-    return res.status(500).json({ error: 'Chave de API não configurada' });
-  }
+  
 
   try {
     const prompt = `Você é um Roteirista Chefe e Diretor de TV.
