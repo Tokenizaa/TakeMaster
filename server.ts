@@ -244,13 +244,7 @@ Responda ESTRITAMENTE em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<any>(response.text, {
-      title: 'Episódio Especial',
-      suggestedFormat: programFormat || 'Entrevista',
-      estimatedDurationMin: durationMin || 45,
-      participants: [{ name: 'Apresentador', type: 'Apresentador', role: 'Apresentador' }],
-      segments: [{ title: '01 — Abertura', type: 'Abertura', estimatedDurationMin: 5, objective: 'Início' }]
-    });
+    const parsed = parseAIJson<any>(response.text);
 
     res.json(parsed);
   } catch (error: any) {
@@ -295,17 +289,7 @@ Responda ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const diagnosis = parseAIJson<EditorialDiagnosis>(response.text, {
-      centralTheme: 'Tema central do episódio',
-      potentialStory: 'História potencial',
-      primaryConflict: 'Conflito principal',
-      primaryTransformation: 'Transformação',
-      whyWatch: 'Relevância para a audiência',
-      whatToDiscover: 'O que descobrir',
-      researchPoints: ['Pesquisa 1', 'Pesquisa 2'],
-      highImpactMoments: ['Momento forte 1', 'Momento forte 2'],
-      approved: false,
-    });
+    const diagnosis = parseAIJson<EditorialDiagnosis>(response.text);
 
     res.json(diagnosis);
   } catch (error: any) {
@@ -359,17 +343,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const research = parseAIJson<ResearchData>(response.text, {
-      aboutGuest: '',
-      trajectory: '',
-      company: '',
-      keyDatesAndNumbers: '',
-      previousInterviews: '',
-      recurringThemes: '',
-      contradictionsAndClarifications: '',
-      compellingStories: '',
-      sources: [],
-    });
+    const research = parseAIJson<ResearchData>(response.text);
 
     res.json(research);
   } catch (error: any) {
@@ -448,10 +422,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<{ segments: Segment[]; questions: QuestionItem[] }>(response.text, {
-      segments: [],
-      questions: [],
-    });
+    const parsed = parseAIJson<{ segments: Segment[]; questions: QuestionItem[] }>(response.text);
 
     res.json(parsed);
   } catch (error: any) {
@@ -517,7 +488,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<{ script: ScriptItem[] }>(response.text, { script: [] });
+    const parsed = parseAIJson<{ script: ScriptItem[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating script:', error);
@@ -558,7 +529,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<{ followUps: FollowUpItem[] }>(response.text, { followUps: [] });
+    const parsed = parseAIJson<{ followUps: FollowUpItem[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating repiques:', error);
@@ -604,7 +575,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<{ shorts: PlannedShort[] }>(response.text, { shorts: [] });
+    const parsed = parseAIJson<{ shorts: PlannedShort[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating shorts:', error);
@@ -643,9 +614,7 @@ Retorne em formato JSON:
       config: { responseMimeType: 'application/json' },
     });
 
-    const parsed = parseAIJson<{ editorScript: string }>(response.text, {
-      editorScript: 'Roteiro de edição sintetizado com sucesso.',
-    });
+    const parsed = parseAIJson<{ editorScript: string }>(response.text);
     res.json(parsed);
   } catch (error: any) {
     console.error('Error generating editor script:', error);
