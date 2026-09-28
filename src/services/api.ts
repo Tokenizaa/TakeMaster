@@ -250,9 +250,13 @@ export const api = {
   },
 
   async aiAssist(params: any): Promise<{ answer: string; suggestionApplied?: any }> {
-    return {
-      answer: 'Sugestão do Copiloto TakeMaster: Refine a pergunta de abertura para criar um contraste imediato com o desfecho da história.'
-    };
+    const res = await fetch('/api/ai/assist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) throw new Error('Falha no Copiloto IA');
+    return res.json();
   },
 
   async aiResearch(params: {
