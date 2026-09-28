@@ -217,7 +217,7 @@ Responda ESTRITAMENTE em formato JSON:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -289,7 +289,7 @@ Responda ESTRITAMENTE em formato JSON com o schema:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -374,7 +374,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -465,7 +465,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -536,7 +536,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -599,7 +599,7 @@ Retorne em formato JSON:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -647,7 +647,7 @@ Retorne em formato JSON:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
@@ -701,7 +701,7 @@ Retorne em formato JSON:
 }`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: process.env.NIM_PRIMARY_MODEL,
       contents: prompt,
       config: { responseMimeType: 'application/json' },
     });
