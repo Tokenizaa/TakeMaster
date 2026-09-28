@@ -30,11 +30,16 @@ export const AiContextAssistant: React.FC<AiContextAssistantProps> = ({
 }) => {
   const [promptInput, setPromptInput] = useState('');
   const [loading, setLoading] = useState(false);
+  // Contrato real de POST /api/ai/assist: { answer, suggestionApplied }.
+  // O "Aplicar ao Episódio" só age quando suggestionApplied traz targetField + updatedData.
   const [proposal, setProposal] = useState<{
-    actionType: string;
-    summary: string;
-    targetField: string;
-    updatedData: any;
+    answer: string;
+    suggestionApplied?: {
+      actionType?: string;
+      summary?: string;
+      targetField?: string;
+      updatedData?: any;
+    } | null;
   } | null>(null);
 
   if (!isOpen) return null;
@@ -94,20 +99,21 @@ export const AiContextAssistant: React.FC<AiContextAssistantProps> = ({
   };
 
   const handleApplyProposal = () => {
-    if (!proposal || !proposal.updatedData) return;
-
+    const suggestion = proposal?.suggestionApplied;
+    if (!suggestion || !suggestion.targetField) return;
+    const data = suggestion.updatedData;
     // Apply change directly to episode object
-    if (proposal.targetField === 'outline') {
-      onUpdateEpisode({ outline: proposal.updatedData });
-    } else if (proposal.targetField === 'questions') {
-      onUpdateEpisode({ questions: proposal.updatedData });
-    } else if (proposal.targetField === 'script') {
-      onUpdateEpisode({ script: proposal.updatedData });
-    } else if (proposal.targetField === 'shorts') {
-      onUpdateEpisode({ shorts: proposal.updatedData });
+    if (suggestion.targetField === 'outline') {
+      onUpdateEpisode({ outline: data });
+    } else if (suggestion.targetField === 'questions') {
+      onUpdateEpisode({ questions: data });
+    } else if (suggestion.targetField === 'script') {
+      onUpdateEpisode({ script: data });
+    } else if (suggestion.targetField === 'shorts') {
+      onUpdateEpisode({ shorts: data });
     } else {
       // General feedback or deep field
-      onUpdateEpisode({ ...proposal.updatedData });
+      onUpdateEpisode({ ...data });
     }
 
     setProposal(null);
@@ -188,12 +194,15 @@ export const AiContextAssistant: React.FC<AiContextAssistantProps> = ({
             </div>
 
             <p className="text-xs text-zinc-200 font-medium leading-relaxed bg-zinc-900 p-2.5 rounded-lg border border-zinc-800">
-              {proposal.summary}
+              {proposal.suggestionApplied?.summary || proposal.answer}
             </p>
 
-            {proposal.targetField && (
+            {proposal.suggestionApplied?.targetField && (
               <div className="text-[11px] font-mono text-zinc-400">
-                Campo afetado: <span className="text-amber-400 font-bold">{proposal.targetField}</span>
+                Campo afetado:{' '}
+                <span className="text-amber-400 font-bold">
+                  {proposal.suggestionApplied.targetField}
+                </span>
               </div>
             )}
 
@@ -207,7 +216,13 @@ export const AiContextAssistant: React.FC<AiContextAssistantProps> = ({
 
               <button
                 onClick={handleApplyProposal}
-                className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1.5 shadow-md transition-colors cursor-pointer"
+                disabled={!proposal.suggestionApplied?.targetField}
+                title={
+                  proposal.suggestionApplied?.targetField
+                    ? 'Aplicar ao episódio'
+                    : 'A IA não retornou uma alteração aplicável'
+                }
+                className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1.5 shadow-md transition-colors cursor-pointer"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>Aplicar ao Episódio</span>

@@ -139,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     key={ws.id}
                     onClick={() => {
                       onNavigate('episode-detail');
-                      onSelectEpisodeWorkspace(ws.id);
+                      onSelectEpisodeWorkspace?.(ws.id);
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                       isWsActive

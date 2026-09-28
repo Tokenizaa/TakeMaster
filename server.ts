@@ -152,7 +152,7 @@ app.post('/api/library', (req: Request, res: Response) => {
   res.status(201).json(asset);
 });
 
-// --- AI Endpoints using @google/genai ---
+// --- AI Endpoints using NVIDIA NIM (Nemotron 3 Super -> Ultra fallback) ---
 
 // 0. Contextual AI Assistant
 app.post('/api/ai/assist', async (req: Request, res: Response) => {

@@ -7,7 +7,7 @@ type GenerateResponse = { text?: string };
 const NIM_BASE_URL = (process.env.NIM_BASE_URL || 'https://integrate.api.nvidia.com').replace(/\/$/, '');
 const NIM_API_KEY = process.env.NIM_API_KEY || process.env.NVIDIA_API_KEY || '';
 const NIM_PRIMARY_MODEL = process.env.NIM_PRIMARY_MODEL || 'nvidia/nemotron-3-super-120b-a12b';
-const NIM_FALLBACK_MODEL = process.env.NIM_FALLBACK_MODEL || 'nvidia/nemotron-3-nano-30b-a3b';
+const NIM_FALLBACK_MODEL = process.env.NIM_FALLBACK_MODEL || 'nvidia/nemotron-3-ultra-550b-a55b';
 const NIM_TIMEOUT_MS = Number(process.env.NIM_TIMEOUT_MS || 60000);
 
 async function callNim(model: string, contents: string, responseMimeType?: string): Promise<GenerateResponse> {
@@ -34,8 +34,7 @@ async function callNim(model: string, contents: string, responseMimeType?: strin
 }
 
 async function generateWithFallback(options: GenerateOptions): Promise<GenerateResponse> {
-  const requested = options.model || NIM_PRIMARY_MODEL;
-  const primary = requested.startsWith('gemini') ? NIM_PRIMARY_MODEL : requested;
+  const primary = options.model || NIM_PRIMARY_MODEL;
   try { return await callNim(primary, options.contents, options.config?.responseMimeType); }
   catch (primaryError: any) {
     console.warn('[AI] Modelo principal falhou (' + primary + '). Tentando fallback ' + NIM_FALLBACK_MODEL + '.');
