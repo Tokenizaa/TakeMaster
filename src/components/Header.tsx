@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Check, Clock, Radio, Tv, Sparkles } from 'lucide-react';
+import { Check, Clock, Tv } from 'lucide-react';
 import { Program, Episode } from '../types';
 
 interface HeaderProps {
@@ -65,20 +65,6 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Keep the header operational: context + save state only. Primary actions live in the page. */}
-      <div className="flex items-center gap-1.5 text-[11px] font-mono">
-        {savingStatus === 'saving' ? (
-          <>
-            <Clock className="w-3.5 h-3.5 text-amber-400 animate-spin" />
-            <span className="text-amber-300">Salvando...</span>
-          </>
-        ) : (
-          <>
-            <Check className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-slate-400">Salvo</span>
-          </>
-        )}
-      </div>
       </div>
     </header>
   );
