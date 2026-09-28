@@ -154,6 +154,46 @@ app.post('/api/library', (req: Request, res: Response) => {
 
 // --- AI Endpoints using @google/genai ---
 
+// 0. Contextual AI Assistant
+app.post('/api/ai/assist', async (req: Request, res: Response) => {
+  const { episode, userPrompt, currentTab, activeBlockId, activeQuestionId } = req.body;
+
+  try {
+    const prompt = `Você é o Copiloto Editorial e de Direção do TakeMaster.
+Responda de forma prática, curta e acionável ao produtor/apresentador.
+
+CONTEXTO DA PRODUÇÃO:
+EPISÓDIO: ${episode?.title || ''}
+PROGRAMA: ${episode?.programName || episode?.program?.name || ''}
+FORMATO: ${episode?.format || ''}
+DURAÇÃO: ${episode?.targetDurationMin || episode?.targetDurationMinutes || ''} minutos
+PARTICIPANTES: ${JSON.stringify(episode?.participants || [])}
+QUADROS: ${JSON.stringify(episode?.segments || episode?.outline || [])}
+PERGUNTAS: ${JSON.stringify(episode?.questions || [])}
+ABA ATUAL: ${currentTab || ''}
+BLOCO ATIVO: ${activeBlockId || ''}
+PERGUNTA ATIVA: ${activeQuestionId || ''}
+
+PEDIDO DO USUÁRIO:
+${userPrompt || ''}
+
+Não invente fatos sobre pessoas reais. Quando faltar informação, diga o que precisa ser definido.
+Retorne JSON:
+{"answer":"string","suggestionApplied":null}`;
+
+    const response = await ai.models.generateContent({
+      model: process.env.NIM_PRIMARY_MODEL,
+      contents: prompt,
+      config: { responseMimeType: 'application/json' },
+    });
+    const parsed = parseAIJson<{ answer: string; suggestionApplied?: any }>(response.text);
+    res.json(parsed);
+  } catch (error: any) {
+    console.error('Error in AI assistant:', error);
+    res.status(500).json({ error: error.message || 'Falha no Copiloto IA' });
+  }
+});
+
 // 1. Natural Language Idea Interpretation (Section 9 New Episode Flow)
 app.post('/api/ai/interpret-idea', async (req: Request, res: Response) => {
   const { idea, programTitle, programFormat, durationMin, existingParticipants } = req.body;
