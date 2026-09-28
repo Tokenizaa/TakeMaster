@@ -1,22 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Plus,
-  Play,
-  Tv,
-  Film,
-  Calendar,
-  Clock,
-  CheckCircle,
-  TrendingUp,
-  Sparkles,
-  Users,
-  Video,
-  FileText,
-  Search,
-  ArrowRight,
-  Sliders,
-  Scissors
-} from 'lucide-react';
+import React from 'react';
+import { Plus, ArrowRight, Calendar, Clock, Film, Play, CheckCircle2 } from 'lucide-react';
 import { Program, Episode, AgendaEvent } from '../types';
 
 interface DashboardViewProps {
@@ -29,6 +12,27 @@ interface DashboardViewProps {
   onNavigateToEpisodes: () => void;
 }
 
+const statusLabel: Record<string, string> = {
+  idea: 'Ideia',
+  diagnosis: 'Pesquisa',
+  outline: 'Pauta',
+  scripting: 'Roteiro',
+  ready: 'Pronto para gravar',
+  recording: 'Gravando',
+  recorded: 'Gravado',
+  editing: 'Em edição',
+  published: 'Publicado',
+};
+
+function getNextEpisode(episodes: Episode[]) {
+  const priority = ['recording', 'ready', 'scripting', 'outline', 'diagnosis', 'idea', 'editing'];
+  for (const status of priority) {
+    const found = episodes.find((episode) => episode.status === status);
+    if (found) return found;
+  }
+  return episodes[0];
+}
+
 export const DashboardView: React.FC<DashboardViewProps> = ({
   programs,
   episodes,
@@ -38,300 +42,158 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigateToPrograms,
   onNavigateToEpisodes,
 }) => {
-  const [selectedProgramFilter, setSelectedProgramFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredEpisodes = episodes.filter(ep => {
-    const matchesProg = selectedProgramFilter === 'all' || ep.programId === selectedProgramFilter;
-    const matchesQuery = !searchQuery || ep.title.toLowerCase().includes(searchQuery.toLowerCase()) || (ep.topic || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesProg && matchesQuery;
-  });
-
-  // Calculate statistics
-  const totalEpisodes = episodes.length;
-  const readyToRecord = episodes.filter(e => e.status === 'ready').length;
-  const inScripting = episodes.filter(e => e.status === 'scripting' || e.status === 'outline').length;
-  const recorded = episodes.filter(e => e.status === 'recorded' || e.status === 'editing').length;
-  const published = episodes.filter(e => e.status === 'published').length;
+  const nextEpisode = getNextEpisode(episodes);
+  const nextProgram = nextEpisode ? programs.find((program) => program.id === nextEpisode.programId) : undefined;
+  const upcomingEvents = [...agendaEvents]
+    .sort((a, b) => String(a.scheduledDate || '').localeCompare(String(b.scheduledDate || '')))
+    .slice(0, 3);
+  const recentEpisodes = episodes.filter((episode) => episode.id !== nextEpisode?.id).slice(0, 5);
 
   return (
-    <div className="space-y-6">
-      {/* Hero Welcome / Fast Action */}
-      <div className="bg-gradient-to-r from-purple-900/40 via-slate-900 to-slate-900 border border-purple-800/30 rounded-2xl p-6 shadow-xl">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-950 text-purple-300 border border-purple-800">
-                TakeMaster • Sistema de Direção & Produção
-              </span>
-              <span className="text-xs text-slate-400">
-                {programs.length} Programas • {totalEpisodes} Episódios
-              </span>
-            </div>
-
-            <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              Central de Produção Audiovisual
-            </h1>
-            <p className="text-sm text-slate-300 max-w-xl">
-              Crie programas, estruture pautas e dirija gravações com teleprompter, switcher e inteligência editorial.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => onOpenNewEpisodeModal()}
-              className="flex items-center gap-2 px-5 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-900/40 transition transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Plus className="w-4 h-4" />
-              + Novo Episódio com IA
-            </button>
-
-            <button
-              onClick={onNavigateToPrograms}
-              className="flex items-center gap-2 px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700 transition"
-            >
-              <Tv className="w-4 h-4 text-purple-400" />
-              Gerenciar Programas
-            </button>
-          </div>
+    <div className="max-w-6xl mx-auto space-y-6 pb-10">
+      <section className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-amber-400 font-semibold">TakeMaster</p>
+          <h1 className="mt-1 text-2xl md:text-3xl font-black text-white tracking-tight">O que vamos produzir?</h1>
+          <p className="mt-2 text-sm text-slate-400 max-w-2xl">
+            Sua central de produção. Entre direto na próxima tarefa ou comece uma nova produção.
+          </p>
         </div>
+        <button
+          onClick={() => onOpenNewEpisodeModal()}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 rounded-xl text-sm font-bold transition shadow-lg shadow-amber-950/20"
+        >
+          <Plus className="w-4 h-4" />
+          Nova produção
+        </button>
+      </section>
 
-        {/* Metric Cards Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-800/80">
-          <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] text-slate-400 uppercase font-bold">Pronto p/ Gravar</p>
-              <p className="text-xl font-black text-emerald-400">{readyToRecord}</p>
-            </div>
-            <Play className="w-5 h-5 text-emerald-500/60" />
-          </div>
-
-          <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] text-slate-400 uppercase font-bold">Em Roteirização</p>
-              <p className="text-xl font-black text-purple-400">{inScripting}</p>
-            </div>
-            <FileText className="w-5 h-5 text-purple-500/60" />
-          </div>
-
-          <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] text-slate-400 uppercase font-bold">Em Edição</p>
-              <p className="text-xl font-black text-amber-400">{recorded}</p>
-            </div>
-            <Scissors className="w-5 h-5 text-amber-500/60" />
-          </div>
-
-          <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] text-slate-400 uppercase font-bold">Publicados</p>
-              <p className="text-xl font-black text-blue-400">{published}</p>
-            </div>
-            <CheckCircle className="w-5 h-5 text-blue-500/60" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: Episodes on deck & Agenda/Next actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Episodes Production Feed */}
-        <div className="lg:col-span-8 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
-                <Film className="w-4 h-4 text-purple-400" />
-                Episódios em Produção
-              </h2>
-              <span className="text-xs text-slate-400">({filteredEpisodes.length})</span>
-            </div>
-
-            {/* Filter by Program */}
-            <div className="flex items-center gap-2">
-              <select
-                value={selectedProgramFilter}
-                onChange={e => setSelectedProgramFilter(e.target.value)}
-                className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
-              >
-                <option value="all">Todos os Programas</option>
-                {programs.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
-
-              <button
-                onClick={onNavigateToEpisodes}
-                className="text-xs text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1"
-              >
-                Ver Todos &rarr;
-              </button>
-            </div>
-          </div>
-
-          {/* Episode Cards */}
-          <div className="space-y-3">
-            {filteredEpisodes.length === 0 ? (
-              <div className="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
-                <Film className="w-10 h-10 text-slate-600 mx-auto" />
-                <p className="text-sm text-slate-300">Nenhum episódio encontrado para este filtro.</p>
-                <button
-                  onClick={() => onOpenNewEpisodeModal()}
-                  className="px-4 py-2 bg-purple-600 text-white text-xs font-semibold rounded-lg"
-                >
-                  Criar Primeiro Episódio
-                </button>
+      {nextEpisode ? (
+        <section className="bg-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="text-[11px] uppercase tracking-wider text-amber-400 font-bold">Próxima produção</span>
+                {nextProgram && (
+                  <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 text-[11px]">
+                    {nextProgram.name}
+                  </span>
+                )}
+                <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 text-[11px]">
+                  {nextEpisode.format}
+                </span>
               </div>
-            ) : (
-              filteredEpisodes.slice(0, 6).map(ep => {
-                const prog = programs.find(p => p.id === ep.programId);
-                const hasScript = (ep.script || []).length > 0;
-                const hasDiagnosis = !!ep.diagnosis?.centralTheme;
+              <h2 className="text-xl md:text-2xl font-bold text-white truncate">{nextEpisode.title}</h2>
+              <p className="mt-1 text-sm text-slate-400 line-clamp-2 max-w-3xl">
+                {nextEpisode.topic || nextEpisode.synopsis || 'Produção pronta para continuar.'}
+              </p>
 
-                return (
-                  <div
-                    key={ep.id}
-                    onClick={() => onSelectEpisode(ep)}
-                    className="bg-slate-900 border border-slate-800 hover:border-purple-500/60 rounded-xl p-4.5 cursor-pointer transition space-y-3 group shadow-sm hover:shadow-purple-950/20"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        {prog && (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-800">
-                            {prog.name}
-                          </span>
-                        )}
-                        <span className="text-xs text-slate-400 font-medium">{ep.format}</span>
-                        <span className="text-slate-600">•</span>
-                        <span className="text-xs text-slate-400 flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {ep.targetDurationMinutes} min
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          ep.status === 'ready'
-                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
-                            : ep.status === 'recording'
-                            ? 'bg-red-950 text-red-300 border border-red-800 animate-pulse'
-                            : 'bg-slate-800 text-slate-300'
-                        }`}>
-                          {ep.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition">
-                        {ep.title}
-                      </h3>
-                      <p className="text-xs text-slate-400 line-clamp-2 mt-0.5">
-                        {ep.topic || ep.synopsis}
-                      </p>
-                    </div>
-
-                    {/* Footer indicators */}
-                    <div className="flex flex-wrap items-center justify-between pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1.5">
-                          <Users className="w-3.5 h-3.5 text-purple-400" />
-                          {(ep.participants || []).length} Participantes
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-emerald-400" />
-                          {(ep.script || []).length} Falas / Roteiro
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Video className="w-3.5 h-3.5 text-amber-400" />
-                          {(ep.cameras || []).length || 3} Câmeras
-                        </span>
-                      </div>
-
-                      <span className="text-purple-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        Abrir Episódio &rarr;
-                      </span>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        {/* Right: Studio Agenda & Quick Shortcuts */}
-        <div className="lg:col-span-4 space-y-4">
-          {/* Agenda / Next Recordings */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-purple-400" />
-                Próximas Gravações & Pautas
-              </h2>
-              <span className="text-xs text-slate-400">{agendaEvents.length} marcadas</span>
+              <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-slate-400">
+                <span className="inline-flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{nextEpisode.targetDurationMinutes || nextEpisode.targetDurationMin} min</span>
+                <span>{(nextEpisode.participants || []).length} participantes</span>
+                <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />{statusLabel[nextEpisode.status] || nextEpisode.status}</span>
+              </div>
             </div>
 
+            <button
+              onClick={() => onSelectEpisode(nextEpisode)}
+              className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-950 hover:bg-slate-200 rounded-xl text-sm font-bold transition"
+            >
+              Continuar produção
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </section>
+      ) : (
+        <section className="bg-slate-900 border border-dashed border-slate-700 rounded-2xl p-8 text-center">
+          <Film className="w-8 h-8 text-slate-600 mx-auto mb-3" />
+          <h2 className="text-base font-bold text-white">Nenhuma produção em andamento</h2>
+          <p className="text-sm text-slate-400 mt-1 mb-4">Descreva sua próxima ideia e deixe o TakeMaster estruturar o primeiro rascunho.</p>
+          <button onClick={() => onOpenNewEpisodeModal()} className="px-4 py-2 bg-amber-500 text-zinc-950 rounded-lg text-sm font-bold">
+            Criar primeira produção
+          </button>
+        </section>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <section className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-sm font-bold text-white">Produções em andamento</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Continue de onde parou.</p>
+            </div>
+            <button onClick={onNavigateToEpisodes} className="text-xs text-amber-400 hover:text-amber-300 font-semibold">
+              Ver episódios
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {recentEpisodes.length === 0 ? (
+              <p className="py-5 text-sm text-slate-500">Nada pendente por enquanto.</p>
+            ) : recentEpisodes.map((episode) => {
+              const program = programs.find((item) => item.id === episode.programId);
+              return (
+                <button
+                  key={episode.id}
+                  onClick={() => onSelectEpisode(episode)}
+                  className="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-slate-950/50 hover:bg-slate-800/70 border border-slate-800 hover:border-slate-700 transition group"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
+                    {episode.status === 'ready' ? <Play className="w-4 h-4 text-emerald-400" /> : <Film className="w-4 h-4 text-slate-400" />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-slate-200 truncate group-hover:text-white">{episode.title}</p>
+                    <p className="text-[11px] text-slate-500 truncate">
+                      {program?.name || 'Produção'} · {statusLabel[episode.status] || episode.status}
+                    </p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 shrink-0" />
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <div className="space-y-5">
+          <section className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Calendar className="w-4 h-4 text-amber-400" />
+              <div>
+                <h2 className="text-sm font-bold text-white">Próximas gravações</h2>
+                <p className="text-[11px] text-slate-500">{agendaEvents.length} agendadas</p>
+              </div>
+            </div>
             <div className="space-y-2.5">
-              {agendaEvents.slice(0, 4).map(event => (
-                <div
-                  key={event.id}
-                  className="bg-slate-950/60 border border-slate-800 rounded-lg p-3 space-y-1 hover:border-slate-700 transition"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300">
-                      {event.type.toUpperCase()}
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-mono">
-                      {event.scheduledDate} {event.scheduledTime}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xs font-semibold text-white">{event.title}</h3>
-                  <p className="text-[11px] text-slate-400 line-clamp-1">{event.notes}</p>
+              {upcomingEvents.length === 0 ? (
+                <p className="text-xs text-slate-500">Nenhuma gravação agendada.</p>
+              ) : upcomingEvents.map((event) => (
+                <div key={event.id} className="p-3 rounded-xl bg-slate-950/50 border border-slate-800">
+                  <p className="text-xs font-semibold text-white truncate">{event.title}</p>
+                  <p className="text-[11px] text-slate-500 mt-1">{event.scheduledDate} {event.scheduledTime}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* Formats at a Glance */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-            <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <Tv className="w-4 h-4 text-emerald-400" />
-              Programas Ativos
-            </h2>
-
-            <div className="space-y-2">
-              {programs.map(prog => (
-                <div
-                  key={prog.id}
-                  onClick={onNavigateToPrograms}
-                  className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer transition flex items-center justify-between text-xs"
-                >
-                  <div>
-                    <p className="font-bold text-slate-200">{prog.name}</p>
-                    <p className="text-[10px] text-slate-400">{prog.format} • {prog.defaultPresenterName}</p>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-slate-500" />
+          <section className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h2 className="text-sm font-bold text-white">Programas</h2>
+                <p className="text-[11px] text-slate-500">{programs.length} ativos</p>
+              </div>
+              <button onClick={onNavigateToPrograms} className="text-xs text-amber-400 hover:text-amber-300">Gerenciar</button>
+            </div>
+            <div className="space-y-1.5">
+              {programs.slice(0, 4).map((program) => (
+                <div key={program.id} className="flex items-center justify-between py-2 border-b border-slate-800 last:border-0">
+                  <span className="text-xs text-slate-300 truncate">{program.name}</span>
+                  <span className="text-[10px] text-slate-600 ml-2">{program.format}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
   );
 };
-
-function ChevronRight(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  );
-}
