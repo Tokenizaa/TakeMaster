@@ -158,25 +158,7 @@ app.post('/api/library', (req: Request, res: Response) => {
 app.post('/api/ai/interpret-idea', async (req: Request, res: Response) => {
   const { idea, programTitle, programFormat, durationMin, existingParticipants } = req.body;
 
-  if (!ai) {
-    // Intelligent structural proposal fallback if offline
-    return res.json({
-      title: 'Produção Especial: ' + (idea?.slice(0, 40) || 'Novo Episódio'),
-      suggestedFormat: programFormat || 'Entrevista',
-      estimatedDurationMin: durationMin || 45,
-      participants: [
-        { name: 'Apresentador', type: 'Apresentador', role: 'Apresentador' },
-        { name: 'Convidado Principal', type: 'Convidado', role: 'Protagonista' }
-      ],
-      segments: [
-        { title: '01 — Abertura e Apresentação', type: 'Abertura', estimatedDurationMin: 5, objective: 'Gancho inicial e boas-vindas' },
-        { title: '02 — Origem e Contexto', type: 'Entrevista', estimatedDurationMin: 12, objective: 'Como tudo começou e os primeiros passos' },
-        { title: '03 — A Grande Virada & Desafios', type: 'História', estimatedDurationMin: 15, objective: 'O momento crítico e a superação' },
-        { title: '04 — Lições Práticas & Onde Está Hoje', type: 'Entrevista', estimatedDurationMin: 10, objective: 'Aprendizados para o público' },
-        { title: '05 — Encerramento', type: 'Encerramento', estimatedDurationMin: 3, objective: 'Mensagem final e agradecimentos' }
-      ]
-    });
-  }
+  
 
   try {
     const prompt = `Você é um Produtor Executivo e Diretor Audiovisual sênior de televisão e streaming.
