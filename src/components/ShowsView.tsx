@@ -2,287 +2,515 @@ import React, { useState } from 'react';
 import {
   Tv,
   Plus,
-  Clock,
-  User,
-  Sliders,
-  Sparkles,
   Trash2,
-  Film
+  Users,
+  Video,
+  Clock,
+  Sparkles,
+  ArrowRight,
+  FolderKanban,
+  Edit2,
+  CheckCircle,
+  Sliders,
+  ChevronRight,
+  UserPlus
 } from 'lucide-react';
-import { Show, ShowFormat } from '../types';
+import { Program, Episode, Participant, ProgramFormat } from '../types';
 
 interface ShowsViewProps {
-  shows: Show[];
-  activeShowId: string;
-  onSelectShowId: (id: string) => void;
-  onSaveShow: (show: Partial<Show>) => Promise<void>;
-  onDeleteShow: (id: string) => Promise<void>;
+  programs: Program[];
+  episodes: Episode[];
+  participants: Participant[];
+  onSelectEpisode: (episode: Episode) => void;
+  onOpenNewEpisodeModal: (programId?: string) => void;
+  onSaveProgram: (program: Program) => void;
+  onDeleteProgram: (id: string) => void;
+  onSaveParticipant: (participant: Participant) => void;
 }
 
 export const ShowsView: React.FC<ShowsViewProps> = ({
-  shows,
-  activeShowId,
-  onSelectShowId,
-  onSaveShow,
-  onDeleteShow,
+  programs,
+  episodes,
+  participants,
+  onSelectEpisode,
+  onOpenNewEpisodeModal,
+  onSaveProgram,
+  onDeleteProgram,
+  onSaveParticipant,
 }) => {
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [host, setHost] = useState('');
-  const [format, setFormat] = useState<ShowFormat>('Entrevista');
-  const [defaultDurationMin, setDefaultDurationMin] = useState(45);
-  const [editorialStyle, setEditorialStyle] = useState('');
-  const [scenario, setScenario] = useState('');
+  const [selectedProgramId, setSelectedProgramId] = useState<string>(programs[0]?.id || '');
+  const [isCreatingProgram, setIsCreatingProgram] = useState(false);
+  const [activeTab, setActiveTab] = useState<'episodes' | 'participants' | 'settings'>('episodes');
 
-  const handleCreate = async (e: React.FormEvent) => {
+  // New Program form state
+  const [newName, setNewName] = useState('');
+  const [newFormat, setNewFormat] = useState<ProgramFormat>('Entrevista');
+  const [newDesc, setNewDesc] = useState('');
+  const [newPresenter, setNewPresenter] = useState('');
+  const [newDuration, setNewDuration] = useState(60);
+
+  // New Participant for selected program form state
+  const [newPartName, setNewPartName] = useState('');
+  const [newPartRole, setNewPartRole] = useState<'Apresentador' | 'Co-apresentador' | 'Convidado Principal' | 'Especialista' | 'Atração Musical' | 'Jurado' | 'Plateia / Povo' | 'Outro'>('Convidado Principal');
+  const [newPartBio, setNewPartBio] = useState('');
+  const [newPartEntity, setNewPartEntity] = useState<'individual' | 'group' | 'band'>('individual');
+
+  const selectedProgram = programs.find(p => p.id === selectedProgramId) || programs[0];
+  const programEpisodes = episodes.filter(e => e.programId === selectedProgram?.id);
+  const programParticipants = participants.filter(p => p.programId === selectedProgram?.id);
+
+  const handleCreateProgram = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!newName.trim()) return;
 
-    await onSaveShow({
-      title,
-      description,
-      host,
-      format,
-      defaultDurationMin,
-      editorialStyle,
-      scenario,
-      cameras: [
-        {
-          id: 'cam-1',
-          name: 'CAM 1',
-          label: 'Frontal Apresentador',
-          purpose: 'Abertura, encerramento, passagens e teleprompter',
-          framing: 'Plano Médio Frontal',
-          active: true,
-        },
-        {
-          id: 'cam-2',
-          name: 'CAM 2',
-          label: '45° Apresentador',
-          purpose: 'Perguntas e interação na bancada',
-          framing: 'Plano Médio 45°',
-          active: true,
-        },
-        {
-          id: 'cam-3',
-          name: 'CAM 3',
-          label: '45° Convidado',
-          purpose: 'Respostas e closes do entrevistado',
-          framing: 'Plano Fechado 45°',
-          active: true,
-        },
+    const newProg: Program = {
+      id: `prog-${Date.now()}`,
+      name: newName,
+      description: newDesc,
+      format: newFormat,
+      defaultPresenterName: newPresenter || 'Apresentador',
+      targetAudience: 'Público geral e profissionais',
+      tone: 'Profissional, dinâmico e envolvente',
+      defaultEpisodeDurationMinutes: newDuration,
+      defaultCameras: [
+        { id: 'c1', name: 'CAM 1 (Apresentador)', type: 'close', target: 'Apresentador Principal', shotType: 'close' },
+        { id: 'c2', name: 'CAM 2 (Convidado)', type: 'close', target: 'Convidado em Destaque', shotType: 'close' },
+        { id: 'c3', name: 'CAM 3 (Geral / Mesa)', type: 'wide', target: 'Plano Conjunto do Estúdio', shotType: 'wide' }
       ],
-      standardStructure: ['Gancho', 'Abertura', 'Origem', 'A Crise', 'A Virada', 'Ping-Pong', 'Encerramento'],
-      defaultOpening: 'Bem-vindos a mais um episódio...',
-      defaultClosing: 'Obrigado por nos acompanhar até aqui. Nos vemos na próxima semana!',
-    });
+      defaultSegments: [
+        { id: 'ds1', title: 'Abertura & Gancho', description: 'Impacto nos primeiros 45 segundos', defaultDurationMinutes: 2 },
+        { id: 'ds2', title: 'O Grande Desafio', description: 'Ponto de virada e conflito', defaultDurationMinutes: 15 },
+        { id: 'ds3', title: 'Encerramento & Aprendizados', description: 'Conclusão e chamada para ação', defaultDurationMinutes: 5 }
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
 
-    setTitle('');
-    setDescription('');
-    setHost('');
-    setEditorialStyle('');
-    setScenario('');
-    setShowAddModal(false);
+    onSaveProgram(newProg);
+    setSelectedProgramId(newProg.id);
+    setIsCreatingProgram(false);
+    setNewName('');
+    setNewDesc('');
+    setNewPresenter('');
+  };
+
+  const handleAddParticipant = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPartName.trim() || !selectedProgram) return;
+
+    const newPart: Participant = {
+      id: `part-${Date.now()}`,
+      programId: selectedProgram.id,
+      name: newPartName,
+      role: newPartRole,
+      entityType: newPartEntity,
+      bio: newPartBio,
+      socialHandles: {},
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    onSaveParticipant(newPart);
+    setNewPartName('');
+    setNewPartBio('');
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 rounded-2xl p-5">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Tv className="w-5 h-5 text-amber-400" />
-            <h1 className="text-xl md:text-2xl font-bold text-zinc-100">Programas & Identidades Editoriais</h1>
-          </div>
-          <p className="text-xs text-zinc-400">
-            Cadastre os formatos principais. Novos episódios herdam estrutura, duração e setup de câmeras.
+          <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <Tv className="w-5 h-5 text-purple-400" />
+            Programas & Elenco
+          </h1>
+          <p className="text-xs text-slate-400">
+            Gerencie seus formatos audiovisuais, elenco fixo, apresentadores e episódios estruturados.
           </p>
         </div>
 
         <button
-          onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-lg flex items-center gap-2 transition-colors cursor-pointer shrink-0"
+          onClick={() => setIsCreatingProgram(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-md transition"
         >
-          <Plus className="w-4 h-4 stroke-[3]" />
-          <span>Novo Programa</span>
+          <Plus className="w-4 h-4" />
+          Novo Programa
         </button>
       </div>
 
-      {/* Shows Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {shows.map((show) => {
-          const isActive = show.id === activeShowId;
-          return (
-            <div
-              key={show.id}
-              className={`rounded-2xl p-6 transition-all border flex flex-col justify-between space-y-4 ${
-                isActive
-                  ? 'bg-zinc-900 border-amber-500/80 ring-1 ring-amber-500/30'
-                  : 'bg-zinc-900/70 border-zinc-800 hover:border-zinc-700'
-              }`}
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase">
-                      {show.format}
-                    </span>
-                    {isActive && (
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
-                        PROGRAMA SELECIONADO
-                      </span>
-                    )}
-                  </div>
-
-                  {shows.length > 1 && (
-                    <button
-                      onClick={() => onDeleteShow(show.id)}
-                      className="text-zinc-600 hover:text-red-400 p-1 transition-colors cursor-pointer"
-                      title="Excluir programa"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-
-                <h3 className="text-lg font-bold text-zinc-100">{show.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{show.description}</p>
-
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-zinc-800/80">
-                  <div className="text-zinc-400">
-                    Apresentador: <strong className="text-zinc-200">{show.host || 'Apresentador'}</strong>
-                  </div>
-                  <div className="text-zinc-400">
-                    Duração Padrão: <strong className="text-zinc-200">{show.defaultDurationMin} min</strong>
-                  </div>
-                </div>
-
-                {show.editorialStyle && (
-                  <p className="text-[11px] text-zinc-400 bg-zinc-950 p-2.5 rounded-lg border border-zinc-850 italic">
-                    Estilo: {show.editorialStyle}
-                  </p>
-                )}
-              </div>
-
-              <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-500">
-                  {show.cameras?.length || 3} câmeras configuradas
-                </span>
-
-                {!isActive && (
-                  <button
-                    onClick={() => onSelectShowId(show.id)}
-                    className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
-                  >
-                    Tornar Programa Ativo
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Modal Add Show */}
-      {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-lg p-6 space-y-4">
-            <h3 className="text-sm font-bold text-zinc-100">Criar Novo Programa</h3>
-            <form onSubmit={handleCreate} className="space-y-3">
+      {/* Program Creation Modal */}
+      {isCreatingProgram && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <h2 className="text-lg font-bold text-white">Criar Novo Programa</h2>
+            <form onSubmit={handleCreateProgram} className="space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Título do Programa</label>
+                <label className="text-xs text-slate-300 font-semibold block mb-1">Nome do Programa</label>
                 <input
                   type="text"
                   required
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ex: Mentes de Valor"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
+                  value={newName}
+                  onChange={e => setNewName(e.target.value)}
+                  placeholder="Ex: Sala de Negócios, Arena dos Criadores..."
+                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Apresentador Principal</label>
-                  <input
-                    type="text"
-                    value={host}
-                    onChange={(e) => setHost(e.target.value)}
-                    placeholder="Ex: Renan Vianna"
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Formato</label>
+                  <label className="text-xs text-slate-300 font-semibold block mb-1">Formato</label>
                   <select
-                    value={format}
-                    onChange={(e: any) => setFormat(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
+                    value={newFormat}
+                    onChange={e => setNewFormat(e.target.value as ProgramFormat)}
+                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white"
                   >
-                    <option value="Entrevista">Entrevista</option>
-                    <option value="Podcast/Videocast">Podcast/Videocast</option>
-                    <option value="Programa Solo">Programa Solo</option>
-                    <option value="Mesa Redonda">Mesa Redonda</option>
-                    <option value="Debate">Debate</option>
-                    <option value="Reportagem">Reportagem</option>
+                    <option value="Entrevista">Entrevista 1 a 1</option>
+                    <option value="Mesa redonda / Painel">Mesa Redonda / Painel</option>
+                    <option value="Programa de auditório">Programa de Auditório</option>
+                    <option value="Talk show">Talk Show</option>
+                    <option value="Jornalístico / Investigativo">Jornalístico</option>
+                    <option value="Solo / Monólogo">Solo / Monólogo</option>
                   </select>
                 </div>
+
+                <div>
+                  <label className="text-xs text-slate-300 font-semibold block mb-1">Apresentador Principal</label>
+                  <input
+                    type="text"
+                    value={newPresenter}
+                    onChange={e => setNewPresenter(e.target.value)}
+                    placeholder="Nome do apresentador"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Duração Estimada (min)</label>
+                <label className="text-xs text-slate-300 font-semibold block mb-1">Duração Padrão (minutos)</label>
                 <input
                   type="number"
-                  min={10}
-                  max={240}
-                  value={defaultDurationMin}
-                  onChange={(e) => setDefaultDurationMin(Number(e.target.value))}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
+                  value={newDuration}
+                  onChange={e => setNewDuration(parseInt(e.target.value) || 60)}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Descrição Editorial</label>
+                <label className="text-xs text-slate-300 font-semibold block mb-1">Descrição & Proposta Editorial</label>
                 <textarea
-                  rows={2}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Ex: Entrevistas com líderes de negócios com foco na verdade dos bastidores..."
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-2.5 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
+                  value={newDesc}
+                  onChange={e => setNewDesc(e.target.value)}
+                  rows={3}
+                  placeholder="Qual é a proposta, o público e o objetivo deste programa?"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs text-zinc-300 mb-1">Estilo & Cenário</label>
-                <input
-                  type="text"
-                  value={scenario}
-                  onChange={(e) => setScenario(e.target.value)}
-                  placeholder="Ex: Estúdio escuro com iluminação pontual e mesa rústica"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2 border-t border-zinc-800">
+              <div className="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 text-xs rounded-lg cursor-pointer"
+                  onClick={() => setIsCreatingProgram(false)}
+                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-amber-500 text-zinc-950 font-bold text-xs rounded-lg cursor-pointer"
+                  className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg text-xs"
                 >
-                  Salvar Programa
+                  Criar Programa
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+
+      {/* Main Two-Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left: Programs Selector Column */}
+        <div className="lg:col-span-4 space-y-3">
+          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Seus Programas ({programs.length})
+          </h2>
+
+          <div className="space-y-2">
+            {programs.map(prog => {
+              const isSelected = prog.id === selectedProgram?.id;
+              const count = episodes.filter(e => e.programId === prog.id).length;
+
+              return (
+                <button
+                  key={prog.id}
+                  onClick={() => setSelectedProgramId(prog.id)}
+                  className={`w-full text-left p-4 rounded-xl border transition ${
+                    isSelected
+                      ? 'bg-purple-950/40 border-purple-500 shadow-md'
+                      : 'bg-slate-900 border-slate-800 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-white">{prog.name}</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-purple-300">
+                      {prog.format}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-slate-400 line-clamp-1 mt-1">
+                    {prog.description || 'Sem descrição'}
+                  </p>
+
+                  <div className="flex items-center gap-3 mt-3 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <FolderKanban className="w-3 h-3 text-purple-400" />
+                      {count} episódios
+                    </span>
+                    <span>•</span>
+                    <span>{prog.defaultPresenterName}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right: Program Detail Workspace */}
+        {selectedProgram && (
+          <div className="lg:col-span-8 space-y-4">
+            {/* Program Banner */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-900/60 text-purple-300 border border-purple-700">
+                      {selectedProgram.format}
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      Duração Padrão: {selectedProgram.defaultEpisodeDurationMinutes} min
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-black text-white">{selectedProgram.name}</h2>
+                  <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                    {selectedProgram.description}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => onOpenNewEpisodeModal(selectedProgram.id)}
+                  className="flex items-center gap-1.5 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-md transition self-start sm:self-auto"
+                >
+                  <Plus className="w-4 h-4" />
+                  + Novo Episódio neste Programa
+                </button>
+              </div>
+
+              {/* Sub-tabs */}
+              <div className="flex items-center gap-2 pt-3 border-t border-slate-800">
+                <button
+                  onClick={() => setActiveTab('episodes')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    activeTab === 'episodes'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  Episódios ({programEpisodes.length})
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('participants')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    activeTab === 'participants'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  Participantes & Elenco ({programParticipants.length})
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('settings')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    activeTab === 'settings'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  Câmeras & Quadros Padrão
+                </button>
+              </div>
+            </div>
+
+            {/* TAB: EPISODES */}
+            {activeTab === 'episodes' && (
+              <div className="space-y-3">
+                {programEpisodes.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-900 border border-slate-800 rounded-xl space-y-3">
+                    <p className="text-sm text-slate-400">Nenhum episódio criado para este programa ainda.</p>
+                    <button
+                      onClick={() => onOpenNewEpisodeModal(selectedProgram.id)}
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg text-xs font-semibold"
+                    >
+                      Criar Primeiro Episódio
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {programEpisodes.map(ep => (
+                      <div
+                        key={ep.id}
+                        onClick={() => onSelectEpisode(ep)}
+                        className="bg-slate-900 border border-slate-800 hover:border-purple-500/60 rounded-xl p-4 cursor-pointer transition space-y-2 group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-emerald-400 font-bold uppercase">
+                            {ep.status}
+                          </span>
+                          <span className="text-xs text-slate-400">{ep.targetDurationMinutes} min</span>
+                        </div>
+
+                        <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition">
+                          {ep.title}
+                        </h3>
+
+                        <p className="text-xs text-slate-400 line-clamp-2">
+                          {ep.topic || ep.synopsis}
+                        </p>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
+                          <span>{(ep.participants || []).length} participantes</span>
+                          <span className="text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Abrir Workspace &rarr;
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB: PARTICIPANTS */}
+            {activeTab === 'participants' && (
+              <div className="space-y-4">
+                {/* Add participant form */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+                  <h3 className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <UserPlus className="w-3.5 h-3.5" />
+                    Adicionar Participante ao Elenco do Programa
+                  </h3>
+                  <form onSubmit={handleAddParticipant} className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={newPartName}
+                        onChange={e => setNewPartName(e.target.value)}
+                        placeholder="Nome completo / Banda"
+                        className="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+                      />
+                      <select
+                        value={newPartRole}
+                        onChange={e => setNewPartRole(e.target.value as any)}
+                        className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      >
+                        <option value="Apresentador">Apresentador</option>
+                        <option value="Co-apresentador">Co-apresentador</option>
+                        <option value="Convidado Principal">Convidado Principal</option>
+                        <option value="Especialista">Especialista</option>
+                        <option value="Atração Musical">Atração Musical / Banda</option>
+                        <option value="Jurado">Jurado</option>
+                        <option value="Plateia / Povo">Plateia / Povo</option>
+                      </select>
+                      <select
+                        value={newPartEntity}
+                        onChange={e => setNewPartEntity(e.target.value as any)}
+                        className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      >
+                        <option value="individual">Pessoa Individual</option>
+                        <option value="band">Banda Musical</option>
+                        <option value="group">Grupo / Painel</option>
+                      </select>
+                    </div>
+
+                    <textarea
+                      value={newPartBio}
+                      onChange={e => setNewPartBio(e.target.value)}
+                      placeholder="Breve biografia, histórico ou relevância para o programa..."
+                      rows={2}
+                      className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white"
+                    />
+
+                    <button
+                      type="submit"
+                      className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold"
+                    >
+                      Cadastrar no Elenco
+                    </button>
+                  </form>
+                </div>
+
+                {/* List participants */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {programParticipants.map(part => (
+                    <div
+                      key={part.id}
+                      className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-white">{part.name}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800 font-semibold">
+                          {part.role}
+                        </span>
+                      </div>
+                      {part.bio && (
+                        <p className="text-xs text-slate-400 line-clamp-2">{part.bio}</p>
+                      )}
+                      <div className="text-[10px] text-slate-500">
+                        Tipo: {part.entityType === 'band' ? 'Banda Musical' : part.entityType === 'group' ? 'Grupo' : 'Individual'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB: SETTINGS & DEFAULT CAMERAS */}
+            {activeTab === 'settings' && (
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-purple-400" />
+                  Câmeras e Quadros Padrão do Programa
+                </h3>
+
+                <div className="space-y-2">
+                  <span className="text-xs font-semibold text-slate-300">Câmeras Pré-Configuradas:</span>
+                  {(selectedProgram.defaultCameras || []).map(cam => (
+                    <div key={cam.id} className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+                      <span className="font-bold text-white">{cam.name}</span>
+                      <span className="text-slate-400">{cam.target}</span>
+                      <span className="text-purple-400">{cam.shotType}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-2 pt-3 border-t border-slate-800">
+                  <span className="text-xs font-semibold text-slate-300">Quadros Padrão na Criação:</span>
+                  {(selectedProgram.defaultSegments || []).map(seg => (
+                    <div key={seg.id} className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-white">{seg.title}</span>
+                        <span className="text-slate-400">{seg.defaultDurationMinutes} min</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">{seg.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

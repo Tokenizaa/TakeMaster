@@ -9,45 +9,45 @@ import { Header } from './components/Header';
 import { DashboardView } from './components/DashboardView';
 import { EpisodesListView } from './components/EpisodesListView';
 import { ShowsView } from './components/ShowsView';
-import { GuestsView } from './components/GuestsView';
+import { AgendaView } from './components/AgendaView';
+import { LibraryView } from './components/LibraryView';
 import { StudioSetupView } from './components/StudioSetupView';
-import { EpisodeHeader } from './components/EpisodeEditor/EpisodeHeader';
-import { DiagnosisTab } from './components/EpisodeEditor/DiagnosisTab';
-import { ResearchTab } from './components/EpisodeEditor/ResearchTab';
-import { OutlineTab } from './components/EpisodeEditor/OutlineTab';
-import { ScriptTab } from './components/EpisodeEditor/ScriptTab';
-import { CamerasTab } from './components/EpisodeEditor/CamerasTab';
-import { AssetsTab } from './components/EpisodeEditor/AssetsTab';
-import { ShortsTab } from './components/EpisodeEditor/ShortsTab';
-import { RecordingPrepTab } from './components/EpisodeEditor/RecordingPrepTab';
-import { EditorTab } from './components/EpisodeEditor/EditorTab';
+import { EpisodeWorkspace } from './components/EpisodeWorkspace/EpisodeWorkspace';
 import { StudioModeModal } from './components/StudioMode/StudioModeModal';
 import { ExportModal } from './components/ExportModal';
 import { NewEpisodeModal } from './components/NewEpisodeModal';
 import { AiContextAssistant } from './components/AiContextAssistant';
-import { Episode, Show, Guest, CameraConfig, ShowFormat } from './types';
+import {
+  Episode,
+  Program,
+  Participant,
+  AgendaEvent,
+  LibraryAsset,
+  CameraConfig
+} from './types';
 import { api } from './services/api';
 
 export default function App() {
-  const [shows, setShows] = useState<Show[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [guests, setGuests] = useState<Guest[]>([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [agendaEvents, setAgendaEvents] = useState<AgendaEvent[]>([]);
+  const [libraryAssets, setLibraryAssets] = useState<LibraryAsset[]>([]);
   const [loadingInitial, setLoadingInitial] = useState(true);
 
   // Navigation
   const [currentView, setCurrentView] = useState<string>('dashboard');
-  const [activeShowId, setActiveShowId] = useState<string>('');
+  const [activeProgramId, setActiveProgramId] = useState<string>('');
   const [activeEpisode, setActiveEpisode] = useState<Episode | null>(null);
-  const [activeEpisodeTab, setActiveEpisodeTab] = useState<string>('diagnosis');
 
   // Modals & Panels
   const [isStudioModeOpen, setIsStudioModeOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isNewEpisodeModalOpen, setIsNewEpisodeModalOpen] = useState(false);
+  const [newEpisodeInitialProgramId, setNewEpisodeInitialProgramId] = useState<string | undefined>(undefined);
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
-  const [teleprompterInitialText, setTeleprompterInitialText] = useState<string>('');
 
-  // Autosave
+  // Autosave status
   const [savingStatus, setSavingStatus] = useState<'saved' | 'saving' | 'idle'>('saved');
   const debounceTimerRef = useRef<any>(null);
 
@@ -55,22 +55,27 @@ export default function App() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [showsData, episodesData, guestsData] = await Promise.all([
-          api.getShows(),
+        const [progData, epData, partData, agendaData, libData] = await Promise.all([
+          api.getPrograms(),
           api.getEpisodes(),
-          api.getGuests(),
+          api.getParticipants(),
+          api.getAgenda(),
+          api.getLibrary()
         ]);
-        setShows(showsData);
-        setEpisodes(episodesData);
-        setGuests(guestsData);
-        if (showsData.length > 0) {
-          setActiveShowId(showsData[0].id);
+        setPrograms(progData);
+        setEpisodes(epData);
+        setParticipants(partData);
+        setAgendaEvents(agendaData);
+        setLibraryAssets(libData);
+
+        if (progData.length > 0) {
+          setActiveProgramId(progData[0].id);
         }
-        if (episodesData.length > 0) {
-          setActiveEpisode(episodesData[0]);
+        if (epData.length > 0) {
+          setActiveEpisode(epData[0]);
         }
       } catch (err) {
-        console.error('Failed to load initial data:', err);
+        console.error('Falha ao carregar dados iniciais:', err);
       } finally {
         setLoadingInitial(false);
       }
@@ -78,19 +83,11 @@ export default function App() {
     loadData();
   }, []);
 
-  const activeShow = shows.find((s) => s.id === activeShowId) || shows[0] || null;
+  const activeProgram = programs.find((p) => p.id === activeProgramId) || programs[0] || null;
 
   // Persist episode changes with debounce
   const handleUpdateEpisode = useCallback(
-    (updatedFields: Partial<Episode>) => {
-      if (!activeEpisode) return;
-
-      const updatedEpisode: Episode = {
-        ...activeEpisode,
-        ...updatedFields,
-        updatedAt: new Date().toISOString(),
-      };
-
+    (updatedEpisode: Episode) => {
       setActiveEpisode(updatedEpisode);
       setEpisodes((prev) =>
         prev.map((e) => (e.id === updatedEpisode.id ? updatedEpisode : e))
@@ -104,302 +101,127 @@ export default function App() {
           await api.updateEpisode(updatedEpisode.id, updatedEpisode);
           setSavingStatus('saved');
         } catch (err) {
-          console.error('Failed to autosave episode:', err);
+          console.error('Falha ao autosalvar episódio:', err);
           setSavingStatus('saved');
         }
-      }, 800);
+      }, 700);
     },
-    [activeEpisode]
+    []
   );
 
-  // Create episode from idea with AI Producer diagnosis
-  const handleCreateEpisodeWithAi = async (data: {
-    showId: string;
-    idea: string;
-    guestName: string;
-    company?: string;
-    format: ShowFormat;
-    durationMin: number;
-    objective?: string;
-    additionalInfo?: string;
-  }) => {
-    setSavingStatus('saving');
-
-    // 1. Run AI diagnosis immediately
-    const diagnosis = await api.aiDiagnose({
-      idea: data.idea,
-      guestName: data.guestName,
-      format: data.format,
-      durationMin: data.durationMin,
-      objective: data.objective,
-      additionalInfo: data.additionalInfo,
-    });
-
-    // 2. Build initial empty outline block template
-    const initialOutline = [
-      {
-        id: `blk-${Date.now()}-1`,
-        blockNumber: 1,
-        title: 'Cold Open & Gancho',
-        estimatedDurationMin: Math.max(2, Math.round(data.durationMin * 0.08)),
-        objective: 'Capturar atenção e situar o contraste da história.',
-        keyThemes: ['Impacto inicial', 'Apresentação'],
-        transitionText: 'Antes de falarmos do sucesso atual, quero voltar ao dia em que tudo começou...',
-      },
-      {
-        id: `blk-${Date.now()}-2`,
-        blockNumber: 2,
-        title: 'Origem & Primeiros Desafios',
-        estimatedDurationMin: Math.max(4, Math.round(data.durationMin * 0.22)),
-        objective: 'Entender a gênese e o primeiro teste de fogo.',
-        keyThemes: ['Início humilde', 'Primeiras barreiras'],
-        transitionText: 'Mas a caminhada não demorou para encontrar sua maior tempestade...',
-      },
-      {
-        id: `blk-${Date.now()}-3`,
-        blockNumber: 3,
-        title: 'A Grande Crise & Conflito Central',
-        estimatedDurationMin: Math.max(6, Math.round(data.durationMin * 0.3)),
-        objective: 'Mergulhar na vulnerabilidade e no momento em que quase perdeu tudo.',
-        keyThemes: ['Pior momento', 'Decisão radical'],
-        transitionText: 'Foi preciso tomar uma atitude drástica para renascer...',
-      },
-      {
-        id: `blk-${Date.now()}-4`,
-        blockNumber: 4,
-        title: 'A Virada Estratégica & Escala',
-        estimatedDurationMin: Math.max(4, Math.round(data.durationMin * 0.25)),
-        objective: 'Analisar como a transformação ocorreu na prática.',
-        keyThemes: ['Mudança de modelo', 'Crescimento'],
-        transitionText: 'Com a experiência acumulada, vieram as lições humanas mais profundas.',
-      },
-      {
-        id: `blk-${Date.now()}-5`,
-        blockNumber: 5,
-        title: 'Ping-Pong & Lição Final',
-        estimatedDurationMin: Math.max(3, Math.round(data.durationMin * 0.15)),
-        objective: 'Perguntas bate-pronto, mensagem final aos espectadores e encerramento.',
-        keyThemes: ['Bate-bola', 'Conselho definitivo'],
-        transitionText: 'Agradecimento e mensagem final aos espectadores.',
-      },
-    ];
-
-    // 3. Construct new full episode object
-    const newEpisode: Episode = {
-      id: `ep-${Date.now()}`,
-      showId: data.showId,
-      episodeNumber: episodes.length + 1,
-      title: data.guestName ? `${data.guestName}: ${diagnosis.centralTheme}` : diagnosis.centralTheme,
-      idea: data.idea,
-      guestName: data.guestName,
-      host: activeShow?.host || 'Apresentador',
-      format: data.format,
-      targetDurationMin: data.durationMin,
-      objective: data.objective,
-      additionalInfo: data.additionalInfo,
-      status: 'diagnosis',
-      diagnosis,
-      research: {
-        aboutGuest: data.guestName ? `${data.guestName}, protagonista da história.` : '',
-        trajectory: 'Início autônomo, consolidação e desafios superados.',
-        company: data.company || '',
-        keyDatesAndNumbers: 'Ano de fundação, faturamento e equipe.',
-        previousInterviews: '',
-        recurringThemes: 'Disciplina, superação de crises e aprendizado prático.',
-        contradictionsAndClarifications: '',
-        compellingStories: '',
-        sources: [
-          {
-            id: `src-${Date.now()}-1`,
-            title: 'Briefing Inicial Informado',
-            detail: data.idea,
-            status: 'CONFIRMADO',
-            category: 'guest',
-          },
-        ],
-      },
-      outline: initialOutline,
-      questions: [
-        {
-          id: `q-${Date.now()}-1`,
-          blockId: initialOutline[1].id,
-          order: 1,
-          text: `Você lembra do momento exato em que percebeu que precisava arriscar?`,
-          objective: 'Descobrir o ponto de virada inicial.',
-          suggestedCamera: 'CAM 2',
-          eyeDirection: 'Olhar para convidado',
-          followUps: [
-            {
-              id: `fu-${Date.now()}-1`,
-              triggerCondition: 'SE FALAR SOBRE MEDO OU FAMÍLIA',
-              actionOrQuestion: 'Quem ao seu redor disse que aquilo era loucura?',
-              tag: 'MEDO',
-            },
-          ],
-        },
-      ],
-      script: [
-        {
-          id: `sc-${Date.now()}-1`,
-          timestamp: '00:00',
-          type: 'opening',
-          camera: 'CAM 1',
-          speaker: activeShow?.host || 'Apresentador',
-          eyeDirection: 'Olhar para a lente',
-          shotType: 'Plano Médio Frontal',
-          content: `Existe uma parte da história de todo empreendedor que você nunca vai encontrar nos manuais. Hoje nós vamos conhecer uma dessas jornadas reais: ${diagnosis.potentialStory}`,
-          directionalMarkers: ['OLHAR PARA LENTE', 'TOM FIRME'],
-          isTeleprompter: true,
-        },
-      ],
-      cameras: activeShow?.cameras || [
-        {
-          id: 'cam-1',
-          name: 'CAM 1',
-          label: 'Frontal Apresentador',
-          purpose: 'Abertura e encerramento',
-          framing: 'Plano Médio Frontal',
-          active: true,
-        },
-        {
-          id: 'cam-2',
-          name: 'CAM 2',
-          label: '45° Apresentador',
-          purpose: 'Perguntas ao entrevistado',
-          framing: 'Plano Médio 45°',
-          active: true,
-        },
-        {
-          id: 'cam-3',
-          name: 'CAM 3',
-          label: '45° Convidado',
-          purpose: 'Respostas e closes',
-          framing: 'Plano Fechado 45°',
-          active: true,
-        },
-      ],
-      assets: [],
-      shorts: [
-        {
-          id: `sh-${Date.now()}-1`,
-          title: `O maior momento de risco de ${data.guestName || 'protagonista'}`,
-          hook: '"O dia em que quase tudo desabou."',
-          generatingQuestion: 'Qual foi o pior momento da sua caminhada?',
-          estimatedDuration: '45s',
-          status: 'Planejado',
-        },
-      ],
-      recordingMarkers: [],
-      technicalChecklist: {
-        cam1Recording: false,
-        cam2Recording: false,
-        cam3Recording: false,
-        micHost: false,
-        micGuest: false,
-        audioMonitored: false,
-        lighting: false,
-        memoryCardsStorage: false,
-        batteries: false,
-        syncClap: false,
-        waterReady: false,
-        silentPhones: false,
-        customItems: [],
-      },
-      versions: [
-        {
-          id: `v-${Date.now()}`,
-          versionNumber: 1,
-          name: 'Criação Inicial da IA',
-          savedAt: new Date().toISOString(),
-          description: 'Diagnóstico editorial e esqueleto inicial do episódio.',
-          snapshot: {},
-        },
-      ],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    const saved = await api.createEpisode(newEpisode);
-    setEpisodes((prev) => [saved, ...prev]);
-    setActiveEpisode(saved);
-    setActiveEpisodeTab('diagnosis');
-    setCurrentView('episode-detail');
-    setSavingStatus('saved');
-  };
-
-  const handleSelectEpisode = (ep: Episode, initialTab: string = 'diagnosis') => {
-    setActiveEpisode(ep);
-    setActiveEpisodeTab(initialTab);
+  // Navigation handlers
+  const handleSelectEpisode = (episode: Episode) => {
+    setActiveEpisode(episode);
+    if (episode.programId) {
+      setActiveProgramId(episode.programId);
+    }
     setCurrentView('episode-detail');
   };
 
-  const handleOpenStudioModeForEpisode = (ep: Episode) => {
-    setActiveEpisode(ep);
+  const handleOpenStudioModeForEpisode = (episode: Episode) => {
+    setActiveEpisode(episode);
     setIsStudioModeOpen(true);
   };
 
   const handleDeleteEpisode = async (id: string) => {
     await api.deleteEpisode(id);
-    setEpisodes((prev) => prev.filter((e) => e.id !== id));
+    setEpisodes(prev => prev.filter(e => e.id !== id));
     if (activeEpisode?.id === id) {
-      setActiveEpisode(episodes.find((e) => e.id !== id) || null);
-      setCurrentView('episodes');
+      setActiveEpisode(episodes.find(e => e.id !== id) || null);
+      if (currentView === 'episode-detail') {
+        setCurrentView('episodes');
+      }
     }
   };
 
-  const handleSaveShow = async (showData: Partial<Show>) => {
-    const created = await api.createShow(showData);
-    setShows((prev) => [...prev, created]);
-    setActiveShowId(created.id);
+  // Program Handlers
+  const handleSaveProgram = async (prog: Program) => {
+    const created = await api.createProgram(prog);
+    setPrograms(prev => [...prev, created]);
+    setActiveProgramId(created.id);
   };
 
-  const handleDeleteShow = async (id: string) => {
-    await api.deleteShow(id);
-    setShows((prev) => prev.filter((s) => s.id !== id));
-    if (activeShowId === id && shows.length > 1) {
-      setActiveShowId(shows.find((s) => s.id !== id)?.id || '');
+  const handleDeleteProgram = async (id: string) => {
+    await api.deleteProgram(id);
+    setPrograms(prev => prev.filter(p => p.id !== id));
+    if (activeProgramId === id && programs.length > 1) {
+      setActiveProgramId(programs.find(p => p.id !== id)?.id || '');
     }
   };
 
-  const handleSaveGuest = async (guestData: Partial<Guest>) => {
-    const created = await api.createGuest(guestData);
-    setGuests((prev) => [...prev, created]);
+  const handleSaveParticipant = async (participant: Participant) => {
+    const created = await api.createParticipant(participant);
+    setParticipants(prev => [...prev, created]);
   };
 
-  const handleUpdateShowCameras = async (cameras: CameraConfig[]) => {
-    if (!activeShow) return;
-    const updated = await api.updateShow(activeShow.id, { cameras });
-    setShows((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+  // Agenda & Library Handlers
+  const handleAddAgendaEvent = async (event: AgendaEvent) => {
+    const created = await api.createAgendaEvent(event);
+    setAgendaEvents(prev => [...prev, created]);
   };
 
-  const handleOpenTeleprompter = (text?: string) => {
-    setTeleprompterInitialText(text || '');
-    setIsStudioModeOpen(true);
+  const handleDeleteAgendaEvent = async (id: string) => {
+    await api.deleteAgendaEvent(id);
+    setAgendaEvents(prev => prev.filter(e => e.id !== id));
+  };
+
+  const handleAddLibraryAsset = async (asset: LibraryAsset) => {
+    const created = await api.createLibraryAsset(asset);
+    setLibraryAssets(prev => [...prev, created]);
+  };
+
+  const handleDeleteLibraryAsset = async (id: string) => {
+    await api.deleteLibraryAsset(id);
+    setLibraryAssets(prev => prev.filter(a => a.id !== id));
+  };
+
+  // Studio setup update
+  const handleUpdateProgramCameras = async (cameras: CameraConfig[]) => {
+    if (!activeProgram) return;
+    const updated = await api.updateProgram(activeProgram.id, { defaultCameras: cameras });
+    setPrograms(prev => prev.map(p => p.id === updated.id ? updated : p));
+  };
+
+  const handleOpenNewEpisodeModal = (programId?: string) => {
+    setNewEpisodeInitialProgramId(programId);
+    setIsNewEpisodeModalOpen(true);
+  };
+
+  const handleCreateEpisodeFromModal = async (createdEp: Episode) => {
+    setEpisodes(prev => [createdEp, ...prev]);
+    setActiveEpisode(createdEp);
+    if (createdEp.programId) {
+      setActiveProgramId(createdEp.programId);
+    }
+    setIsNewEpisodeModalOpen(false);
+    setCurrentView('episode-detail');
   };
 
   if (loadingInitial) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center space-y-3 text-zinc-400">
-        <div className="w-8 h-8 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center space-y-3 text-slate-400">
+        <div className="w-9 h-9 rounded-full border-3 border-purple-500 border-t-transparent animate-spin" />
         <p className="text-xs font-mono">Iniciando TakeMaster Studio...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
       {/* Sidebar Navigation */}
       <Sidebar
         currentView={currentView}
         onNavigate={setCurrentView}
         activeEpisode={activeEpisode}
-        activeEpisodeTab={activeEpisodeTab}
-        onSelectEpisodeTab={setActiveEpisodeTab}
-        onOpenStudioMode={() => setIsStudioModeOpen(true)}
-        onNewEpisodeClick={() => setIsNewEpisodeModalOpen(true)}
-        shows={shows}
-        activeShowId={activeShowId}
-        onSelectShowId={setActiveShowId}
+        activeEpisodeWorkspace="overview"
+        onSelectEpisodeWorkspace={() => {}}
+        onOpenStudioMode={() => {
+          if (activeEpisode) setIsStudioModeOpen(true);
+        }}
+        onNewEpisodeClick={() => handleOpenNewEpisodeModal()}
+        programs={programs}
+        activeProgramId={activeProgramId}
+        onSelectProgramId={setActiveProgramId}
       />
 
       {/* Main View Area */}
@@ -408,152 +230,89 @@ export default function App() {
         <Header
           currentView={currentView}
           activeEpisode={activeEpisode}
-          activeShow={activeShow}
+          activeProgram={activeProgram}
           savingStatus={savingStatus}
-          onNewEpisodeClick={() => setIsNewEpisodeModalOpen(true)}
-          onNewShowClick={() => setCurrentView('shows')}
+          onNewEpisodeClick={() => handleOpenNewEpisodeModal()}
+          onNewProgramClick={() => setCurrentView('shows')}
           onBackToEpisodes={() => setCurrentView('episodes')}
         />
 
         {/* View Switcher */}
-        <main className="flex-1 flex flex-col min-h-0 overflow-hidden bg-zinc-950">
+        <main className="flex-1 flex flex-col min-h-0 overflow-y-auto p-6 md:p-8 bg-slate-950">
           {currentView === 'dashboard' && (
             <DashboardView
+              programs={programs}
               episodes={episodes}
-              shows={shows}
-              activeShow={activeShow}
+              agendaEvents={agendaEvents}
               onSelectEpisode={handleSelectEpisode}
-              onNewEpisodeClick={() => setIsNewEpisodeModalOpen(true)}
-              onNewShowClick={() => setCurrentView('shows')}
-              onOpenStudioMode={handleOpenStudioModeForEpisode}
+              onOpenNewEpisodeModal={handleOpenNewEpisodeModal}
+              onNavigateToPrograms={() => setCurrentView('shows')}
+              onNavigateToEpisodes={() => setCurrentView('episodes')}
+            />
+          )}
+
+          {currentView === 'shows' && (
+            <ShowsView
+              programs={programs}
+              episodes={episodes}
+              participants={participants}
+              onSelectEpisode={handleSelectEpisode}
+              onOpenNewEpisodeModal={handleOpenNewEpisodeModal}
+              onSaveProgram={handleSaveProgram}
+              onDeleteProgram={handleDeleteProgram}
+              onSaveParticipant={handleSaveParticipant}
             />
           )}
 
           {currentView === 'episodes' && (
             <EpisodesListView
               episodes={episodes}
+              programs={programs}
               onSelectEpisode={handleSelectEpisode}
-              onNewEpisodeClick={() => setIsNewEpisodeModalOpen(true)}
-              onOpenStudioMode={handleOpenStudioModeForEpisode}
-              onDeleteEpisode={handleDeleteEpisode}
+              onOpenNewEpisodeModal={handleOpenNewEpisodeModal}
             />
           )}
 
-          {currentView === 'shows' && (
-            <ShowsView
-              shows={shows}
-              activeShowId={activeShowId}
-              onSelectShowId={setActiveShowId}
-              onSaveShow={handleSaveShow}
-              onDeleteShow={handleDeleteShow}
+          {currentView === 'agenda' && (
+            <AgendaView
+              events={agendaEvents}
+              episodes={episodes}
+              programs={programs}
+              onAddEvent={handleAddAgendaEvent}
+              onDeleteEvent={handleDeleteAgendaEvent}
             />
           )}
 
-          {currentView === 'guests' && (
-            <GuestsView
-              guests={guests}
-              onSaveGuest={handleSaveGuest}
-              onNewEpisodeWithGuest={(guest) => {
-                setIsNewEpisodeModalOpen(true);
-              }}
+          {currentView === 'library' && (
+            <LibraryView
+              assets={libraryAssets}
+              onAddAsset={handleAddLibraryAsset}
+              onDeleteAsset={handleDeleteLibraryAsset}
             />
           )}
 
           {currentView === 'studio-setup' && (
             <StudioSetupView
-              activeShow={activeShow}
-              onUpdateShowCameras={handleUpdateShowCameras}
+              activeShow={activeProgram ? {
+                ...activeProgram,
+                title: activeProgram.name,
+                cameras: activeProgram.defaultCameras
+              } as any : null}
+              onUpdateShowCameras={handleUpdateProgramCameras}
             />
           )}
 
-          {/* Episode Editor & 9 Tabbed Subviews */}
+          {/* Consolidated Master Episode Workspace */}
           {currentView === 'episode-detail' && activeEpisode && (
-            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-              <EpisodeHeader
-                episode={activeEpisode}
-                activeTab={activeEpisodeTab}
-                onSelectTab={setActiveEpisodeTab}
-                onUpdateEpisode={handleUpdateEpisode}
-                onOpenStudioMode={() => setIsStudioModeOpen(true)}
-                onOpenExportModal={() => setIsExportModalOpen(true)}
-                onToggleAiAssistant={() => setIsAiAssistantOpen(!isAiAssistantOpen)}
-                onBack={() => setCurrentView('episodes')}
-              />
-
-              <div className="flex-1 overflow-y-auto p-6 md:p-8">
-                {activeEpisodeTab === 'diagnosis' && (
-                  <DiagnosisTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('research')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'research' && (
-                  <ResearchTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('outline')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'outline' && (
-                  <OutlineTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('script')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'script' && (
-                  <ScriptTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('cameras')}
-                    onOpenTeleprompter={handleOpenTeleprompter}
-                  />
-                )}
-
-                {activeEpisodeTab === 'cameras' && (
-                  <CamerasTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('assets')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'assets' && (
-                  <AssetsTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('shorts')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'shorts' && (
-                  <ShortsTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onAdvanceToNextTab={() => setActiveEpisodeTab('prep')}
-                  />
-                )}
-
-                {activeEpisodeTab === 'prep' && (
-                  <RecordingPrepTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                    onOpenStudioMode={() => setIsStudioModeOpen(true)}
-                  />
-                )}
-
-                {activeEpisodeTab === 'editor' && (
-                  <EditorTab
-                    episode={activeEpisode}
-                    onUpdateEpisode={handleUpdateEpisode}
-                  />
-                )}
-              </div>
-            </div>
+            <EpisodeWorkspace
+              episode={activeEpisode}
+              program={programs.find(p => p.id === activeEpisode.programId) || activeProgram || undefined}
+              onUpdateEpisode={handleUpdateEpisode}
+              onBackToDashboard={() => setCurrentView('episodes')}
+              onLaunchStudio={() => setIsStudioModeOpen(true)}
+              onOpenExportModal={() => setIsExportModalOpen(true)}
+              onOpenAiAssistant={() => setIsAiAssistantOpen(true)}
+            />
           )}
         </main>
       </div>
@@ -564,12 +323,11 @@ export default function App() {
           episode={activeEpisode}
           isOpen={isStudioModeOpen}
           onClose={() => setIsStudioModeOpen(false)}
-          onUpdateEpisode={handleUpdateEpisode}
-          initialTeleprompterText={teleprompterInitialText}
+          onUpdateEpisode={(fields) => handleUpdateEpisode({ ...activeEpisode, ...fields })}
         />
       )}
 
-      {/* Export & Printing Modal */}
+      {/* Export Modal */}
       {activeEpisode && isExportModalOpen && (
         <ExportModal
           isOpen={isExportModalOpen}
@@ -578,14 +336,14 @@ export default function App() {
         />
       )}
 
-      {/* New Episode Creation from Idea Modal */}
+      {/* New Episode Creation from Natural Language Idea Modal */}
       {isNewEpisodeModalOpen && (
         <NewEpisodeModal
           isOpen={isNewEpisodeModalOpen}
           onClose={() => setIsNewEpisodeModalOpen(false)}
-          activeShow={activeShow}
-          shows={shows}
-          onCreateWithAi={handleCreateEpisodeWithAi}
+          programs={programs}
+          initialProgramId={newEpisodeInitialProgramId || activeProgramId}
+          onEpisodeCreated={handleCreateEpisodeFromModal}
         />
       )}
 
@@ -595,8 +353,8 @@ export default function App() {
           isOpen={isAiAssistantOpen}
           onClose={() => setIsAiAssistantOpen(false)}
           episode={activeEpisode}
-          currentTab={activeEpisodeTab}
-          onUpdateEpisode={handleUpdateEpisode}
+          currentTab="overview"
+          onUpdateEpisode={(fields) => handleUpdateEpisode({ ...activeEpisode, ...fields })}
         />
       )}
     </div>
