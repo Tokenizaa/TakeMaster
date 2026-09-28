@@ -424,9 +424,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 app.post('/api/ai/script', async (req: Request, res: Response) => {
   const { episode, program } = req.body;
 
-  if (!ai) {
-    return res.status(500).json({ error: 'Chave de API não configurada' });
-  }
+  
 
   try {
     const prompt = `Você é um Diretor de TV e Roteirista Chefe de Produção Audiovisual.
