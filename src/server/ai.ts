@@ -5,9 +5,9 @@ type GenerateOptions = { model?: string; contents: string; config?: { responseMi
 type GenerateResponse = { text?: string };
 
 const NIM_BASE_URL = (process.env.NIM_BASE_URL || 'https://integrate.api.nvidia.com').replace(/\/$/, '');
-const NIM_API_KEY = process.env.NIM_API_KEY || '';
-const NIM_PRIMARY_MODEL = process.env.NIM_PRIMARY_MODEL || 'nvidia/llama-3.1-nemotron-ultra-253b-v1';
-const NIM_FALLBACK_MODEL = process.env.NIM_FALLBACK_MODEL || 'nvidia/llama-3.1-nemotron-nano-vl-8b-v1';
+const NIM_API_KEY = process.env.NIM_API_KEY || process.env.NVIDIA_API_KEY || '';
+const NIM_PRIMARY_MODEL = process.env.NIM_PRIMARY_MODEL || 'nvidia/nemotron-3-super-120b-a12b';
+const NIM_FALLBACK_MODEL = process.env.NIM_FALLBACK_MODEL || 'nvidia/nemotron-3-nano-30b-a3b';
 const NIM_TIMEOUT_MS = Number(process.env.NIM_TIMEOUT_MS || 60000);
 
 async function callNim(model: string, contents: string, responseMimeType?: string): Promise<GenerateResponse> {
