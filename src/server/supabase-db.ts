@@ -175,7 +175,7 @@ export class SupabaseDatabase {
       const p = await this.getProgram(programId);
       if (!p) return [];
       const raw = await request(`/participants?select=*&program_id=eq.${enc((p as any)._dbId || (p as any).id)}&order=created_at.asc`);
-      return raw.map(participantFromDb);
+      return raw.map(participantFromDb).map((x:any) => ({...x, programId: programId || x.programId}));
     }
     const raw = await request('/participants?select=*&order=created_at.asc');
     return raw.map(participantFromDb);
