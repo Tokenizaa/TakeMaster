@@ -30,7 +30,13 @@ async function rpc(name: string, body: unknown) {
 
 const enc = encodeURIComponent;
 
-const isUuid = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);\n\nfunction idFilter(column: string, value: string) {\n  return isUuid(value) ? `${column}=eq.${enc(value)}` : `legacy_id=eq.${enc(value)}`;\n}\n\nfunction toLegacy(row: any) {
+const isUuid = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+function idFilter(column: string, value: string) {
+  return isUuid(value) ? `${column}=eq.${enc(value)}` : `legacy_id=eq.${enc(value)}`;
+}
+
+function toLegacy(row: any) {
   return { ...row, id: row.legacy_id || row.id };
 }
 
@@ -317,7 +323,8 @@ export class SupabaseDatabase {
 
   async saveAgendaEvent(event: any) {
     const ep = event.episodeId ? await this.getEpisode(event.episodeId) : undefined;
-    const program = event.programId ? await this.getProgram(event.programId) : undefined;\n    const row = { legacy_id: event.legacy_id || event.id, title: event.title || event.episodeTitle, episode_id: ep ? (await request(`/episodes?select=id&legacy_id=eq.${enc(event.episodeId)}&limit=1`))[0]?.id : null, program_id: program ? (program as any)._dbId : null, program_title: event.programTitle, episode_title: event.episodeTitle, scheduled_date: event.date, scheduled_time: event.time, duration_min: event.durationMin, location: event.location, type: event.type, status: event.status, notes: event.notes, participants_summary: event.participantsSummary };
+    const program = event.programId ? await this.getProgram(event.programId) : undefined;
+    const row = { legacy_id: event.legacy_id || event.id, title: event.title || event.episodeTitle, episode_id: ep ? (await request(`/episodes?select=id&legacy_id=eq.${enc(event.episodeId)}&limit=1`))[0]?.id : null, program_id: program ? (program as any)._dbId : null, program_title: event.programTitle, episode_title: event.episodeTitle, scheduled_date: event.date, scheduled_time: event.time, duration_min: event.durationMin, location: event.location, type: event.type, status: event.status, notes: event.notes, participants_summary: event.participantsSummary };
     await request('/agenda_events?on_conflict=legacy_id', { method:'POST', headers:{Prefer:'resolution=merge-duplicates'}, body:JSON.stringify(row) });
     return event;
   }
