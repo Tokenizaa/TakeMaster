@@ -70,6 +70,7 @@ function programFromDb(row: any, cameras: any[] = []) {
 function participantFromDb(row: any) {
   return {
     ...toLegacy(row),
+    _dbId: row.id,
     programId: row.program_id,
     groupType: row.group_type,
     companyOrGroup: row.company_or_group,
@@ -81,6 +82,7 @@ function participantFromDb(row: any) {
 function segmentFromDb(row: any) {
   return {
     ...toLegacy(row),
+    _dbId: row.id,
     order: row.order_pos,
     blockNumber: row.block_number,
     estimatedDurationMin: row.estimated_duration_min ?? row.estimated_duration_minutes,
@@ -97,6 +99,7 @@ function segmentFromDb(row: any) {
 function questionFromDb(row: any, followUps: any[]) {
   return {
     ...toLegacy(row),
+    _dbId: row.id,
     segmentId: row.segment_id,
     order: row.order_pos,
     targetParticipantName: row.target_participant_name,
