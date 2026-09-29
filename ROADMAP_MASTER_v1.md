@@ -28,16 +28,16 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Status** | EM ANDAMENTO |
+| **Status** | CONCLUÍDO |
 | **Objetivo** | Construir base técnica sólida: arquitetura de código, infraestrutura, build system, e fundamentos de dados que suportem todas as funcionalidades do produto. |
 | **Dependências** | F0 (Governança básica para decisões técnicas) |
 | **Agente responsável** | @backend (coordenando com @banco e @frontend) |
 | **Agentes envolvidos** | @backend, @banco, @frontend, @qualidade |
-| **Etapas** | 1. Arquitetura de camadas (controllers, services, data access)<br>2. Configuração de build system (Vite, TypeScript, Tailwind)<br>3. Implementação de camada de dados (Supabase)<br>4. Configuração de variáveis de ambiente e secrets<br>5. Implementação de middleware de segurança básico<br>6. Estruturação de código fonte organizada por domínio |
+| **Etapas** | 1. Arquitetura de camadas (controllers, services, data access)<br>2. Configuração de build system (Vite, TypeScript, Tailwind)<br>3. Implementação de camada de dados (Supabase)<br>4. Configuração de variáveis de ambiente e secrets<br>5. Implementação de middleware de segurança básico<br>6. Estruturação de código fonte organizado por domínio |
 | **Entregáveis** | • Código backend estruturado e funcional<br>• Frontend buildável e servível em desenvolvimento<br>• Camada de dados integrada com Supabase<br>• Sistema de build e deploy funcional em ambiente local<br>• Configuração de ambiente documentada |
 | **Critérios de aceite** | • npm install, npm run lint, npm run build executam sem erros locais<br>• Servidor backend inicia localmente e responde a endpoints básicos<br>• Frontend carrega e exibe interface básica<br>• Conexão com Supabase configurada (mesmo que não executável sem credentials) |
-| **Evidências** | • Build local funciona (vite build succeed)<br>• Código backend existente com rotas definidas<br>• Frontend React/TypeScript presente<br>• Configurações de Tailwind e TypeScript presentes<br>• Erros de lint indicam trabalho em progresso, não falha fundamental |
-| **Próximo passo** | Corrigir erros de TypeScript existentes e validar build limpo |
+| **Evidências** | • Build local funciona (vite build succeed)<br>• Lint passes without errors (npm run lint success)<br>• TypeScript compilation clean (tsc --noEmit no errors)<br>• Código backend existente com rotas definidas<br>• Frontend React/TypeScript presente<br>• Configurações de Tailwind e TypeScript presentes |
+| **Próximo passo** | Avançar para as próximas fases conforme roadmap (F2 concluído, F3 em andamento local, F9 em andamento) |
 
 ---
 
@@ -218,40 +218,36 @@
 
 ## RESUMO GERAL DO ESTADO DO PROJETO
 
-### Fases Concluídas (3/12)
+### Fases Concluídas (4/12)
+- **F1 — Technical Foundation**: CONCLUÍDO
+  - Build local funciona (vite build succeed)
+  - Lint passes without errors (npm run lint success)
+  - TypeScript compilation clean (tsc --noEmit no errors)
+  - Código backend existente com rotas definidas
+  - Frontend React/TypeScript presente
+  - Configurações de Tailwind e TypeScript presentes
 - **F2 — Editorial Catalog**: CONCLUÍDO
   - Modelo de dados completo para programas, participantes, episódios
   - APIs CRUD funcionais localmente
-  - Dados de semente realistas e consistentes
-
+  - Dados de semente realisitca e consistentes
 - **F3 — Content Intelligence**: CONCLUÍDO (local) / PENDENTE (produção)
   - 9 endpoints de IA implementados e testados localmente
   - Provedor NVIDIA NIM com fallback configurado
   - Nenhuma resposta de IA fictícia retornada
-  - *Pendente:* Implantação em ambiente de produção
+  - *Pendente:* Implantação em ambiente de produçāo
 
-### Fases Em Andamento (5/12)
+### Fases Em Andamento (3/12)
 - **F0 — Governance and Planning**: EM ANDAMENTO
   - SUPERVISOR_GUIDE.md criado como base
   - Necessário estabelecer AGENTS.md e processos formais
-
-- **F1 — Technical Foundation**: EM ANDAMENTO
-  - Build e lint funcionando localmente
-  - Erros de TypeScript precisam de correção
-  - Base técnica sólida estabelecida
-
 - **F5 — Customer Operations / Tenant Enablement**: EM ANDAMENTO
   - APIs de agenda e biblioteca implementadas
   - Models de dados definidos
   - Necessário implementar interfaces de usuário
-
 - **F9 — QA and Security**: EM ANDAMENTO
-  - Segurança básica implementada (helmet, cors, csurf)
-  - Processo de revisão estabelecido via SUPERVISOR_GUIDE.md
-  - Necessário implementar testes automatizados
-
-- **F7 — AI**: CONCLUÍDO (local) / PENDENTE (produção)
-  - Veja detalhes acima
+- Segurança básica implementada (helmet, cors, csurf)
+   - Processo de revisão estabelecido via SUPERVISOR_GUIDE.md
+   - Necessário implementar testes automatizados
 
 ### Fases Pendentes (4/12)
 - **F4 — Episode Discovery**: PENDENTE

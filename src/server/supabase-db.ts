@@ -255,7 +255,7 @@ export class SupabaseDatabase {
     const segmentParticipantMap = new Map<string, string[]>();
     for (const sp of segmentParticipantRows) {
       const legacy = participantLegacyById.get(sp.participant_id);
-      if (!legacy) continue;
+      if (!legacy || typeof legacy !== 'string') continue;
       const list = segmentParticipantMap.get(sp.segment_id) || [];
       list.push(legacy);
       segmentParticipantMap.set(sp.segment_id, list);

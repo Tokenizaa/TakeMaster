@@ -34,17 +34,21 @@ export type ShowFormat = ProgramFormat;
 
 export interface CameraConfig {
   id: string;
+  legacy_id?: string;
   name: string; // e.g. "CAM 1", "CAM 2", "CAM 4 (Banda)", "CAM 5 (Plateia)"
   role?: string; // e.g. "Apresentador", "Convidados", "Plano Geral", "Banda", "Plateia"
   position?: string; // e.g. "Centro 0°", "Lateral 45°", "Grua", "Plateia"
   framing?: string; // e.g. "Plano Geral Aberto", "Plano Médio", "Close Fechado"
   purpose?: string; // e.g. "Abertura e conexão direta", "Respostas e reações"
   shotTypes?: string[];
+  shotType?: string;
+  sortOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
   notes?: string;
   active?: boolean;
   label?: string; // backwards compatibility alias for role
   target?: string;
-  shotType?: string;
   type?: 'close' | 'medium' | 'wide' | 'overhead' | 'mobile';
   focalLength?: string;
   lensNotes?: string;
@@ -73,6 +77,7 @@ export type ParticipantType =
 
 export interface Participant {
   id: string;
+  legacy_id?: string;
   programId?: string;
   name: string;
   type?: ParticipantType;
@@ -98,6 +103,7 @@ export type Guest = Participant;
 export interface EpisodeParticipant {
   participantId?: string;
   id?: string;
+  legacy_id?: string;
   name: string;
   type?: ParticipantType;
   role?: string;
@@ -128,6 +134,7 @@ export type SegmentType =
 
 export interface QuestionItem {
   id: string;
+  legacy_id?: string;
   segmentId?: string;
   participantId?: string;
   targetParticipantName?: string;
@@ -146,6 +153,7 @@ export interface QuestionItem {
 
 export interface FollowUpItem {
   id: string;
+  legacy_id?: string;
   triggerCondition?: string;
   condition?: string;
   actionOrQuestion?: string;
@@ -157,6 +165,7 @@ export interface FollowUpItem {
 
 export interface Segment {
   id: string;
+  legacy_id?: string;
   order?: number;
   title: string;
   type?: SegmentType;
@@ -221,6 +230,7 @@ export interface ResearchData {
 
 export interface ScriptItem {
   id: string;
+  legacy_id?: string;
   order?: number;
   segmentId?: string;
   timestamp?: string;
@@ -246,6 +256,7 @@ export interface ScriptItem {
 
 export interface PlannedShort {
   id: string;
+  legacy_id?: string;
   segmentId?: string;
   title: string;
   hook?: string;
@@ -264,6 +275,7 @@ export interface PlannedShort {
 
 export interface ProductionAsset {
   id: string;
+  legacy_id?: string;
   segmentId?: string;
   type: string;
   title: string;
@@ -282,6 +294,7 @@ export type ProductionMaterial = ProductionAsset;
 
 export interface RecordingMarker {
   id: string;
+  legacy_id?: string;
   timestampSec: number;
   formattedTime: string;
   type: 'momento_forte' | 'corte' | 'nota' | 'estender' | 'erro';
@@ -328,6 +341,7 @@ export interface ProgramDefaultSegment {
 
 export interface Program {
   id: string;
+  legacy_id?: string;
   name?: string;
   title?: string;
   description: string;
@@ -357,6 +371,7 @@ export type Show = Program;
 
 export interface Episode {
   id: string;
+  legacy_id?: string;
   programId: string;
   episodeNumber?: number;
   title: string;
@@ -401,6 +416,7 @@ export interface Episode {
 
 export interface AgendaEvent {
   id: string;
+  legacy_id?: string;
   title?: string;
   episodeId?: string;
   programTitle?: string;
@@ -419,6 +435,7 @@ export interface AgendaEvent {
 
 export interface LibraryAsset {
   id: string;
+  legacy_id?: string;
   programId?: string;
   title: string;
   category?: 'vinheta' | 'trilha' | 'gc_template' | 'b_roll' | 'cenario' | 'roteiro_modelo';
