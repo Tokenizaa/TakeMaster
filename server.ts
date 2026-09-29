@@ -65,10 +65,12 @@ app.delete('/api/episodes/:id', async (req: Request, res: Response) => {
 
 app.get('/api/agenda', async (req: Request, res: Response) => { try {res.json(await db.getAgendaEvents());} catch(e:any){res.status(500).json({error:e.message});} });
 app.post('/api/agenda', async (req: Request, res: Response) => { try {const e={...req.body,id:req.body.id||`ag-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id}; res.status(201).json(await db.saveAgendaEvent(e));} catch(e:any){res.status(500).json({error:e.message});} });
+app.put('/api/agenda/:id', async (req: Request, res: Response) => { try {res.json(await db.saveAgendaEvent({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id}));} catch(e:any){res.status(500).json({error:e.message});} });
 app.delete('/api/agenda/:id', async (req: Request, res: Response) => { try {res.json({success:await db.deleteAgendaEvent(req.params.id)});} catch(e:any){res.status(500).json({error:e.message});} });
 
 app.get('/api/library', async (req: Request, res: Response) => { try {res.json(await db.getLibraryAssets());} catch(e:any){res.status(500).json({error:e.message});} });
 app.post('/api/library', async (req: Request, res: Response) => { try {const a={...req.body,id:req.body.id||`lib-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id}; res.status(201).json(await db.saveLibraryAsset(a));} catch(e:any){res.status(500).json({error:e.message});} });
+app.put('/api/library/:id', async (req: Request, res: Response) => { try {res.json(await db.saveLibraryAsset({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id}));} catch(e:any){res.status(500).json({error:e.message});} });
 
 // --- AI Endpoints using NVIDIA NIM (Nemotron 3 Super -> Ultra fallback) ---
 
