@@ -1,0 +1,71 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto1.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Cacá Lima",
+      "tipo": "apresentadora",
+      "contexto": "Foto da apresentadora Cacá Lima - também usada como logo"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto2.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto3.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto4.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto5.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto6.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto7.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto8.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/alto_valor/alto9.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/alto_valor.html",
+      "alt_text": "Conversas de Alto Valor",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "As 9 imagens aparecem duplicadas na página original (listadas 2x cada)"
+}

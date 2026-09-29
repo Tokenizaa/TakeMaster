@@ -1,0 +1,38 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cultura/culturacena5.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/cultura.html",
+      "alt_text": "Nando Gross no Estúdio",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cultura/culturacena3.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/cultura.html",
+      "alt_text": "Cultura em Cena",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cultura/culturacena4.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/cultura.html",
+      "alt_text": "Cultura em Cena",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cultura/culturacena6.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/cultura.html",
+      "alt_text": "Cultura em Cena",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cultura/culturacena7.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/cultura.html",
+      "alt_text": "Cultura em Cena",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "5 imagens únicas listadas duplicadas na página original"
+}

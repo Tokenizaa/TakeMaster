@@ -1,0 +1,46 @@
+{
+  "slug": "papo-de-terapeuta",
+  "nome": "Papo de Terapeuta",
+  "titulo": "Mídia Kit Oficial — Papo de Terapeuta",
+  "subtitulo": "Marco Marzolla",
+  "tagline": "Constelação Familiar • Autoconhecimento • Terapias Integrativas",
+  "apresentador": {
+    "nome": "Marco Marzolla",
+    "bio": "Com uma escuta atenta e uma condução acolhedora (e por vezes incisiva, quando necessário), Marco Marzolla guia seus convidados e telespectadores por jornadas profundas de cura emocional. É a ponte entre o ponto cego do indivíduo e a claridade que as terapias integrativas proporcionam. O Papo de Terapeuta desvenda os campos ocultos que travam a vida financeira, os relacionamentos e a carreira. Através de temas como Constelação Familiar Sistêmica, Reiki, Apometria e Psicologia, explica como quebrar padrões repetitivos e lealdades familiares inconscientes.",
+    "instagram": "https://www.instagram.com/terapeuta_marcoamarzolla/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show e Entrevistas com Especialistas",
+  "genero": "Saúde Mental, Terapias e Bem-Estar",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Constelação Familiar Sistêmica",
+    "Reiki",
+    "Apometria",
+    "Psicologia",
+    "Autoconhecimento e cura emocional",
+    "Padrões repetitivos e lealdades familiares inconscientes",
+    "Vida financeira, relacionamentos e carreira"
+  ],
+  "oportunidades_integracao": [
+    "Cursos & Formações - Psicanálise, Reiki, Yoga, Constelação Familiar",
+    "Clínicas & Psicologia - Redes de clínicas, terapeutas holísticos, apps de meditação",
+    "Editoras & Literatura - Psicologia sistêmica (Bert Hellinger), autoajuda, evolução da consciência",
+    "Produtos Holísticos - Óleos essenciais, florais, chás relaxantes, terapias integrativas OMS"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

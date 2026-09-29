@@ -1,0 +1,28 @@
+{
+  "scrape_data": "2026-09-29T16:05:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/dna.html",
+      "page_title": "Mídia Kit Oficial — DNA Empresarial",
+      "page_type": "midia_kit",
+      "programa_relacionado": "dna-empresarial",
+      "trechos": [
+        {
+          "secao": "Lema",
+          "texto_original": "\"Empresas não quebram por falta de faturamento. Elas quebram por falhas no seu DNA.\"",
+          "origem": "profile.json:lema"
+        },
+        {
+          "secao": "Os Estrategistas - Matheus Bulegon e Rômulo Vargas",
+          "texto_original": "Empresário & Consultor / Advogado & Mentor. Especialistas em Gestão/Vendas e Jurídico/Compliance...",
+          "origem": "profile.json:apresentadores"
+        },
+        {
+          "secao": "O DNA do Episódio",
+          "texto_original": "Entrevista Master (20 min), Pílula do Conhecimento (1 min), Mitos ou Verdades (2 min), Radar de Tendências...",
+          "origem": "profile.json:estrutura_episodio"
+        }
+      ]
+    }
+  ]
+}

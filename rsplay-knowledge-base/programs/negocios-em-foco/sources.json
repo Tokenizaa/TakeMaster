@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:25:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/negociosfoco.html",
+      "page_title": "Mídia Kit Oficial — Negócios em Foco",
+      "page_type": "midia_kit",
+      "programa_relacionado": "negocios-em-foco",
+      "trechos": [
+        {
+          "secao": "A Apresentadora - Michèle Castro",
+          "texto_original": "Mentora e palestrante. Comunicadora e anfitriã de presença marcante, Michèle Castro traduz inteligência, elegância e autoridade no universo corporativo...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "O Conceito do Programa",
+          "texto_original": "O Negócios em Foco é o palco onde as trajetórias reais de sucesso ganham destaque. Abordamos histórias de profissionais que superaram crises...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

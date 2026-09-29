@@ -1,0 +1,44 @@
+{
+  "slug": "tudo-de-bom",
+  "nome": "Tudo de Bom",
+  "titulo": "Mídia Kit Oficial — Tudo de Bom com Rose do Erre",
+  "subtitulo": "O Universo Feminino Sem Tabus. Com Rose do Erre",
+  "tagline": "Moda & Estilo • Intimidade • Autoconhecimento",
+  "apresentadora": {
+    "nome": "Rose do Erre",
+    "bio": "Com muito carisma e leveza, Rose do Erre comanda um espaço acolhedor e real para a mulher. Transita perfeitamente entre dicas de looks, \"compras inteligentes\" e papos profundos sobre sexualidade, maturidade e relacionamento. É aquela amiga íntima que te convida para tomar um espumante e falar a verdade nua e crua. \"Sexo sem tabu, com prazer e com saúde. Permita-se viver e sinta-se feminina.\"",
+    "instagram": "https://www.instagram.com/roseedoerre/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show e Externas (Lojas, Espaços)",
+  "genero": "Variedades, Moda e Universo Feminino",
+  "duracao_minutos": 60,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Moda e estilo - Looks, compras inteligentes, vitrines de boutiques",
+    "Intimidade e sexualidade - Sem tabus, com prazer e saúde",
+    "Autoconhecimento e maturidade",
+    "Relacionamentos",
+    "Autoestima e saúde da mulher"
+  ],
+  "oportunidades_integracao": [
+    "Moda & Varejo - Apresentação real de looks, boutiques, calçados, bolsas, acessórios",
+    "Intimidade & Saúde - Sex shops, lingeries, terapeutas, cosmética sensual, ginecologia",
+    "Gastronomia Romântica - Tábuas de frios, docerias, espumantes, vinhos, restaurantes",
+    "Beleza & Estética - Clínicas estética, biomédicas, salões, perfumaria, skincare"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

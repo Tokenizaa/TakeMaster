@@ -1,0 +1,110 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque.png",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "logo",
+      "contexto": "Logo principal do programa no mídia kit"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque1.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Taise Vielmo Côrtes — Advogada do Leque",
+      "tipo": "apresentadora",
+      "contexto": "Foto da apresentadora Taise Vielmo Côrtes"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque2.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque3.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque4.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque5.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque6.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque7.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque8.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque9.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque10.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque11.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque12.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/advogada_leque/advogada_leque13.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/advogada_leque.html",
+      "alt_text": "Advogada do Leque",
+      "tipo": "galeria",
+      "contexto": "Galeria de imagens do programa"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "redes_sociais_vinculadas": [
+    "https://instagram.com/advogadadoleque",
+    "https://instagram.com/pachecoecortes",
+    "https://instagram.com/flamencosdosul"
+  ]
+}

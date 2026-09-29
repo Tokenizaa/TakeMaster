@@ -1,0 +1,93 @@
+{
+  "slug": "conversas-de-alto-valor",
+  "nome": "Conversas de Alto Valor",
+  "titulo": "Mídia Kit Oficial — Conversas de Alto Valor",
+  "subtitulo": "\"Onde histórias revelam propósitos.\" Com Cacá Lima",
+  "tagline": "Profundidade • Propósito • Narrativa Humana",
+  "apresentadora": {
+    "nome": "Cacá Lima",
+    "bio": "Cacá Lima é referência pela clareza, elegância, visão estratégica e habilidade de conectar pessoas, marcas e histórias com inteligência e sensibilidade. O programa nasce com um DNA sólido: conteúdo que inspira, educa e movimenta. Cada episódio é construído como uma experiência completa - o público não apenas assiste; ele se reconhece, reflete e evolui."
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Sala de Entrevistas",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "proposta_editorial_pilares": [
+    "Inspirar — Trajetórias reais, corajosas e transformadoras",
+    "Educar — Técnica, mentalidade e prática",
+    "Conectar — Pessoas, marcas, ideias e setores",
+    "Provocar Clareza — Perguntas que mudam a percepção",
+    "Valorizar Propósito — Porque propósito sustenta qualquer movimento",
+    "Criar Impacto — Conteúdo que permanece após o episódio"
+  ],
+  "temas_principais": [
+    "Empreendedorismo de alto nível",
+    "Histórias de superação e transformação",
+    "Mentalidade e propósito",
+    "Negócios, estratégia, liderança",
+    "Cases reais com resultados mensuráveis"
+  ],
+  "estrutura_episodio": [
+    {
+      "bloco": 1,
+      "nome": "Minuto Educação",
+      "duracao": "45s-1min",
+      "descricao": "VT de alta produção executado por Head Trainer. Quebrar crenças limitantes do público. Entregar valor rápido e aplicável. Objetivo: Ativar mentalidade empreendedora.",
+      "cota_disponivel": "Cota Master"
+    },
+    {
+      "bloco": 2,
+      "nome": "Boas-vindas + Tema + Histórias",
+      "duracao": "8 min",
+      "descricao": "Cacá Lima dá o tom e cria conexão humana. Saudação calorosa da apresentadora. Introdução dos convidados com mini-bio. Criação de conexão emocional com o público. Apresentação do tema do episódio."
+    },
+    {
+      "bloco": 3,
+      "nome": "Construindo Novos Saberes",
+      "duracao": "8 min (2 VTs)",
+      "descricao": "Aprofundamento técnico e educacional. 2 VTs educativos de alta qualidade. Entrevistas com especialistas do mercado. Formato \"Você Sabia?\" para engajamento. Conteúdo técnico acessível ao público.",
+      "cota_disponivel": "Cota Premium"
+    },
+    {
+      "bloco": 4,
+      "nome": "Vozes que Transformam",
+      "duracao": "8 min (2 VTs)",
+      "descricao": "Momento central do episódio. Histórias reais de 2 convidados que mudaram o jogo. Narrativas de superação e conquistas pessoais. Resultados concretos e mensuráveis. Impacto gerado em suas comunidades e mercados."
+    },
+    {
+      "bloco": 5,
+      "nome": "Desafio Revelador",
+      "duracao": "3-4 min",
+      "descricao": "A pergunta que revela o propósito. Pergunta final poderosa e provocativa. Reflexão profunda dos convidados. Revelação de propósitos e valores. Encerramento memorável e impactante."
+    }
+  ],
+  "formato_producao": {
+    "cameras": "Gravação multicâmera (2 ou 3) com alta qualidade cinematográfica",
+    "audio": "Captação cristalina com lapelas profissionais",
+    "edicao": "Cortes dinâmicos premium e trilha sonora suave pensada para imersão"
+  },
+  "publico_alvo": [
+    "Empreendedores, líderes, decisores",
+    "Profissionais busca propósito/carreira",
+    "Público interessado desenvolvimento pessoal/negócios"
+  ],
+  "informacoes_comerciais": [
+    "Cota Master (Minuto Educação)",
+    "Cota Premium (Construindo Novos Saberes)",
+    "Integração orgânica marca ao conteúdo",
+    "Multiplataforma: TV, Streaming, YouTube, Instagram, TikTok, App Smart TV"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  }
+}

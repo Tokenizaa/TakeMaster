@@ -1,0 +1,32 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/terapeuta/terapeuta.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/terapeuta.html",
+      "alt_text": "Marco Marzolla",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/terapeuta/terapeuta2.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/terapeuta.html",
+      "alt_text": "Papo de Terapeuta",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/terapeuta/terapeuta3.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/terapeuta.html",
+      "alt_text": "Papo de Terapeuta",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/terapeuta/terapeuta4.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/terapeuta.html",
+      "alt_text": "Papo de Terapeuta",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "4 imagens únicas listadas multiplicadas (até 4x cada) na página original"
+}

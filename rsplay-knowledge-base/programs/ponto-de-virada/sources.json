@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:40:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/pontovirada.html",
+      "page_title": "Mídia Kit Oficial — Ponto de Virada com Tati Ferreira",
+      "page_type": "midia_kit",
+      "programa_relacionado": "ponto-de-virada",
+      "trechos": [
+        {
+          "secao": "A Apresentadora - Tatiana Ferreira de Ávila",
+          "texto_original": "Personal trainer, especialista em musculação e apresentadora do programa Ponto de Virada. Propósito: conduzir transformações reais...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "A Filosofia",
+          "texto_original": "\"Acredito na força do alinhamento entre corpo/ação, consciência/foco e atitude/emocional para sustentar uma nova versão.\"",
+          "origem": "profile.json:apresentadora.bio"
+        }
+      ]
+    }
+  ]
+}

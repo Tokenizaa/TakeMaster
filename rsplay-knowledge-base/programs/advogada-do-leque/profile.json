@@ -1,0 +1,63 @@
+{
+  "slug": "advogada-do-leque",
+  "nome": "Advogada do Leque",
+  "titulo": "Advogada do Leque — Mídia Kit Oficial",
+  "subtitulo": "Com Taise Vielmo Côrtes",
+  "apresentadora": {
+    "nome": "Taise Vielmo Côrtes",
+    "handle": "@advogadadoleque",
+    "bio": "Advogada com mais de 30 anos de experiência, especialista em direito previdenciário pela UCS (Universidade de Caxias do Sul), com diversos cursos de direito e gestão de escritórios de advocacia. Sócia e gestora majoritária do escritório Pacheco e Côrtes Advogados, com duas unidades no Rio Grande do Sul, em Porto Alegre e Viamão, e uma unidade em Santa Catarina, na cidade de Palhoça/SC. Mentora de advogados em gestão e direito previdenciário, Associada do IARGS e articulista de obras. Associada da BPWPOA, nesta como coordenadora do jurídico. Escritora articulista no livro \"Lugar de Mulher é aonde ela quiser\", lançado na Feira do Livro de Porto Alegre no ano de 2024. Dançarina de flamenco há mais de doze anos, já se apresentou no Teatro São Pedro por duas oportunidades. Atualmente integra o grupo amador de apresentação desta arte chamado @flamencosdosul, criado no ano passado e comandado pela professora @deniseflamenco. Associada da ONG @bpwpoa, que valoriza a mulher e a liderança feminina."
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show + Cultural",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Direito Previdenciário (planejamento, aposentadoria, benefícios)",
+    "Advocacia (gestão, mentoria, carreira)",
+    "Cultura: Flamenco, dança, arte, terapia",
+    "Liderança feminina, empoderamento",
+    "Saúde, bem-estar, qualidade de vida",
+    "Produtos/serviços da marca advogadadoleque"
+  ],
+  "quadros": [
+    "Entrevistas com convidados diversos",
+    "Momento cultural (flamenco, música, dança)",
+    "Tira-dúvidas previdenciária",
+    "Conteúdo sobre advocacia e carreira"
+  ],
+  "publico_alvo": [
+    "Advogados, estudantes de direito",
+    "Pessoas interessadas em previdência/aposentadoria",
+    "Público feminino (liderança, empoderamento)",
+    "Apreciadores de cultura/arte"
+  ],
+  "proposta_editorial": "Fortalecer marca @advogadadoleque e @pachecoecortes como autoridade em advocacia. Trazer informações sobre planejamento previdenciário e aposentadoria. Momentos culturais (flamenco, escrita, música, saúde). Divulgar ONG @bpwpoa (liderança feminina). Geração de negócios, expansão de rede, compartilhamento de conhecimento.",
+  "informacoes_comerciais": [
+    "Fortalecimento marca pessoal/empresarial",
+    "Posicionamento autoridade",
+    "Geração novos negócios",
+    "Expansão rede relacionamento",
+    "Divulgação produtos/serviços próprios"
+  ],
+  "redes_sociais": {
+    "apresentadora": "https://instagram.com/advogadadoleque",
+    "escritorio": "https://instagram.com/pachecoecortes",
+    "flamenco": "https://instagram.com/flamencosdosul",
+    "ong": "https://instagram.com/bpwpoa",
+    "professora_flamenco": "https://instagram.com/deniseflamenco"
+  },
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  }
+}

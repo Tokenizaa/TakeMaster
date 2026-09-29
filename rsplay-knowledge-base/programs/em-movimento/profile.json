@@ -1,0 +1,50 @@
+{
+  "slug": "em-movimento",
+  "nome": "Em Movimento",
+  "titulo": "Mídia Kit Oficial — Dra. Tamara Mucenic",
+  "subtitulo": "# Dra. Tamara Mucenic",
+  "tagline": "Ciência • Escolhas • Vida Real • Saúde",
+  "apresentadora": {
+    "nome": "Dra. Tamara Mucenic",
+    "bio": "Médica reumatologista, atua no consultório privado e em pesquisa clínica, com foco em doenças inflamatórias sistêmicas e saúde ao longo da vida. Seu trabalho assistencial valoriza o movimento, a autonomia, o sono e o manejo do estresse. Promove decisões conscientes, sempre embasadas em evidências científicas e escuta clínica qualificada. Investigadora principal em estudos clínicos e speaker em eventos científicos, integra ciência e vida real no cuidado dos pacientes.",
+    "especialidades": ["Reumatologia", "Longevidade"]
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Medicina baseada em evidência, Autonomia do paciente, Inovação em saúde",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Reumatologia e doenças inflamatórias sistêmicas",
+    "Longevidade e envelhecimento saudável",
+    "Medicina baseada em evidências",
+    "Autonomia do paciente",
+    "Sono e manejo do estresse",
+    "Inovação em saúde"
+  ],
+  "autoridade_medica": {
+    "referencia": "Investigadora principal em estudos clínicos e speaker reconhecida",
+    "mentora": "Formação e mentoria para construção de carreiras sólidas",
+    "educacao": "Conteúdo que traduz a complexidade da ciência para a vida real"
+  },
+  "servicos_projetos": [
+    "Consultoria & Mentoria - Orientação para médicos e profissionais",
+    "Speaker & Palestras - Eventos científicos e corporativos",
+    "Pesquisa Clínica - Liderança em estudos clínicos",
+    "Educação Médica - Workshops e treinamentos"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "perfil_publico": ["Saúde Integral", "Medicina", "Bem-estar", "Ciência", "Longevidade"],
+  "status_scrape": "basico"
+}

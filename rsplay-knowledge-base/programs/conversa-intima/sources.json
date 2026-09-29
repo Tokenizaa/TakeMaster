@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:15:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/conversaintima.html",
+      "page_title": "Mídia Kit Oficial — Conversa Íntima",
+      "page_type": "midia_kit",
+      "programa_relacionado": "conversa-intima",
+      "trechos": [
+        {
+          "secao": "A Anfitriã - Shirley Coden",
+          "texto_original": "Terapeuta especialista em sexualidade feminina, palestrante, empresária e mãe, ela transforma histórias em libertação...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "Sobre o Programa",
+          "texto_original": "\"A sexualidade te exalta ou te reprime?\" Essa é a provocação que guia o Conversa Íntima...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

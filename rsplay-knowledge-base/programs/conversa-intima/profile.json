@@ -1,0 +1,44 @@
+{
+  "slug": "conversa-intima",
+  "nome": "Conversa Íntima",
+  "titulo": "Mídia Kit Oficial — Conversa Íntima",
+  "subtitulo": "Com Shirley Coden",
+  "tagline": "Sexualidade • Empoderamento • Bem-Estar",
+  "apresentadora": {
+    "nome": "Shirley Coden",
+    "bio": "Terapeuta especialista em sexualidade feminina, palestrante, empresária e mãe. Transforma histórias em libertação e conversas em verdadeiros despertares. Com carisma inconfundível, recebe seus \"gatonas e gatões\" para conversas profundas. Missão: guiar o público em jornadas de autoconhecimento, provando que a sexualidade não se limita a quatro paredes, mas exala no autocuidado, no trabalho e na forma de caminhar pela vida.",
+    "instagram": "https://www.instagram.com/shirley_coden/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show Íntimo com Entrevistas e Dicas Práticas",
+  "genero": "Variedades, Bem-Estar e Relacionamento",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Sexualidade feminina sem tabus",
+    "Empoderamento e autoconhecimento",
+    "Relacionamentos e bloqueios emocionais",
+    "Terapias integrativas (tântrica, somática)",
+    "Autocuidado e bem-estar"
+  ],
+  "oportunidades_marcas": [
+    "Beleza & Estética - Clínicas, biomédicas, cosméticos, autocuidado orgânico",
+    "Realização de Sonhos - Consórcios, cirurgia plástica, empoderamento feminino",
+    "Produtos Íntimos & Terapias - Sex care, terapeutas, mentorias",
+    "Moda & Lifestyle - Lingerie, moda íntima, acessórios"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

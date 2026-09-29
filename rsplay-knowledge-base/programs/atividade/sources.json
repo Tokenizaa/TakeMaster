@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T14:50:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/atividade.html",
+      "page_title": "Mídia Kit Oficial — Programa Atividade",
+      "page_type": "midia_kit",
+      "programa_relacionado": "atividade",
+      "trechos": [
+        {
+          "secao": "O Compromisso com a Verdade",
+          "texto_original": "O Programa Atividade é um espaço diário dedicado à interpretação profunda dos fatos que moldam o Brasil e o Rio Grande do Sul...",
+          "origem": "profile.json:descricao"
+        },
+        {
+          "secao": "Pilares Editoriais",
+          "texto_original": "Política Nacional, Economia Real, Justiça & Direitos, Esporte e Cultura",
+          "origem": "profile.json:pilares_editoriais"
+        }
+      ]
+    }
+  ]
+}

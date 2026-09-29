@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T14:45:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/inspiram.html",
+      "page_title": "Mídia Kit Oficial — As Pessoas Inspiram",
+      "page_type": "midia_kit",
+      "programa_relacionado": "as-pessoas-inspiram",
+      "trechos": [
+        {
+          "secao": "A Apresentadora - Dra. Eliane Davila",
+          "texto_original": "Comunicadora, palestrante, mediadora de diálogos e PhD em Processos e Manifestações Culturais...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "A Origem do Projeto",
+          "texto_original": "O projeto nasceu durante a pandemia com uma missão clara: compartilhar histórias de vida inspiradoras...",
+          "origem": "profile.json:apresentadora.bio"
+        }
+      ]
+    }
+  ]
+}

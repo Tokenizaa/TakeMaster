@@ -1,0 +1,25 @@
+{
+  "imagens": [
+    {
+      "url": "https://rsplay.com.br/imgmidia/grenal_show.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/grenalshow.html",
+      "alt_text": "GreNal Show - Banner / Estúdio",
+      "tipo": "banner"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/grenal/nando.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/grenalshow.html",
+      "alt_text": "Nando Gross",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/grenal/farid.jpg",
+      "pagina_origem": "https://www.rsplay.com.br/grenalshow.html",
+      "alt_text": "Farid Germano Filho",
+      "tipo": "apresentador"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": []
+}

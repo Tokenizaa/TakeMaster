@@ -1,0 +1,44 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor6.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Fernanda Appel",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor1.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Consumidor RS",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor2.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Consumidor RS",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor3.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Consumidor RS",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor4.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Consumidor RS",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/consumidor/consumidor5.png",
+      "pagina_origem": "https://www.rsplay.com.br/consumidor.html",
+      "alt_text": "Consumidor RS",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "6 imagens únicas listadas duplicadas na página original"
+}

@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T16:00:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/tdb.html",
+      "page_title": "Mídia Kit Oficial — Tudo de Bom com Rose do Erre",
+      "page_type": "midia_kit",
+      "programa_relacionado": "tudo-de-bom",
+      "trechos": [
+        {
+          "secao": "A Anfitriã - Rose do Erre",
+          "texto_original": "Com muito carisma e leveza, Rose do Erre comanda um espaço acolhedor e real para a mulher...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "Sobre o Programa",
+          "texto_original": "O Tudo de Bom mistura o que a mulher mais gosta: se sentir linda por fora e bem resolvida por dentro...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

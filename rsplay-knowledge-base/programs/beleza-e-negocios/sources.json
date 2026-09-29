@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T14:55:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/belezanegocio.html",
+      "page_title": "Mídia Kit Oficial — Beleza & Negócios",
+      "page_type": "midia_kit",
+      "programa_relacionado": "beleza-e-negocios",
+      "trechos": [
+        {
+          "secao": "A Apresentadora - Natália Dias",
+          "texto_original": "Especialista no mercado da beleza, empreendedora e comunicadora. Dedica-se a transformar a visão de profissionais da área...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "A Origem do Projeto",
+          "texto_original": "O projeto nasceu da necessidade de mostrar os bastidores e a inteligência por trás do mercado de estética e beleza...",
+          "origem": "profile.json:apresentadora.bio"
+        }
+      ]
+    }
+  ]
+}

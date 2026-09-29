@@ -1,0 +1,62 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto2.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Tatiana Ferreira de Ávila",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto3.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto4.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto5.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto6.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto7.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto8.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto9.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/pontovirada/ponto10.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/pontovirada.html",
+      "alt_text": "Ponto de Virada",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "9 imagens únicas listadas duplicadas na página original"
+}

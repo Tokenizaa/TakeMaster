@@ -1,0 +1,76 @@
+{
+  "slug": "dna-empresarial",
+  "nome": "DNA Empresarial",
+  "titulo": "Mídia Kit Oficial — DNA Empresarial",
+  "subtitulo": "Com Matheus Bulegon e Rômulo Vargas",
+  "tagline": "Gestão • Estratégia • Pessoas e Processos • Jurídico • Compliance",
+  "lema": "\"Empresas não quebram por falta de faturamento. Elas quebram por falhas no seu DNA.\"",
+  "apresentadores": [
+    {
+      "nome": "Matheus Bulegon",
+      "area": "Gestão & Vendas",
+      "bio": "Empresário & Consultor. Empresário no setor educacional - Idiomas e Negócios. Especialista em Gestão de Pessoas, Processos e Vendas. Mentor e conselheiro de empresários. Fundador da Prosperion Business Academy (1ª Escola de Inglês e Negócios do Brasil).",
+      "foto": "https://www.rsplay.com.br/img/mediakit/dna/matheus.png"
+    },
+    {
+      "nome": "Rômulo Vargas",
+      "area": "Jurídico & Compliance",
+      "bio": "Advogado & Mentor. Mais de 20 anos de experiência na área jurídica. Especialista em Direito Empresarial e Compliance Trabalhista. Fundador da Vargas Advocacia e Compliance. Mentor de empresários na estruturação jurídica de negócios com atuação nacional.",
+      "foto": "https://www.rsplay.com.br/img/mediakit/dna/romulo.JPG"
+    }
+  ],
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Entrevista Master + Pílula do Conhecimento + Mitos ou Verdades + Radar de Tendências",
+  "genero": "Gestão, Estratégia, Jurídico, Compliance",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "estrutura_episodio": [
+    {
+      "bloco": "Entrevista Master",
+      "duracao": "20 min",
+      "descricao": "Dividida em dois blocos dinâmicos (10 min cada). Foco na história, decisões estratégicas, erros, aprendizados e bastidores reais do negócio do convidado."
+    },
+    {
+      "bloco": "Pílula do Conhecimento",
+      "duracao": "1 min",
+      "descricao": "Momento de pura autoridade dos apresentadores. Ex: \"Um dos maiores erros que vejo nas empresas hoje é...\" — direto ao ponto e aplicável."
+    },
+    {
+      "bloco": "Mitos ou Verdades",
+      "duracao": "2 min",
+      "descricao": "Quadro interativo e dinâmico sobre gestão e compliance. Ex: \"Posso demitir um funcionário sem risco?\" Resposta rápida desmistificando o mercado."
+    },
+    {
+      "bloco": "Radar de Tendências + Abertura/Encerramento",
+      "duracao": "7 min",
+      "descricao": "Atualizações jurídicas e novidades de mercado + Provocações iniciais e Call to Action forte."
+    }
+  ],
+  "temas_principais": [
+    "Gestão de Pessoas, Processos e Vendas",
+    "Direito Empresarial e Compliance Trabalhista",
+    "Estratégia e decisões de negócios",
+    "Estruturação jurídica de negócios",
+    "Mentalidade empresarial"
+  ],
+  "oportunidades_comerciais": [
+    "Patrocínio Master - Naming Rights / Apresenta, Inserções garantidas",
+    "Cotas Mensais - Oferecimento de Quadros, VT no Break Comercial",
+    "Inserção de Marca - Product Placement, Merchandising Físico"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "instagram": "https://instagram.com/dnaempresarial",
+  "status_scrape": "basico"
+}

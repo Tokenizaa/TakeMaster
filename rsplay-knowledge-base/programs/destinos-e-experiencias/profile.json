@@ -1,0 +1,44 @@
+{
+  "slug": "destinos-e-experiencias",
+  "nome": "Destinos & Experiências",
+  "titulo": "Mídia Kit Oficial — Destinos & Experiências com Vívian Lima",
+  "subtitulo": "Com Vívian Lima",
+  "tagline": "RS PLAY • Claro-tv Canal 524",
+  "apresentadora": {
+    "nome": "Vívian Lima",
+    "bio": "Natural de Gramado (RS), Vívian cresceu cercada pela excelência da hospitalidade. Hoje vivendo em Santa Catarina, ela traz em sua trajetória a paixão por contar histórias de forma humana e inspiradora. \"Meu objetivo é mostrar que viajar vai muito além de visitar — é sentir, aprender e viver experiências que ficam para sempre.\" Impacto Digital: 1,37 Mi Visualizações (últimos 90 dias), 282,9 K Contas Alcançadas, Crescimento +44,5%.",
+    "instagram": "https://instagram.com/vivianlima"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Turismo experiencial - Linguagem Dinâmica e Emocional, Curiosidades Culturais e Gastronomia",
+  "duracao_minutos": 30,
+  "periodicidade": "Diário",
+  "exibicao": "RS Play - Programação Diária - Canal Claro-tv 524",
+  "temas_principais": [
+    "Turismo além dos pontos tradicionais",
+    "Experiências reais e dicas práticas",
+    "Bastidores de cada roteiro",
+    "Curiosidades culturais",
+    "Gastronomia local",
+    "Olhar sensível sobre destinos"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "impacto_digital_apresentadora": {
+    "visualizacoes_90dias": "1.37 Mi",
+    "contas_alcancadas": "282.9 K",
+    "crescimento": "+44.5%"
+  },
+  "status_scrape": "basico"
+}

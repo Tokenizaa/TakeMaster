@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:10:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/consumidor.html",
+      "page_title": "Mídia Kit Oficial — Consumidor RS",
+      "page_type": "midia_kit",
+      "programa_relacionado": "consumidor-rs",
+      "trechos": [
+        {
+          "secao": "Fernanda Appel - A Apresentadora",
+          "texto_original": "A jornalista e comunicadora Fernanda Appel é a voz da defesa dos direitos e interesses do cidadão gaúcho...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "27 Anos de História",
+          "texto_original": "No ar ininterruptamente há quase três décadas, o Consumidor RS não é apenas um programa de televisão, mas uma ferramenta de utilidade pública consolidada.",
+          "origem": "profile.json:historico"
+        }
+      ]
+    }
+  ]
+}

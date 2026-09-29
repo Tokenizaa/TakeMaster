@@ -1,0 +1,38 @@
+{
+  "scrape_metadata": {
+    "data_scrape": "2026-09-29",
+    "site_origem": "https://www.rsplay.com.br/",
+    "total_urls_menu": 40,
+    "programas_processados": 19,
+    "midia_kits_sucesso": 15,
+    "urls_404": ["https://www.rsplay.com.br/2ou10.html", "https://www.rsplay.com.br/belezainteligente.html"],
+    "projetos_especiais": 4
+  },
+  "programas": [
+    {"slug": "advogada-do-leque", "nome": "Advogada do Leque", "apresentadora": "Taise Vielmo Côrtes", "status": "completo"},
+    {"slug": "conversas-de-alto-valor", "nome": "Conversas de Alto Valor", "apresentadora": "Cacá Lima", "status": "completo"},
+    {"slug": "as-pessoas-inspiram", "nome": "As Pessoas Inspiram", "apresentadora": "Dra. Eliane Davila", "status": "basico"},
+    {"slug": "atividade", "nome": "Atividade", "apresentadora": "José Silva", "status": "basico"},
+    {"slug": "beleza-e-negocios", "nome": "Beleza & Negócios", "apresentadora": "Natália Dias", "status": "basico"},
+    {"slug": "cafe-com-teu-doc", "nome": "Café com teu Doc", "apresentadora": "Dr. Vitor Picanço", "status": "basico"},
+    {"slug": "caminhos-com-franzen", "nome": "Caminhos com Franzen", "apresentadora": "Claudio Franzen", "status": "basico"},
+    {"slug": "consumidor-rs", "nome": "Consumidor RS", "apresentadora": "Fernanda Appel", "status": "basico"},
+    {"slug": "conversa-intima", "nome": "Conversa Íntima", "apresentadora": "Shirley Coden", "status": "basico"},
+    {"slug": "cultura-em-cena", "nome": "Cultura em Cena", "apresentadora": "Nando Gross", "status": "basico"},
+    {"slug": "negocios-em-foco", "nome": "Negócios em Foco", "apresentadora": "Michèle Castro", "status": "basico"},
+    {"slug": "em-movimento", "nome": "Em Movimento", "apresentadora": "Dra. Tamara Mucenic", "status": "basico"},
+    {"slug": "papo-de-terapeuta", "nome": "Papo de Terapeuta", "apresentadora": "Marco Marzolla", "status": "basico"},
+    {"slug": "ponto-de-virada", "nome": "Ponto de Virada", "apresentadora": "Tati Ferreira", "status": "basico"},
+    {"slug": "destinos-e-experiencias", "nome": "Destinos & Experiências", "apresentadora": "Vívian Lima", "status": "basico"},
+    {"slug": "raizcast-pro", "nome": "Raizcast Pro", "apresentadora": "Rodrigo", "status": "basico"},
+    {"slug": "grenal-show", "nome": "GreNal Show", "apresentadora": "Nando Gross + Farid Germano Filho", "status": "basico"},
+    {"slug": "tudo-de-bom", "nome": "Tudo de Bom", "apresentadora": "Rose do Erre", "status": "basico"},
+    {"slug": "dna-empresarial", "nome": "DNA Empresarial", "apresentadora": "Matheus Bulegon + Rômulo Vargas", "status": "basico"}
+  ],
+  "projetos_especiais": [
+    {"slug": "nba-park", "nome": "NBA Park / RSPLAY Serra Gaúcha", "url": "https://rsplay.com.br/apresentacoes/nba_park.html"},
+    {"slug": "projeto-turismo", "nome": "Projeto Turismo", "url": "https://rsplay.com.br/apresentacoes/turismo.html"},
+    {"slug": "hype-summit-brasil", "nome": "Hype Summit Brasil", "url": "https://rsplay.com.br/apresentacoes/summit.html"},
+    {"slug": "reality", "nome": "Reality Show", "url": "https://rsplay.com.br/apresentacoes/reality.html"}
+  ]
+}

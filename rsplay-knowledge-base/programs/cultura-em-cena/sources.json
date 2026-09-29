@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:20:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/cultura.html",
+      "page_title": "Mídia Kit Oficial — Cultura em Cena com Nando Gross",
+      "page_type": "midia_kit",
+      "programa_relacionado": "cultura-em-cena",
+      "trechos": [
+        {
+          "secao": "O Apresentador - Nando Gross",
+          "texto_original": "Jornalista, comunicador de peso e profundo conhecedor do cenário musical e artístico do Rio Grande do Sul...",
+          "origem": "profile.json:apresentador.bio"
+        },
+        {
+          "secao": "O Espaço da Cena Gaúcha",
+          "texto_original": "O Cultura em Cena estreia para registrar, celebrar e divulgar o que acontece na cidade de Porto Alegre e no RS...",
+          "origem": "profile.json:apresentador.bio"
+        }
+      ]
+    }
+  ]
+}

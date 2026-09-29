@@ -1,0 +1,28 @@
+{
+  "scrape_data": "2026-09-29T14:30:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/advogada_leque.html",
+      "page_title": "Advogada do Leque — Mídia Kit Oficial",
+      "page_type": "midia_kit",
+      "programa_relacionado": "advogada-do-leque",
+      "trechos": [
+        {
+          "secao": "A Apresentadora",
+          "texto_original": "Advogada com mais de 30 anos de experiência, especialista em direito previdenciário pela UCS...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "O Programa - Objetivo do Projeto",
+          "texto_original": "Fortalecimento da marca @advogadadoleque e @pachecoecortes — fortalecimento da marca pessoal e empresarial...",
+          "origem": "profile.json:proposta_editorial"
+        },
+        {
+          "secao": "O Programa - Resumo dos Objetivos",
+          "texto_original": "O objetivo do programa é trazer convidados para falar sobre Direito Previdenciário...",
+          "origem": "profile.json:temas_principais, quadros"
+        }
+      ]
+    }
+  ]
+}

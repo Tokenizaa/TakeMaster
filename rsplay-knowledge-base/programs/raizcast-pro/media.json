@@ -1,0 +1,50 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast2.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Rodrigo - Raizcast Pro",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast1.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast5.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast6.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast7.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast8.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/raizcast/raizcast9.png",
+      "pagina_origem": "https://www.rsplay.com.br/raizcastpro.html",
+      "alt_text": "Raizcast Pro",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "7 imagens únicas listadas duplicadas na página original"
+}

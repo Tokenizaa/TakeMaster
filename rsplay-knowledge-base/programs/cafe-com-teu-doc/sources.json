@@ -1,0 +1,28 @@
+{
+  "scrape_data": "2026-09-29T15:00:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/cafedoc.html",
+      "page_title": "Mídia Kit Oficial — Café com teu doc",
+      "page_type": "midia_kit",
+      "programa_relacionado": "cafe-com-teu-doc",
+      "trechos": [
+        {
+          "secao": "O Apresentador - Dr. Vitor Picanço",
+          "texto_original": "Amazonense, 35 anos, casado. Médico Neurologista apaixonado por levar saúde e qualidade de vida aos seus pacientes...",
+          "origem": "profile.json:apresentador.bio"
+        },
+        {
+          "secao": "O Propósito",
+          "texto_original": "\"Minha meta é levar saúde e qualidade de vida aos meus pacientes, amparando, compreendendo e ajudando da melhor forma possível: tratando pessoas, ao invés de doenças.\"",
+          "origem": "profile.json:apresentador.bio"
+        },
+        {
+          "secao": "Sobre o Programa",
+          "texto_original": "Um programa idealizado para levar informação de saúde com qualidade e responsabilidade aos espectadores...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

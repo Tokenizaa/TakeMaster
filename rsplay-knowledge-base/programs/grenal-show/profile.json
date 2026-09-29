@@ -1,0 +1,66 @@
+{
+  "slug": "grenal-show",
+  "nome": "GreNal Show",
+  "titulo": "GreNal Show - Mídia Kit Oficial 2026",
+  "subtitulo": "Nando Gross e Farid Germano Filho. Destaque Esportivo 2026",
+  "tagline": "Rivalidade com Opinião.",
+  "apresentadores": [
+    {
+      "nome": "Nando Gross",
+      "bio": "Jornalista e músico, trajetória marcada pela cobertura cultural e esportiva no rádio, TV e plataformas digitais. Apresenta-se de forma clara e envolvente, conectando artistas, produtores e público.",
+      "metricas": {
+        "seguidores_x": "154K",
+        "viz_semanais_ig": "150K",
+        "seguidores_ig": "30.4K"
+      },
+      "instagram": "https://www.instagram.com/nandogross/"
+    },
+    {
+      "nome": "Farid Germano Filho",
+      "bio": "Jornalista formado na PUCRS, pós-graduado em marketing esportivo na PUCRS. 40 anos de profissão (2026), 7 prêmios ARI de jornalismo. Trabalhou na Tv Tarobá, rádio Fandango, rádios Gaúcha, Farroupilha, Metrô, Band, Guaíba e atualmente comentário na Jovem Pan. Vasta experiência televisiva.",
+      "metricas": {
+        "inscritos_yt": "278K",
+        "seguidores_ig": "318K",
+        "seguidores_threads": "69.4K"
+      },
+      "instagram": "https://www.instagram.com/faridgermano/"
+    }
+  ],
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Bate-papo descontraído com entrevistas e quadros dinâmicos",
+  "genero": "Esportivo",
+  "duracao_minutos": 60,
+  "periodicidade": "Segunda a Sexta-feira",
+  "horario": "13H",
+  "programas_semana": 5,
+  "publico": "Aberto a todos que se interessam pela dupla GreNal e futebol no geral",
+  "temas_principais": [
+    "Futebol Grêmio x Internacional",
+    "Bastidores dos clubes",
+    "Polêmicas e debates",
+    "Análise tática e opinião"
+  ],
+  "proposta_comercial": {
+    "vinheta_abertura": true,
+    "vinheta_encerramento": true,
+    "selo": true,
+    "insercoes_mensais_30s": 120,
+    "entrevista_presenca_estudio": true,
+    "investimento_mensal": "R$ 20.000"
+  },
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "contato_comercial": "comercial4@rsplay.com.br",
+  "status_scrape": "basico"
+}

@@ -1,0 +1,42 @@
+{
+  "slug": "negocios-em-foco",
+  "nome": "Negócios em Foco",
+  "titulo": "Mídia Kit Oficial — Negócios em Foco",
+  "subtitulo": "Com Michèle Castro",
+  "tagline": "Histórias que inspiram e deixam um legado. Empreendedorismo • Trajetórias • Estratégia • Sucesso",
+  "apresentadora": {
+    "nome": "Michèle Castro",
+    "bio": "Mentora e palestrante. Comunicadora e anfitriã de presença marcante, Michèle Castro traduz inteligência, elegância e autoridade no universo corporativo. Com uma comunicação envolvente e uma paixão genuína pelos negócios, conduz o espectador aos bastidores das mentes empreendedoras mais brilhantes da nossa região, revelando o que poucos acessam: a essência e a visão estratégica por trás do sucesso. \"Do zero ao topo\" - explora escolhas de carreira, resiliência, inovação e humanização das marcas.",
+    "instagram": "https://www.instagram.com/michelecastrooficial/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Videocast Interativo e Inspirador",
+  "genero": "Empreendedorismo, Carreira & Histórias Reais",
+  "duracao_minutos": "30-45",
+  "periodicidade": "Semanal",
+  "quadros": [
+    "\"Do Zero ao Topo\"",
+    "\"Direto e Reto\""
+  ],
+  "temas_principais": [
+    "Empreendedorismo e trajetórias de sucesso",
+    "Estratégia e visão de negócios",
+    "Resiliência e superação de crises",
+    "Inovação e experiência do cliente",
+    "Humanização das marcas"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

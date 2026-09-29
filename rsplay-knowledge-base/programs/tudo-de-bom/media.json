@@ -1,0 +1,50 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb2.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Rose do Erre",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb1.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb3.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb4.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb5.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb6.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/tdb/tdb7.png",
+      "pagina_origem": "https://www.rsplay.com.br/tdb.html",
+      "alt_text": "Tudo de Bom",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "7 imagens únicas listadas duplicadas na página original"
+}

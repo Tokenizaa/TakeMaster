@@ -1,0 +1,44 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima2.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Shirley Coden",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima1.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Conversa Íntima",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima3.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Conversa Íntima",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima4.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Conversa Íntima",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima5.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Conversa Íntima",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/intima/intima6.png",
+      "pagina_origem": "https://www.rsplay.com.br/conversaintima.html",
+      "alt_text": "Conversa Íntima",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "6 imagens únicas listadas duplicadas na página original"
+}

@@ -1,0 +1,33 @@
+{
+  "scrape_data": "2026-09-29T14:35:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/alto_valor.html",
+      "page_title": "Mídia Kit Oficial — Conversas de Alto Valor",
+      "page_type": "midia_kit",
+      "programa_relacionado": "conversas-de-alto-valor",
+      "trechos": [
+        {
+          "secao": "Visão Geral - Apresentado por Cacá Lima",
+          "texto_original": "Cacá Lima é referência pela clareza, elegância, visão estratégica e habilidade de conectar pessoas, marcas e histórias com inteligência e sensibilidade...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "Nosso Propósito (6 Pilares)",
+          "texto_original": "Inspirar, Educar, Conectar, Provocar Clareza, Valorizar Propósito, Criar Impacto",
+          "origem": "profile.json:proposta_editorial_pilares"
+        },
+        {
+          "secao": "Estrutura do Episódio (5 Blocos)",
+          "texto_original": "Minuto Educação, Boas-vindas + Tema + Histórias, Construindo Novos Saberes, Vozes que Transformam, Desafio Revelador",
+          "origem": "profile.json:estrutura_episodio"
+        },
+        {
+          "secao": "Formato de Produção",
+          "texto_original": "Gravação multicâmera (2 ou 3) com alta qualidade cinematográfica. Captação cristalina com lapelas profissionais. Edição Premium...",
+          "origem": "profile.json:formato_producao"
+        }
+      ]
+    }
+  ]
+}

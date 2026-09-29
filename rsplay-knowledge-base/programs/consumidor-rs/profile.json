@@ -1,0 +1,47 @@
+{
+  "slug": "consumidor-rs",
+  "nome": "Consumidor RS",
+  "titulo": "Mídia Kit Oficial — Consumidor RS",
+  "subtitulo": "Com Fernanda Appel",
+  "tagline": "Informação Educação Comunicação",
+  "apresentadora": {
+    "nome": "Fernanda Appel",
+    "bio": "A jornalista e comunicadora Fernanda Appel é a voz da defesa dos direitos e interesses do cidadão gaúcho. Com credibilidade inquestionável, traduz informações complexas sobre consumo, saúde e cidadania em conteúdo direto e acessível para o público. 27 Anos de História: No ar ininterruptamente há quase três décadas, o Consumidor RS não é apenas um programa de televisão, mas uma ferramenta de utilidade pública consolidada."
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Entrevistas, Reportagens & Mediação",
+  "genero": "Jornalismo & Utilidade Pública",
+  "duracao_minutos": 30,
+  "periodicidade": "Diário",
+  "historico": "27 Anos de Continuidade",
+  "transmissao": "Simultânea para o RS e Portal Digital",
+  "temas_principais": [
+    "Direitos do consumidor",
+    "Saúde e cidadania",
+    "Mediação de conflitos",
+    "Educação para o consumo",
+    "Utilidade pública"
+  ],
+  "marcas_que_confiam": [
+    "ZAFFARI / BOURBON", "UNIMED", "PANVEL", "RODOIL", "GBOEX",
+    "LOJAS LEBES", "SINDILOJAS POA", "SULPETRO"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "contatos": {
+    "portal": "https://consumidorrs.com.br",
+    "email": "contato@consumidorrs.com.br"
+  },
+  "status_scrape": "basico"
+}

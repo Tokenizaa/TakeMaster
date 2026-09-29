@@ -1,0 +1,45 @@
+{
+  "slug": "raizcast-pro",
+  "nome": "Raizcast Pro",
+  "titulo": "Mídia Kit Oficial — Raizcast Pro",
+  "subtitulo": "A versão Pro é outro nível. Apresentado por Rodrigo",
+  "tagline": "Gestão Financeira • Previsibilidade • Lucro",
+  "apresentador": {
+    "nome": "Rodrigo",
+    "bio": "De um podcast de garagem há 6 anos para estúdios profissionais e transmissão nacional na Claro TV. Rodrigo é a voz que desafia o empresário brasileiro a sair do achismo e assumir o comando de seus negócios. Experiente, conhece as dores de faturar milhões e ainda assim ter que encarar a realidade do fluxo de caixa e da previsibilidade. \"Quem vende sem gerir, cresce cansado e quebra cedo. O faturamento vem das vendas, o lucro vem da gestão.\"",
+    "instagram": "https://www.instagram.com/raizcastpro/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Entrevistas e Aulas de Liderança",
+  "genero": "Gestão, Finanças e Negócios B2B",
+  "duracao_minutos": 60,
+  "periodicidade": "3x na semana",
+  "temas_principais": [
+    "Gestão financeira e previsibilidade",
+    "Margem de contribuição e EBITDA",
+    "Reforma tributária 2026/2027",
+    "Fluxo de caixa e governança",
+    "Mentoria para empresários"
+  ],
+  "ecossistema": "Onde a experiência vira método",
+  "oportunidades_integracao": [
+    "Tributário & Contabilidade - Reforma tributária, escritórios contabilidade, advocacia tributária",
+    "Tech & ERPs - Sistemas gestão financeira, controle estoque, automação, dados",
+    "Bancos & Investimentos - Linhas crédito PJ, gestão investimentos, contas PJ, antecipação recebíveis",
+    "Mentorias & Ecossistemas - Infoprodutos gestão, mentorias vendas, imersões executivas, masterminds"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

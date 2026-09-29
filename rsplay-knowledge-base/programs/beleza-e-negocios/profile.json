@@ -1,0 +1,39 @@
+{
+  "slug": "beleza-e-negocios",
+  "nome": "Beleza & Negócios",
+  "titulo": "Mídia Kit Oficial — Beleza & Negócios",
+  "subtitulo": "Beleza. Empreendedorismo. Bem-estar.",
+  "tagline": "Estética • Gestão • Sucesso",
+  "apresentadora": {
+    "nome": "Natália Dias",
+    "bio": "Especialista no mercado da beleza, empreendedora e comunicadora. Dedica-se a transformar a visão de profissionais da área, mostrando que estética, bem-estar e gestão estratégica caminham de mãos dadas para o verdadeiro sucesso. O projeto nasceu da necessidade de mostrar os bastidores e a inteligência por trás do mercado de estética e beleza. Muito além dos procedimentos, existe um mundo de gestão, inovação e histórias de superação.",
+    "instagram": "https://www.instagram.com/nataliadiasbeauty/"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show com Entrevistas e Dicas Práticas",
+  "genero": "Variedades, Beleza & Empreendedorismo",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "agenda": "Todas às Terças feiras às 11h",
+  "temas_principais": [
+    "Estética e procedimentos",
+    "Gestão de clínicas e negócios de beleza",
+    "Empreendedorismo no setor",
+    "Inovação e tecnologia",
+    "Histórias de superação"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

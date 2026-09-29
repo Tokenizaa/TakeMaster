@@ -1,0 +1,50 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza5.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Natália Dias",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza1.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza2.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza3.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza4.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza6.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/belezanegocio/beleza7.png",
+      "pagina_origem": "https://www.rsplay.com.br/belezanegocio.html",
+      "alt_text": "Beleza & Negócios",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "7 imagens únicas listadas duplicadas na página original"
+}

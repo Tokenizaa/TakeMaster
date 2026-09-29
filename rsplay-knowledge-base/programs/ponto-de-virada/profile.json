@@ -1,0 +1,53 @@
+{
+  "slug": "ponto-de-virada",
+  "nome": "Ponto de Virada",
+  "titulo": "Mídia Kit Oficial — Ponto de Virada com Tati Ferreira",
+  "subtitulo": "Com Tati Ferreira",
+  "tagline": "Ação • Corpo • Mentalidade • Transformação",
+  "apresentadora": {
+    "nome": "Tatiana Ferreira de Ávila",
+    "bio": "Personal trainer, especialista em musculação e apresentadora do programa Ponto de Virada. Propósito: conduzir transformações reais, que ultrapassam a estética e alcançam também a mente, as emoções e a postura diante da vida. Filosofia: \"Acredito na força do alinhamento entre corpo/ação, consciência/foco e atitude/emocional para sustentar uma nova versão.\"",
+    "instagram": "https://instagram.com/tatiferreira.avila"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Transformação real - conversas inspiradoras e profundas",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Mudança de Vida - Histórias reais de superação",
+    "Corpo & Saúde - Musculação, bem-estar, impacto do movimento na autoestima e longevidade",
+    "Mentalidade & Foco - Treinar a mente, gerenciar emoções, construir constância",
+    "Disciplina & Atitude - Passo a passo prático, transformar motivação em rotina"
+  ],
+  "diferenciais": [
+    "Autoridade Prática - Especialista em musculação que vive e conduz transformações corporais reais",
+    "Conexão Humana - Foco em histórias verdadeiras, alta identificação e engajamento emocional",
+    "Visão 360º - Não é só estética. Abordagem completa entre corpo, mente, foco e atitude"
+  ],
+  "perfil_publico": [
+    "Pessoas em busca de emagrecimento, hipertrofia e mudança de hábitos",
+    "Profissionais de educação física e saúde integrativa",
+    "Consumidores de moda fitness, suplementação e alimentação saudável",
+    "Indivíduos interessados em desenvolvimento pessoal e mentalidade forte"
+  ],
+  "oportunidades_marcas": [
+    "Visibilidade / Placement - Exibição orgânica de roupas, acessórios, alimentos, suplementos",
+    "Endosso da Especialista - Marca recomendada por profissional experiente",
+    "Presença Multiplataforma - Ações TV + cortes virais redes sociais",
+    "Quadros Patrocinados - Segmentos específicos (ex: \"Dica de Nutrição X\", \"O Treino do Dia\")"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

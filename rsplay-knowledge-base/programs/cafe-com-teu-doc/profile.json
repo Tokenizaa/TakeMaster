@@ -1,0 +1,43 @@
+{
+  "slug": "cafe-com-teu-doc",
+  "nome": "Café com teu Doc",
+  "titulo": "Mídia Kit Oficial — Café com teu doc",
+  "subtitulo": "Apresentado por Dr. Vitor Picanço",
+  "tagline": "Qualidade de Vida • Prevenção • Bem-Estar",
+  "apresentador": {
+    "nome": "Dr. Vitor Picanço",
+    "bio": "Amazonense, 35 anos, casado. Médico Neurologista apaixonado por levar saúde e qualidade de vida aos seus pacientes. Atua em Porto Alegre e região através de consultas presenciais e telemedicina, com foco em dores de cabeça e doença de Parkinson, combinando a excelência técnica com um atendimento humano e empático. Formado em medicina pela Univ. Estadual do Amazonas (UEA). Neurologista (UFFS/Hospital de Clínicas de Passo Fundo). Subespecialista em Distúrbios do Movimento e Cefaleia (HCPA). Mestrando pela UFRGS e Professor de medicina da Unisinos. Neurologista da Santa Casa de Misericórdia de Porto Alegre. Preceptor Voluntário (Residência em Neurologia - Santa Casa). Propósito: \"Minha meta é levar saúde e qualidade de vida aos meus pacientes, amparando, compreendendo e ajudando da melhor forma possível: tratando pessoas, ao invés de doenças.\"",
+    "instagram": "https://www.instagram.com/drvitorpicancoo",
+    "youtube": "https://www.youtube.com/@VitorPican%C3%A7o-l1t"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Videocast / Bate-papo estilo videocast",
+  "genero": "Saúde, Medicina, Qualidade de Vida",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Neurologia (dores de cabeça, Parkinson, distúrbios do movimento)",
+    "Saúde baseada em evidências",
+    "Prevenção e qualidade de vida",
+    "Entrevistas com profissionais de saúde (médicos, educadores físicos, fonoaudiólogos, fisioterapeutas, dentistas, psicólogos)",
+    "Empreendedorismo na saúde"
+  ],
+  "convidados_tipos": [
+    "Profissionais de Saúde: Médicos de diversas especialidades, educadores físicos, fonoaudiólogos, fisioterapeutas, dentistas, cirurgiões bucomaxilofaciais, psicólogos",
+    "Empreendedores: Empresários e inovadores do ramo da saúde"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

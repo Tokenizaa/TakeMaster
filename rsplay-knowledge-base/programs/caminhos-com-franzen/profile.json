@@ -1,0 +1,49 @@
+{
+  "slug": "caminhos-com-franzen",
+  "nome": "Caminhos com Franzen",
+  "titulo": "Caminhos com Franzen — Mídia Kit Oficial",
+  "subtitulo": "# Claudio Franzen",
+  "tagline": "Esporte • Superação • Sustentabilidade",
+  "apresentador": {
+    "nome": "Claudio Franzen",
+    "bio": "Empreendedor, apresentador e uma das vozes mais atuantes na promoção da alta performance e conscientização sustentável no Sul do país. À frente do programa Caminhos, Claudio utiliza sua vasta experiência para conectar marcas e pessoas através de histórias de superação, saúde e equilíbrio. Como 5 vezes Campeão Mundial, ele transforma a disciplina de elite em uma ferramenta poderosa de comunicação. 15 Anos de História.",
+    "instagram": "https://instagram.com/claudiofranzen"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Entrevistas exclusivas, Dicas de saúde e performance, Parcerias com marcas conscientes",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Performance esportiva",
+    "Empreendedorismo consciente",
+    "Superação e disciplina",
+    "Sustentabilidade",
+    "Saúde e equilíbrio"
+  ],
+  "perfil_publico": [
+    "Empresários",
+    "Atletas",
+    "Lideranças",
+    "Performance"
+  ],
+  "servicos_parcerias": [
+    "Cota Master - Exclusividade total e presença em todas as frentes",
+    "Apresentação - Condução de eventos, lives e media training",
+    "Publi & Conteúdo - Divulgação estratégica em redes",
+    "Palestras - Experiência de 5 mundiais aplicada à resiliência e foco"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

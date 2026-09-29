@@ -1,0 +1,18 @@
+{
+  "scrape_data": "2026-09-29T15:05:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/caminhofranzen.html",
+      "page_title": "Caminhos com Franzen — Mídia Kit Oficial",
+      "page_type": "midia_kit",
+      "programa_relacionado": "caminhos-com-franzen",
+      "trechos": [
+        {
+          "secao": "Sobre Claudio Franzen",
+          "texto_original": "Empreendedor, apresentador e uma das vozes mais atuantes na promoção da alta performance e conscientização sustentável no Sul do país...",
+          "origem": "profile.json:apresentador.bio"
+        }
+      ]
+    }
+  ]
+}

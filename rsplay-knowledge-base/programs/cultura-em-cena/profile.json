@@ -1,0 +1,44 @@
+{
+  "slug": "cultura-em-cena",
+  "nome": "Cultura em Cena",
+  "titulo": "Mídia Kit Oficial — Cultura em Cena com Nando Gross",
+  "subtitulo": "Com Nando Gross",
+  "tagline": "Música / Arte / Entretenimento",
+  "apresentador": {
+    "nome": "Nando Gross",
+    "bio": "Jornalista, comunicador de peso e profundo conhecedor do cenário musical e artístico do Rio Grande do Sul. Nando conecta diferentes gerações, gêneros e tribos — do vinil independente ao simulador digital, do rock ao hip hop — com entrevistas autênticas e performances marcantes. O Cultura em Cena estreia para registrar, celebrar e divulgar o que acontece na cidade de Porto Alegre e no RS em termos de estrutura, shows e entretenimento.",
+    "instagram": "https://www.instagram.com/nandogross/",
+    "youtube": "https://youtube.com/@nandogross"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show Musical",
+  "genero": "Música & Cultura",
+  "duracao_minutos": 45,
+  "periodicidade": "Semanal",
+  "temas_principais": [
+    "Música ao vivo e performances",
+    "Cena musical gaúcha (rock, hip hop, independente)",
+    "Entrevistas com artistas, DJs, músicos, produtores culturais",
+    "Crônicas da cidade de Porto Alegre",
+    "Demonstrações técnicas de som",
+    "História da música independente local"
+  ],
+  "convidados_destaque": [
+    "Nelson Coelho de Castro",
+    "DJ Piá"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "status_scrape": "basico"
+}

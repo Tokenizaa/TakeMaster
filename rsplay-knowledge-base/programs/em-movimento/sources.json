@@ -1,0 +1,18 @@
+{
+  "scrape_data": "2026-09-29T15:30:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/emmovimento.html",
+      "page_title": "Mídia Kit Oficial — Dra. Tamara Mucenic",
+      "page_type": "midia_kit",
+      "programa_relacionado": "em-movimento",
+      "trechos": [
+        {
+          "secao": "Sobre Dra. Tamara",
+          "texto_original": "Médica reumatologista, atua no consultório privado e em pesquisa clínica, com foco em doenças inflamatórias sistêmicas e saúde ao longo da vida...",
+          "origem": "profile.json:apresentadora.bio"
+        }
+      ]
+    }
+  ]
+}

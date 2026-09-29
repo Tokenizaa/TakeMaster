@@ -1,0 +1,42 @@
+{
+  "slug": "as-pessoas-inspiram",
+  "nome": "As Pessoas Inspiram",
+  "titulo": "Mídia Kit Oficial — As Pessoas Inspiram",
+  "subtitulo": "Com Dra. Eliane Davila",
+  "tagline": "Cultura • Propósito • Impacto Social",
+  "apresentadora": {
+    "nome": "Dra. Eliane Davila",
+    "bio": "Comunicadora, palestrante, mediadora de diálogos e PhD em Processos e Manifestações Culturais. Eliane dedica-se à valorização de histórias que conectam propósito, sustentabilidade, inovação e impacto social. O projeto nasceu durante a pandemia com uma missão clara: compartilhar histórias de vida inspiradoras quando o mundo mais precisava. O que iniciou nas redes sociais evoluiu com força para o formato televisivo. + de 250 Episódios Produzidos e disponíveis no YouTube."
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Talk Show com Entrevistas e Quadros Dinâmicos",
+  "genero": "Informativo, Empreendedorismo & Cultural",
+  "duracao_minutos": 30,
+  "periodicidade": "Semanal",
+  "agenda": "Todas às Terças feiras às 11h",
+  "temas_principais": [
+    "Histórias de vida inspiradoras",
+    "Cultura e propósito",
+    "Impacto social e sustentabilidade",
+    "Liderança e inovação",
+    "Trajetórias de artistas e cidadãos comuns"
+  ],
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "redes_sociais": {
+    "instagram": "https://instagram.com/elianedavila",
+    "youtube": "https://youtube.com/@ElianeDavila"
+  },
+  "status_scrape": "basico"
+}

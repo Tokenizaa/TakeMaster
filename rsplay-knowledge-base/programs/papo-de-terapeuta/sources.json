@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:35:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/terapeuta.html",
+      "page_title": "Mídia Kit Oficial — Papo de Terapeuta",
+      "page_type": "midia_kit",
+      "programa_relacionado": "papo-de-terapeuta",
+      "trechos": [
+        {
+          "secao": "O Anfitrião - Marco Marzolla",
+          "texto_original": "Com uma escuta atenta e uma condução acolhedora (e por vezes incisiva, quando necessário), Marco Marzolla guia seus convidados...",
+          "origem": "profile.json:apresentador.bio"
+        },
+        {
+          "secao": "Sobre o Programa",
+          "texto_original": "O Papo de Terapeuta desvenda os campos ocultos que travam a vida financeira, os relacionamentos e a carreira...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "imagens": [
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara2.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Dra. Tamara Mucenic",
+      "tipo": "apresentadora"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara3.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara4.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara5.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara6.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara7.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/emmovimento/tamara8.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/emmovimento.html",
+      "alt_text": "Em Movimento",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": []
+}

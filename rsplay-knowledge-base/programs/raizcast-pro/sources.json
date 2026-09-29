@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:50:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/raizcastpro.html",
+      "page_title": "Mídia Kit Oficial — Raizcast Pro",
+      "page_type": "midia_kit",
+      "programa_relacionado": "raizcast-pro",
+      "trechos": [
+        {
+          "secao": "O Anfitrião - Rodrigo",
+          "texto_original": "De um podcast de garagem há 6 anos para estúdios profissionais e transmissão nacional na Claro TV...",
+          "origem": "profile.json:apresentador.bio"
+        },
+        {
+          "secao": "Sobre o Programa",
+          "texto_original": "O empresário brasileiro aprendeu a vender, mas muitos vivem inseguros. O Raizcast Pro é onde o faturamento encontra a gestão...",
+          "origem": "content.md"
+        }
+      ]
+    }
+  ]
+}

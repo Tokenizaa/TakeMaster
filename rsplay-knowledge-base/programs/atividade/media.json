@@ -1,0 +1,19 @@
+{
+  "imagens": [
+    {
+      "url": "https://rsplay.com.br/img/mediakit/atividade/atividade2-min.JPG",
+      "pagina_origem": "https://www.rsplay.com.br/atividade.html",
+      "alt_text": "Programa Atividade",
+      "tipo": "banner"
+    },
+    {
+      "url": "https://rsplay.com.br/img/mediakit/atividade/atividade3-min.JPG",
+      "pagina_origem": "https://www.rsplay.com.br/atividade.html",
+      "alt_text": "Programa Atividade - Pilares",
+      "tipo": "infografico"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": []
+}

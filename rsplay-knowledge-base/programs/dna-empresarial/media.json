@@ -1,0 +1,25 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/dna/dna.png",
+      "pagina_origem": "https://www.rsplay.com.br/dna.html",
+      "alt_text": "Logo DNA Empresarial",
+      "tipo": "logo"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/dna/matheus.png",
+      "pagina_origem": "https://www.rsplay.com.br/dna.html",
+      "alt_text": "Matheus Bulegon - Gestão & Vendas",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/dna/romulo.JPG",
+      "pagina_origem": "https://www.rsplay.com.br/dna.html",
+      "alt_text": "Rômulo Vargas - Jurídico & Compliance",
+      "tipo": "apresentador"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": []
+}

@@ -1,0 +1,28 @@
+{
+  "scrape_data": "2026-09-29T15:55:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/grenalshow.html",
+      "page_title": "GreNal Show - Mídia Kit Oficial 2026",
+      "page_type": "midia_kit",
+      "programa_relacionado": "grenal-show",
+      "trechos": [
+        {
+          "secao": "Sinopse - Rivalidade com Opinião",
+          "texto_original": "GRENAL SHOW é o espaço onde a rivalidade mais quente do futebol brasileiro ganha voz. Nando Gross e Farid Germano Filho comandam um debate sem freios...",
+          "origem": "content.md"
+        },
+        {
+          "secao": "Quem é Nando Gross / Quem é Farid Germano",
+          "texto_original": "Jornalista e músico... / Jornalista formado na PUCRS, pós graduado em marketing esportivo...",
+          "origem": "profile.json:apresentadores"
+        },
+        {
+          "secao": "Proposta Comercial",
+          "texto_original": "Vinheta de Abertura, Vinheta de Encerramento, Selo, 120 Inserções Mensais de 30 Segundos, Entrevista Presença em Estúdio, Investimento R$20.000 Valor Mensal",
+          "origem": "profile.json:proposta_comercial"
+        }
+      ]
+    }
+  ]
+}

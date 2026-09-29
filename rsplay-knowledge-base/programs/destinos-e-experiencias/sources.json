@@ -1,0 +1,23 @@
+{
+  "scrape_data": "2026-09-29T15:45:00Z",
+  "source_urls": [
+    {
+      "url": "https://www.rsplay.com.br/vivian.html",
+      "page_title": "Mídia Kit Oficial — Destinos & Experiências com Vívian Lima",
+      "page_type": "midia_kit",
+      "programa_relacionado": "destinos-e-experiencias",
+      "trechos": [
+        {
+          "secao": "A Apresentadora - Vívian Lima",
+          "texto_original": "Natural de Gramado (RS), Vívian cresceu cercada pela excelência da hospitalidade...",
+          "origem": "profile.json:apresentadora.bio"
+        },
+        {
+          "secao": "Impacto Digital",
+          "texto_original": "1,37 Mi Visualizações (últimos 90 dias), 282,9 K Contas Alcançadas, Crescimento de +44,5%",
+          "origem": "profile.json:impacto_digital_apresentadora"
+        }
+      ]
+    }
+  ]
+}

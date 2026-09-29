@@ -1,0 +1,47 @@
+{
+  "slug": "atividade",
+  "nome": "Atividade",
+  "titulo": "Mídia Kit Oficial — Programa Atividade",
+  "subtitulo": "Análise Crítica, Debate e Reflexão",
+  "tagline": "Política Economia Justiça Esporte",
+  "apresentador": {
+    "nome": "José Silva",
+    "email_comercial": "jornalistajosesilvas@gmail.com.br",
+    "whatsapp": "51 98111 0333"
+  },
+  "canal": "RS Play • Claro TV Canal 524",
+  "formato": "Jornalismo Opinativo",
+  "duracao_minutos": 30,
+  "periodicidade": "Diário",
+  "pilares_editoriais": [
+    "Política Nacional - Cenário institucional e movimentos que definem o futuro da democracia brasileira",
+    "Economia Real - Custo de vida, agronegócio e setor produtivo sob ótica prática",
+    "Justiça & Direitos - Decisões do judiciário e questões previdenciárias explicadas para o cidadão",
+    "Esporte e Cultura - Futebol e sociedade analisados sob viés econômico e cultural"
+  ],
+  "temas_principais": [
+    "Política nacional e institucional",
+    "Economia real e custo de vida",
+    "Justiça, direitos e previdência",
+    "Esporte e cultura com análise econômica"
+  ],
+  "publico_alvo": "Formadores de opinião",
+  "alcance_emissora": {
+    "total_multiplataforma": "14.388 Milhões",
+    "acessos_tvsplay": "16M",
+    "alcance_claro_tv": "2M",
+    "app_smart_tv": "678.224",
+    "programas_exclusivos": 72,
+    "youtube_views": "1.2M+",
+    "youtube_inscritos": "19K",
+    "instagram_alcance": "5.0M+",
+    "instagram_interacoes": "163K",
+    "tiktok_views": "784K",
+    "tiktok_curtidas": "48K"
+  },
+  "integracao_comercial": [
+    "Conteúdo Institucional - Valorização de marcas e iniciativas públicas ou privadas",
+    "Ações Comunitárias - Divulgação de eventos culturais e projetos sociais"
+  ],
+  "status_scrape": "basico"
+}

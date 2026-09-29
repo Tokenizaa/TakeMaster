@@ -1,0 +1,22 @@
+{
+  "urls_404": [
+    {
+      "url": "https://www.rsplay.com.br/2ou10.html",
+      "programa_esperado": "2 ou 10",
+      "status_code": 404,
+      "data_verificacao": "2026-09-29T14:25:00Z",
+      "sugestao_slug": "dois-ou-dez"
+    },
+    {
+      "url": "https://www.rsplay.com.br/belezainteligente.html",
+      "programa_esperado": "Beleza Inteligente",
+      "status_code": 404,
+      "data_verificacao": "2026-09-29T14:40:00Z",
+      "sugestao_slug": "beleza-inteligente"
+    }
+  ],
+  "urls_com_problemas": [],
+  "total_verificadas": 20,
+  "total_sucesso": 18,
+  "total_falha": 2
+}

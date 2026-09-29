@@ -1,0 +1,68 @@
+{
+  "imagens": [
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc2.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Dr. Vitor Picanço",
+      "tipo": "apresentador"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc1.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc - Cenário",
+      "tipo": "cenario"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc3.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc4.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc5.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc6.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc7.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc8.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc9.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    },
+    {
+      "url": "https://www.rsplay.com.br/img/mediakit/cafedoc/cafedoc10.jpeg",
+      "pagina_origem": "https://www.rsplay.com.br/cafedoc.html",
+      "alt_text": "Café com teu Doc",
+      "tipo": "galeria"
+    }
+  ],
+  "videos": [],
+  "pdfs": [],
+  "documentos": [],
+  "observacao": "10 imagens únicas listadas duplicadas na página original"
+}
