@@ -272,12 +272,34 @@ export class SupabaseDatabase {
   async saveEpisode(episode: any) {
     const payload = JSON.parse(JSON.stringify(episode));
     payload.legacy_id = payload.legacy_id || payload.id;
-    if (!payload.program_legacy_id) {
-      const p = await this.getProgram(payload.programId || payload.showId);
-      if (!p) throw new Error('Programa não encontrado');
-      payload.program_legacy_id = (p as any).legacy_id || (p as any).id;
-    }
-    const result = await rpc('save_episode', { episode: payload, segments: payload.segments || [], ensure_participants: (payload.participants || []).map((p:any) => ({legacy_id: p.legacy_id || p.participantId || p.id, program_id: (await this.getProgram(payload.program_legacy_id) as any)._dbId, name:p.name, type:p.type, role:p.role, company_or_group:p.companyOrGroup, bio:p.bio, notes:p.notes})), episode_participants: (payload.participants || []).map((p:any, i:number) => ({legacy_id: p.legacy_id || p.id || `${payload.legacy_id}-participant-${i+1}`, participant_legacy_id: p.participantId || p.legacy_id || p.id, name:p.name, type:p.type, role:p.role, order_pos:p.order || i+1, notes:p.notes, is_featured:p.isFeatured, estimated_time_min:p.estimatedTimeMin, bio:p.bio})), segment_participants: [], questions: payload.questions || [], follow_ups: (payload.questions || []).flatMap((q: any) => (q.followUps || []).map((f: any) => ({ ...f, question_legacy_id: q.id }))), script: payload.script || [], shorts: payload.shorts || [], assets: payload.assets || [], markers: payload.recordingMarkers || [] });
+    const program = await this.getProgram(payload.programId || payload.showId || payload.program_legacy_id);
+    if (!program) throw new Error('Programa não encontrado');
+    payload.program_legacy_id = (program as any).legacy_id || (program as any).id;
+    const participants = (payload.participants || []).map((p:any) => ({
+      legacy_id: p.legacy_id || p.participantId || p.id,
+      program_id: (program as any)._dbId,
+      name:p.name, type:p.type, role:p.role,
+      company_or_group:p.companyOrGroup, bio:p.bio, notes:p.notes
+    }));
+    const episodeParticipants = (payload.participants || []).map((p:any, i:number) => ({
+      legacy_id: p.legacy_id || p.id || `${payload.legacy_id}-participant-${i+1}`,
+      participant_legacy_id: p.participantId || p.legacy_id || p.id,
+      name:p.name, type:p.type, role:p.role, order_pos:p.order || i+1,
+      notes:p.notes, is_featured:p.isFeatured, estimated_time_min:p.estimatedTimeMin, bio:p.bio
+    }));
+    const result = await rpc('save_episode', {
+      episode: payload,
+      segments: payload.segments || [],
+      ensure_participants: participants,
+      episode_participants: episodeParticipants,
+      segment_participants: [],
+      questions: payload.questions || [],
+      follow_ups: (payload.questions || []).flatMap((q: any) => (q.followUps || []).map((f: any) => ({ ...f, question_legacy_id: q.id }))),
+      script: payload.script || [],
+      shorts: payload.shorts || [],
+      assets: payload.assets || [],
+      markers: payload.recordingMarkers || []
+    });
     return this.getEpisode(result.legacy_id);
   }
 
