@@ -253,6 +253,7 @@ export class SupabaseDatabase {
     const partOut = epParticipants.map((p: any) => ({ ...toLegacy(p), participantId: p.participant_id, estimatedTimeMin: p.estimated_time_min, isFeatured: p.is_featured, order: p.order_pos }));
     const out = {
       ...toLegacy(e),
+      _dbId: e.id,
       programId: e.program_id,
       showId: e.program_id,
       episodeNumber: e.episode_number,
