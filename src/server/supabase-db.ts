@@ -30,7 +30,7 @@ async function rpc(name: string, body: unknown) {
 
 const enc = encodeURIComponent;
 
-function toLegacy(row: any) {
+const isUuid = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);\n\nfunction idFilter(column: string, value: string) {\n  return isUuid(value) ? `${column}=eq.${enc(value)}` : `legacy_id=eq.${enc(value)}`;\n}\n\nfunction toLegacy(row: any) {
   return { ...row, id: row.legacy_id || row.id };
 }
 
