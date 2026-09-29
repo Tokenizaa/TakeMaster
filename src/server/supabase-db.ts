@@ -215,7 +215,7 @@ export class SupabaseDatabase {
   async deleteParticipant(id: string) {
     const p = await this.getParticipant(id);
     if (!p) return false;
-    const rows = await request(`/participants?select=id&or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})&limit=1`);
+    const rows = await request(`/participants?select=id&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return false;
     await request(`/participants?id=eq.${enc(rows[0].id)}`, { method: 'DELETE' });
     return true;
@@ -315,7 +315,7 @@ export class SupabaseDatabase {
   }
 
   async deleteEpisode(id: string) {
-    const rows = await request(`/episodes?select=id&or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})&limit=1`);
+    const rows = await request(`/episodes?select=id&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return false;
     await request(`/episodes?id=eq.${enc(rows[0].id)}`, { method: 'DELETE' });
     return true;
@@ -335,7 +335,7 @@ export class SupabaseDatabase {
   }
 
   async deleteAgendaEvent(id: string) {
-    const rows = await request(`/agenda_events?select=id&or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})&limit=1`);
+    const rows = await request(`/agenda_events?select=id&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return false;
     await request(`/agenda_events?id=eq.${enc(rows[0].id)}`, {method:'DELETE'});
     return true;
