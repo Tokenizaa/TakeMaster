@@ -277,7 +277,7 @@ export class SupabaseDatabase {
       if (!p) throw new Error('Programa não encontrado');
       payload.program_legacy_id = (p as any).legacy_id || (p as any).id;
     }
-    const result = await rpc('save_episode', { episode: payload, segments: payload.segments || [], ensure_participants: [], episode_participants: payload.episodeParticipants || [], segment_participants: [], questions: payload.questions || [], follow_ups: (payload.questions || []).flatMap((q: any) => (q.followUps || []).map((f: any) => ({ ...f, question_legacy_id: q.id }))), script: payload.script || [], shorts: payload.shorts || [], assets: payload.assets || [], markers: payload.recordingMarkers || [] });
+    const result = await rpc('save_episode', { episode: payload, segments: payload.segments || [], ensure_participants: (payload.participants || []).map((p:any) => ({...p, legacy_id: p.legacy_id || p.participantId || p.id, id: undefined, program_legacy_id: payload.program_legacy_id})), episode_participants: (payload.participants || []).map((p:any, i:number) => ({legacy_id: p.legacy_id || p.id || `${payload.legacy_id}-participant-${i+1}`, participant_legacy_id: p.participantId || p.legacy_id || p.id, name:p.name, type:p.type, role:p.role, order_pos:p.order || i+1, notes:p.notes, is_featured:p.isFeatured, estimated_time_min:p.estimatedTimeMin, bio:p.bio})), segment_participants: [], questions: payload.questions || [], follow_ups: (payload.questions || []).flatMap((q: any) => (q.followUps || []).map((f: any) => ({ ...f, question_legacy_id: q.id }))), script: payload.script || [], shorts: payload.shorts || [], assets: payload.assets || [], markers: payload.recordingMarkers || [] });
     return this.getEpisode(result.legacy_id);
   }
 
@@ -295,7 +295,7 @@ export class SupabaseDatabase {
 
   async saveAgendaEvent(event: any) {
     const ep = event.episodeId ? await this.getEpisode(event.episodeId) : undefined;
-    const row = { legacy_id: event.legacy_id || event.id, title: event.title || event.episodeTitle, episode_id: ep ? (await request(`/episodes?select=id&legacy_id=eq.${enc(event.episodeId)}&limit=1`))[0]?.id : null, program_id: event.programId || null, program_title: event.programTitle, episode_title: event.episodeTitle, scheduled_date: event.date, scheduled_time: event.time, duration_min: event.durationMin, location: event.location, type: event.type, status: event.status, notes: event.notes, participants_summary: event.participantsSummary };
+    const program = event.programId ? await this.getProgram(event.programId) : undefined;\n    const row = { legacy_id: event.legacy_id || event.id, title: event.title || event.episodeTitle, episode_id: ep ? (await request(`/episodes?select=id&legacy_id=eq.${enc(event.episodeId)}&limit=1`))[0]?.id : null, program_id: program ? (program as any)._dbId : null, program_title: event.programTitle, episode_title: event.episodeTitle, scheduled_date: event.date, scheduled_time: event.time, duration_min: event.durationMin, location: event.location, type: event.type, status: event.status, notes: event.notes, participants_summary: event.participantsSummary };
     await request('/agenda_events?on_conflict=legacy_id', { method:'POST', headers:{Prefer:'resolution=merge-duplicates'}, body:JSON.stringify(row) });
     return event;
   }
