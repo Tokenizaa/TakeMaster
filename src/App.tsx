@@ -188,10 +188,23 @@ export default function App() {
   };
 
   const handleCreateEpisodeFromModal = async (createdEp: Episode) => {
-    setEpisodes(prev => [createdEp, ...prev]);
-    setActiveEpisode(createdEp);
-    if (createdEp.programId) {
-      setActiveProgramId(createdEp.programId);
+    // Persist first so a newly created production survives reloads.
+    // Keep the existing episode model and derive the next number locally.
+    const nextEpisodeNumber =
+      episodes.reduce(
+        (max, episode) => Math.max(max, Number((episode as any).episodeNumber) || 0),
+        0
+      ) + 1;
+
+    const persistedEpisode = await api.createEpisode({
+      ...createdEp,
+      episodeNumber: (createdEp as any).episodeNumber || nextEpisodeNumber,
+    });
+
+    setEpisodes(prev => [persistedEpisode, ...prev]);
+    setActiveEpisode(persistedEpisode);
+    if (persistedEpisode.programId) {
+      setActiveProgramId(persistedEpisode.programId);
     }
     setIsNewEpisodeModalOpen(false);
     setCurrentView('episode-detail');
