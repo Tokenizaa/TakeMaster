@@ -1,156 +1,74 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { db } from './src/server/db';
+import { SupabaseDatabase } from './src/server/supabase-db';
 import { ai, parseAIJson } from './src/server/ai';
 import {
-  Episode,
-  Program,
-  Participant,
-  EditorialDiagnosis,
-  ResearchData,
-  Segment,
-  QuestionItem,
-  ScriptItem,
-  PlannedShort,
-  FollowUpItem,
-  AgendaEvent,
-  LibraryAsset
+  Episode, Program, Participant, EditorialDiagnosis, ResearchData, Segment,
+  QuestionItem, ScriptItem, PlannedShort, FollowUpItem, AgendaEvent, LibraryAsset
 } from './src/types';
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const db = new SupabaseDatabase();
 
 app.use(express.json({ limit: '15mb' }));
 
-// --- REST Endpoints: Programs (and Shows alias) ---
-app.get(['/api/programs', '/api/shows'], (req: Request, res: Response) => {
-  res.json(db.getPrograms());
+// --- REST Endpoints backed by Supabase ---
+app.get(['/api/programs', '/api/shows'], async (req: Request, res: Response) => {
+  try { res.json(await db.getPrograms()); } catch (e:any) { res.status(500).json({error:e.message}); }
+});
+app.get(['/api/programs/:id', '/api/shows/:id'], async (req: Request, res: Response) => {
+  try { const prog = await db.getProgram(req.params.id); if (!prog) return res.status(404).json({error:'Programa não encontrado'}); res.json(prog); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.post(['/api/programs', '/api/shows'], async (req: Request, res: Response) => {
+  try { const now=new Date().toISOString(); const p={...req.body,id:req.body.id||`prog-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id,createdAt:now,updatedAt:now}; const saved=await db.saveProgram(p); res.status(201).json(saved); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.put(['/api/programs/:id', '/api/shows/:id'], async (req: Request, res: Response) => {
+  try { const saved=await db.saveProgram({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id}); res.json(saved); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.delete(['/api/programs/:id', '/api/shows/:id'], async (req: Request, res: Response) => {
+  try { res.json({success:await db.deleteProgram(req.params.id)}); } catch(e:any){res.status(500).json({error:e.message});}
 });
 
-app.get(['/api/programs/:id', '/api/shows/:id'], (req: Request, res: Response) => {
-  const prog = db.getProgram(req.params.id);
-  if (!prog) return res.status(404).json({ error: 'Programa não encontrado' });
-  res.json(prog);
+app.get(['/api/participants', '/api/guests'], async (req: Request, res: Response) => {
+  try { res.json(await db.getParticipants(req.query.programId as string|undefined)); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.get(['/api/participants/:id', '/api/guests/:id'], async (req: Request, res: Response) => {
+  try { const p=await db.getParticipant(req.params.id); if(!p)return res.status(404).json({error:'Participante não encontrado'}); res.json(p); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.post(['/api/participants', '/api/guests'], async (req: Request, res: Response) => {
+  try { const p={...req.body,id:req.body.id||`part-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id||`part-${crypto.randomUUID()}`,createdAt:new Date().toISOString()}; const saved=await db.saveParticipant(p); res.status(201).json(saved); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.put(['/api/participants/:id', '/api/guests/:id'], async (req: Request, res: Response) => {
+  try { res.json(await db.saveParticipant({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id})); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.delete(['/api/participants/:id', '/api/guests/:id'], async (req: Request, res: Response) => {
+  try { res.json({success:await db.deleteParticipant(req.params.id)}); } catch(e:any){res.status(500).json({error:e.message});}
 });
 
-app.post(['/api/programs', '/api/shows'], (req: Request, res: Response) => {
-  const newProgram: Program = {
-    ...req.body,
-    id: req.body.id || `prog-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  db.saveProgram(newProgram);
-  res.status(201).json(newProgram);
+app.get('/api/episodes', async (req: Request, res: Response) => {
+  try { res.json(await db.getEpisodes(req.query.programId as string|undefined)); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.get('/api/episodes/:id', async (req: Request, res: Response) => {
+  try { const ep=await db.getEpisode(req.params.id); if(!ep)return res.status(404).json({error:'Episódio não encontrado'}); res.json(ep); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.post('/api/episodes', async (req: Request, res: Response) => {
+  try { const ep=req.body as Episode; const saved=await db.saveEpisode({...ep,id:ep.id||`ep-${crypto.randomUUID()}`,legacy_id:ep.legacy_id||ep.id||`ep-${crypto.randomUUID()}`,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}); res.status(201).json(saved); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.put('/api/episodes/:id', async (req: Request, res: Response) => {
+  try { res.json(await db.saveEpisode({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id})); } catch(e:any){res.status(500).json({error:e.message});}
+});
+app.delete('/api/episodes/:id', async (req: Request, res: Response) => {
+  try { res.json({success:await db.deleteEpisode(req.params.id)}); } catch(e:any){res.status(500).json({error:e.message});}
 });
 
-app.put(['/api/programs/:id', '/api/shows/:id'], (req: Request, res: Response) => {
-  const updated = db.saveProgram({ ...req.body, id: req.params.id });
-  res.json(updated);
-});
+app.get('/api/agenda', async (req: Request, res: Response) => { try {res.json(await db.getAgendaEvents());} catch(e:any){res.status(500).json({error:e.message});} });
+app.post('/api/agenda', async (req: Request, res: Response) => { try {const e={...req.body,id:req.body.id||`ag-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id}; res.status(201).json(await db.saveAgendaEvent(e));} catch(e:any){res.status(500).json({error:e.message});} });
+app.delete('/api/agenda/:id', async (req: Request, res: Response) => { try {res.json({success:await db.deleteAgendaEvent(req.params.id)});} catch(e:any){res.status(500).json({error:e.message});} });
 
-app.delete(['/api/programs/:id', '/api/shows/:id'], (req: Request, res: Response) => {
-  const success = db.deleteProgram(req.params.id);
-  res.json({ success });
-});
-
-// --- REST Endpoints: Participants (and Guests alias) ---
-app.get(['/api/participants', '/api/guests'], (req: Request, res: Response) => {
-  const programId = req.query.programId as string | undefined;
-  res.json(db.getParticipants(programId));
-});
-
-app.get(['/api/participants/:id', '/api/guests/:id'], (req: Request, res: Response) => {
-  const part = db.getParticipant(req.params.id);
-  if (!part) return res.status(404).json({ error: 'Participante não encontrado' });
-  res.json(part);
-});
-
-app.post(['/api/participants', '/api/guests'], (req: Request, res: Response) => {
-  const newParticipant: Participant = {
-    ...req.body,
-    id: req.body.id || `part-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-  };
-  db.saveParticipant(newParticipant);
-  res.status(201).json(newParticipant);
-});
-
-app.put(['/api/participants/:id', '/api/guests/:id'], (req: Request, res: Response) => {
-  const updated = db.saveParticipant({ ...req.body, id: req.params.id });
-  res.json(updated);
-});
-
-app.delete(['/api/participants/:id', '/api/guests/:id'], (req: Request, res: Response) => {
-  const success = db.deleteParticipant(req.params.id);
-  res.json({ success });
-});
-
-// --- REST Endpoints: Episodes ---
-app.get('/api/episodes', (req: Request, res: Response) => {
-  const programId = req.query.programId as string | undefined;
-  res.json(db.getEpisodes(programId));
-});
-
-app.get('/api/episodes/:id', (req: Request, res: Response) => {
-  const ep = db.getEpisode(req.params.id);
-  if (!ep) return res.status(404).json({ error: 'Episódio não encontrado' });
-  res.json(ep);
-});
-
-app.post('/api/episodes', (req: Request, res: Response) => {
-  const ep = req.body as Episode;
-  const created = db.saveEpisode({
-    ...ep,
-    id: ep.id || `ep-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-  res.status(201).json(created);
-});
-
-app.put('/api/episodes/:id', (req: Request, res: Response) => {
-  const updated = db.saveEpisode({ ...req.body, id: req.params.id });
-  res.json(updated);
-});
-
-app.delete('/api/episodes/:id', (req: Request, res: Response) => {
-  const success = db.deleteEpisode(req.params.id);
-  res.json({ success });
-});
-
-// --- REST Endpoints: Agenda & Library ---
-app.get('/api/agenda', (req: Request, res: Response) => {
-  res.json(db.getAgendaEvents());
-});
-
-app.post('/api/agenda', (req: Request, res: Response) => {
-  const event: AgendaEvent = {
-    ...req.body,
-    id: req.body.id || `ag-${Date.now()}`,
-  };
-  db.saveAgendaEvent(event);
-  res.status(201).json(event);
-});
-
-app.delete('/api/agenda/:id', (req: Request, res: Response) => {
-  const success = db.deleteAgendaEvent(req.params.id);
-  res.json({ success });
-});
-
-app.get('/api/library', (req: Request, res: Response) => {
-  res.json(db.getLibraryAssets());
-});
-
-app.post('/api/library', (req: Request, res: Response) => {
-  const asset: LibraryAsset = {
-    ...req.body,
-    id: req.body.id || `lib-${Date.now()}`,
-  };
-  db.saveLibraryAsset(asset);
-  res.status(201).json(asset);
-});
+app.get('/api/library', async (req: Request, res: Response) => { try {res.json(await db.getLibraryAssets());} catch(e:any){res.status(500).json({error:e.message});} });
+app.post('/api/library', async (req: Request, res: Response) => { try {const a={...req.body,id:req.body.id||`lib-${crypto.randomUUID()}`,legacy_id:req.body.legacy_id||req.body.id}; res.status(201).json(await db.saveLibraryAsset(a));} catch(e:any){res.status(500).json({error:e.message});} });
 
 // --- AI Endpoints using NVIDIA NIM (Nemotron 3 Super -> Ultra fallback) ---
 
