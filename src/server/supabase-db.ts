@@ -54,6 +54,7 @@ function cameraFromDb(row: any) {
 function programFromDb(row: any, cameras: any[] = []) {
   return {
     ...toLegacy(row),
+    _dbId: row.id,
     title: row.title || row.name,
     defaultDurationMin: row.default_duration_min ?? row.default_episode_duration_minutes,
     defaultPresenterName: row.default_presenter_name,
