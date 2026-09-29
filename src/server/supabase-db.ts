@@ -236,7 +236,7 @@ export class SupabaseDatabase {
     const rows = await request(`/episodes?select=*&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return undefined;
     const e = rows[0];
-    const [segments, questions, followUps, script, shorts, assets, markers, epParticipants, cameras, programRows] = await Promise.all([
+    const [segments, questions, followUps, script, shorts, assets, markers, epParticipants, cameras, programRows, participantRows, segmentParticipantRows] = await Promise.all([
       request(`/segments?select=*&episode_id=eq.${enc(e.id)}&order=order_pos.asc`),
       request(`/questions?select=*&episode_id=eq.${enc(e.id)}&order=order_pos.asc`),
       request('/question_follow_ups?select=*'),
@@ -245,17 +245,29 @@ export class SupabaseDatabase {
       request(`/production_assets?select=*&episode_id=eq.${enc(e.id)}&order=created_at.asc`),
       request(`/recording_markers?select=*&episode_id=eq.${enc(e.id)}&order=timestamp_sec.asc`),
       request(`/episode_participants?select=*&episode_id=eq.${enc(e.id)}&order=order_pos.asc`),
-      request(`/cameras?select=*&program_id=eq.${enc(e.program_id)}&order=sort_order.asc`)
+      request(`/cameras?select=*&program_id=eq.${enc(e.program_id)}&order=sort_order.asc`),
+      request(`/programs?select=id,legacy_id&${idFilter('id', e.program_id)}&limit=1`),
+      request('/participants?select=id,legacy_id&order=created_at.asc'),
+      request(`/segment_participants?select=segment_id,participant_id,order_pos`)
     ]);
     const filteredFollowUps = followUps.filter((f: any) => questions.some((q: any) => q.id === f.question_id));
-    const segmentOut = segments.map((s: any) => segmentFromDb(s));
-    const qOut = questions.map((q: any) => questionFromDb(q, filteredFollowUps));
-    const partOut = epParticipants.map((p: any) => ({ ...toLegacy(p), participantId: p.participant_id, estimatedTimeMin: p.estimated_time_min, isFeatured: p.is_featured, order: p.order_pos }));
+    const participantLegacyById = new Map(participantRows.map((p: any) => [p.id, p.legacy_id || p.id]));
+    const segmentParticipantMap = new Map<string, string[]>();
+    for (const sp of segmentParticipantRows) {
+      const legacy = participantLegacyById.get(sp.participant_id);
+      if (!legacy) continue;
+      const list = segmentParticipantMap.get(sp.segment_id) || [];
+      list.push(legacy);
+      segmentParticipantMap.set(sp.segment_id, list);
+    }
+    const segmentOut = segments.map((s: any) => ({ ...segmentFromDb(s), participantIds: segmentParticipantMap.get(s.id) || [] }));
+    const qOut = questions.map((q: any) => ({ ...questionFromDb(q, filteredFollowUps), participantId: q.participant_id ? participantLegacyById.get(q.participant_id) : undefined }));
+    const partOut = epParticipants.map((p: any) => ({ ...toLegacy(p), participantId: participantLegacyById.get(p.participant_id) || p.participant_id, estimatedTimeMin: p.estimated_time_min, isFeatured: p.is_featured, order: p.order_pos }));
     const out = {
       ...toLegacy(e),
       _dbId: e.id,
-      programId: e.program_id,
-      showId: e.program_id,
+      programId: programRows[0]?.legacy_id || e.program_id,
+      showId: programRows[0]?.legacy_id || e.program_id,
       episodeNumber: e.episode_number,
       targetDurationMin: e.target_duration_min ?? e.target_duration_minutes,
       targetDurationMinutes: e.target_duration_minutes ?? e.target_duration_min,
@@ -323,7 +335,9 @@ export class SupabaseDatabase {
 
   async getAgendaEvents() {
     const rows = await request('/agenda_events?select=*&order=scheduled_date.asc,scheduled_time.asc');
-    return rows.map((r: any) => ({ ...toLegacy(r), episodeId: r.episode_id, programId: r.program_id, programTitle: r.program_title, episodeTitle: r.episode_title, date: r.scheduled_date, time: r.scheduled_time?.slice(0,5), durationMin: r.duration_min, participantsSummary: r.participants_summary }));
+    const programs = await request('/programs?select=id,legacy_id');
+    const programLegacyById = new Map(programs.map((p:any) => [p.id, p.legacy_id || p.id]));
+    return rows.map((r: any) => ({ ...toLegacy(r), episodeId: r.episode_id, programId: programLegacyById.get(r.program_id) || r.program_id, programTitle: r.program_title, episodeTitle: r.episode_title, date: r.scheduled_date, time: r.scheduled_time?.slice(0,5), durationMin: r.duration_min, participantsSummary: r.participants_summary }));
   }
 
   async saveAgendaEvent(event: any) {
