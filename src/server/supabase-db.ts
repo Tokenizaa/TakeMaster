@@ -236,7 +236,7 @@ export class SupabaseDatabase {
     const rows = await request(`/episodes?select=*&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return undefined;
     const e = rows[0];
-    const [segments, questions, followUps, script, shorts, assets, markers, epParticipants, cameras] = await Promise.all([
+    const [segments, questions, followUps, script, shorts, assets, markers, epParticipants, cameras, programRows] = await Promise.all([
       request(`/segments?select=*&episode_id=eq.${enc(e.id)}&order=order_pos.asc`),
       request(`/questions?select=*&episode_id=eq.${enc(e.id)}&order=order_pos.asc`),
       request('/question_follow_ups?select=*'),
