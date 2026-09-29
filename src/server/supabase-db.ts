@@ -152,7 +152,7 @@ export class SupabaseDatabase {
   }
 
   async getProgram(id: string) {
-    const filter = id.includes('-') ? `or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})` : `legacy_id=eq.${enc(id)}`;
+    const filter = idFilter('id', id);
     const rows = await request(`/programs?select=*&${filter}&limit=1`);
     if (!rows[0]) return undefined;
     const cameras = await request(`/cameras?select=*&program_id=eq.${enc(rows[0].id)}&order=sort_order.asc`);
@@ -192,7 +192,7 @@ export class SupabaseDatabase {
   }
 
   async getParticipant(id: string) {
-    const rows = await request(`/participants?select=*&or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})&limit=1`);
+    const rows = await request(`/participants?select=*&${idFilter('id', id)}&limit=1`);
     return rows[0] ? participantFromDb(rows[0]) : undefined;
   }
 
@@ -233,7 +233,7 @@ export class SupabaseDatabase {
   }
 
   async getEpisode(id: string) {
-    const rows = await request(`/episodes?select=*&or=(id.eq.${enc(id)},legacy_id.eq.${enc(id)})&limit=1`);
+    const rows = await request(`/episodes?select=*&${idFilter('id', id)}&limit=1`);
     if (!rows[0]) return undefined;
     const e = rows[0];
     const [segments, questions, followUps, script, shorts, assets, markers, epParticipants, cameras] = await Promise.all([
