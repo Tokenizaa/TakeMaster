@@ -1,6 +1,6 @@
 import { db } from './db';
 import { checkSupabaseConnection, describeSupabaseConfig } from './supabase';
-import { describeNimConfig } from './ai';
+import { describeNimConfig } from './supabase';
 
 export type Alert = {
   id: string;
@@ -64,7 +64,7 @@ export function initializeMonitoring() {
 /**
  * Update dependency metrics (Supabase, NIM, etc.)
  */
-export async function updateDependencyMetrics() {
+export async function updateDependencyMetrics(nimOptions?: { primaryModel?: string; apiKey?: string }) {
   try {
     // Check Supabase connection
     const supabaseCfg = describeSupabaseConfig();
@@ -85,8 +85,10 @@ export async function updateDependencyMetrics() {
   try {
     // Check NIM configuration
     const nim = describeNimConfig();
-    metrics.nimPrimaryConfigured = nim.configured && !!nim.primaryModel;
-    metrics.nimFallbackConfigured = nim.configured && !!nim.fallbackModel;
+    const apiKeyConfigured = Boolean(nimOptions?.apiKey) || nim.configured;
+    const primaryModel = nimOptions?.primaryModel || process.env.NIM_PRIMARY_MODEL || 'nvidia/nemotron-3-super-120b-a12b';
+    metrics.nimPrimaryConfigured = apiKeyConfigured && Boolean(primaryModel);
+    metrics.nimFallbackConfigured = apiKeyConfigured && Boolean(process.env.NIM_FALLBACK_MODEL);
   } catch (error) {
     console.warn('[Monitoring] Failed to update NIM metrics:', error);
     metrics.nimPrimaryConfigured = false;
@@ -167,8 +169,8 @@ export function getMetrics() {
 /**
  * Get health status for the worker
  */
-export async function getHealthStatus() {
-  await updateDependencyMetrics();
+export async function getHealthStatus(nimOptions?: { primaryModel?: string; apiKey?: string }) {
+  await updateDependencyMetrics(nimOptions);
   
   const supabaseCfg = describeSupabaseConfig();
   const nim = describeNimConfig();
