@@ -57,7 +57,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     .slice(0, 4);
   const activeCount = scopedEpisodes.filter((episode) => !['published'].includes(episode.status)).length;
   const recordingCount = scopedEpisodes.filter((episode) => ['recording', 'ready'].includes(episode.status)).length;
-  const postCount = scopedEpisodes.filter((episode) => ['recorded', 'editing'].includes(episode.status)).length;
+  const postCount = scopedEpisodes.filter((episode) => ['recorded', 'editing'].includes(episode.status)).length;\n  const metricCards = [\n    { label: 'Produções ativas', value: activeCount, icon: Film },\n    { label: 'Gravações / prontas', value: recordingCount, icon: CheckCircle2 },\n    { label: 'Em pós-produção', value: postCount, icon: Sparkles },\n    { label: 'Eventos na agenda', value: agendaEvents.length, icon: Calendar },\n  ];
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-10">
