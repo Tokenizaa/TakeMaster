@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span>&larr; Episódios</span>
             </button>
             <span className="text-slate-600">/</span>
-            <span className="text-purple-400 font-mono font-bold">{activeProgram?.name || 'TakeMaster'}</span>
+            <span className="text-amber-400 font-mono font-bold">{activeProgram?.name || 'TakeMaster'}</span>
             <span className="text-slate-600">/</span>
             <span className="text-white font-semibold truncate max-w-sm">{activeEpisode.title}</span>
           </div>
@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
           {savingStatus === 'saving' ? (
             <>
               <Clock className="w-3.5 h-3.5 text-purple-400 animate-spin" />
-              <span className="text-purple-300">Salvando...</span>
+              <span className="text-amber-300">Salvando...</span>
             </>
           ) : (
             <>
