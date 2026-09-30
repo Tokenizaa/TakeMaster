@@ -1,4 +1,4 @@
-import { Database, db, DbError } from './src/server/db';
+import { Database, DbError } from './src/server/db';
 import { checkSupabaseConnection, describeNimConfig, describeSupabaseConfig, getAuthenticatedUser, getSupabase } from './src/server/supabase';
 import { ai, parseAIJson } from './src/server/ai';
 import { initializeMonitoring, recordRequest, getHealthStatus, isReady, runRecoveryTests, getSliSloDefinitions, checkAlertConditions, deliverAlerts, getMetrics } from './src/server/monitoring';
