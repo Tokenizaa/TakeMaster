@@ -1,3 +1,12 @@
+import { supabase } from '../lib/supabase';
+
+async function apiFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+  const { data } = await supabase.auth.getSession();
+  const headers = new Headers(init.headers);
+  if (data.session?.access_token) headers.set('Authorization', `Bearer ${data.session.access_token}`);
+  return fetch(input, { ...init, headers });
+}
+
 import {
   Program,
   Episode,
@@ -14,21 +23,45 @@ import {
 } from '../types';
 
 export const api = {
+  async getAuthMe(): Promise<any> {
+    const res = await apiFetch('/api/auth/me');
+    if (!res.ok) throw new Error('Falha ao carregar conta');
+    return res.json();
+  },
+
+  async bootstrapOrganization(name: string): Promise<string> {
+    const res = await apiFetch('/api/auth/bootstrap', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+    if (!res.ok) throw new Error((await res.json().catch(()=>({}))).error || 'Falha ao criar organização');
+    return (await res.json()).organizationId;
+  },
+
+  async getCatalogPrograms(): Promise<any[]> {
+    const res = await apiFetch('/api/catalog/programs');
+    if (!res.ok) throw new Error('Falha ao carregar catálogo');
+    return res.json();
+  },
+
+  async contractProgram(catalogProgramId: string): Promise<any> {
+    const res = await apiFetch('/api/contract/program/' + encodeURIComponent(catalogProgramId), { method: 'POST' });
+    if (!res.ok) throw new Error((await res.json().catch(()=>({}))).error || 'Falha ao contratar programa');
+    return res.json();
+  },
+
   // Programs
   async getPrograms(): Promise<Program[]> {
-    const res = await fetch('/api/programs');
+    const res = await apiFetch('/api/programs');
     if (!res.ok) throw new Error('Falha ao carregar programas');
     return res.json();
   },
 
   async getProgram(id: string): Promise<Program> {
-    const res = await fetch(`/api/programs/${id}`);
+    const res = await apiFetch(`/api/programs/${id}`);
     if (!res.ok) throw new Error('Programa não encontrado');
     return res.json();
   },
 
   async createProgram(program: Partial<Program>): Promise<Program> {
-    const res = await fetch('/api/programs', {
+    const res = await apiFetch('/api/programs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(program),
@@ -38,7 +71,7 @@ export const api = {
   },
 
   async updateProgram(id: string, program: Partial<Program>): Promise<Program> {
-    const res = await fetch(`/api/programs/${id}`, {
+    const res = await apiFetch(`/api/programs/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(program),
@@ -48,7 +81,7 @@ export const api = {
   },
 
   async deleteProgram(id: string): Promise<boolean> {
-    const res = await fetch(`/api/programs/${id}`, { method: 'DELETE' });
+    const res = await apiFetch(`/api/programs/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao excluir programa');
     const data = await res.json();
     return data.success;
@@ -74,13 +107,13 @@ export const api = {
   // Participants
   async getParticipants(programId?: string): Promise<Participant[]> {
     const url = programId ? `/api/participants?programId=${programId}` : '/api/participants';
-    const res = await fetch(url);
+    const res = await apiFetch(url);
     if (!res.ok) throw new Error('Falha ao carregar participantes');
     return res.json();
   },
 
   async createParticipant(participant: Partial<Participant>): Promise<Participant> {
-    const res = await fetch('/api/participants', {
+    const res = await apiFetch('/api/participants', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(participant),
@@ -90,7 +123,7 @@ export const api = {
   },
 
   async updateParticipant(id: string, participant: Partial<Participant>): Promise<Participant> {
-    const res = await fetch(`/api/participants/${id}`, {
+    const res = await apiFetch(`/api/participants/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(participant),
@@ -100,7 +133,7 @@ export const api = {
   },
 
   async deleteParticipant(id: string): Promise<boolean> {
-    const res = await fetch(`/api/participants/${id}`, { method: 'DELETE' });
+    const res = await apiFetch(`/api/participants/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao excluir participante');
     const data = await res.json();
     return data.success;
@@ -120,19 +153,19 @@ export const api = {
   // Episodes
   async getEpisodes(programId?: string): Promise<Episode[]> {
     const url = programId ? `/api/episodes?programId=${programId}` : '/api/episodes';
-    const res = await fetch(url);
+    const res = await apiFetch(url);
     if (!res.ok) throw new Error('Falha ao carregar episódios');
     return res.json();
   },
 
   async getEpisode(id: string): Promise<Episode> {
-    const res = await fetch(`/api/episodes/${id}`);
+    const res = await apiFetch(`/api/episodes/${id}`);
     if (!res.ok) throw new Error('Episódio não encontrado');
     return res.json();
   },
 
   async createEpisode(episode: Partial<Episode>): Promise<Episode> {
-    const res = await fetch('/api/episodes', {
+    const res = await apiFetch('/api/episodes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(episode),
@@ -142,7 +175,7 @@ export const api = {
   },
 
   async updateEpisode(id: string, episode: Partial<Episode>): Promise<Episode> {
-    const res = await fetch(`/api/episodes/${id}`, {
+    const res = await apiFetch(`/api/episodes/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(episode),
@@ -152,7 +185,7 @@ export const api = {
   },
 
   async deleteEpisode(id: string): Promise<boolean> {
-    const res = await fetch(`/api/episodes/${id}`, { method: 'DELETE' });
+    const res = await apiFetch(`/api/episodes/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao excluir episódio');
     const data = await res.json();
     return data.success;
@@ -160,13 +193,13 @@ export const api = {
 
   // Agenda
   async getAgenda(): Promise<AgendaEvent[]> {
-    const res = await fetch('/api/agenda');
+    const res = await apiFetch('/api/agenda');
     if (!res.ok) throw new Error('Falha ao carregar agenda');
     return res.json();
   },
 
   async createAgendaEvent(event: Partial<AgendaEvent>): Promise<AgendaEvent> {
-    const res = await fetch('/api/agenda', {
+    const res = await apiFetch('/api/agenda', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(event),
@@ -176,7 +209,7 @@ export const api = {
   },
 
   async deleteAgendaEvent(id: string): Promise<boolean> {
-    const res = await fetch(`/api/agenda/${id}`, { method: 'DELETE' });
+    const res = await apiFetch(`/api/agenda/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao cancelar agendamento');
     const data = await res.json();
     return data.success;
@@ -184,13 +217,13 @@ export const api = {
 
   // Library
   async getLibrary(): Promise<LibraryAsset[]> {
-    const res = await fetch('/api/library');
+    const res = await apiFetch('/api/library');
     if (!res.ok) throw new Error('Falha ao carregar biblioteca');
     return res.json();
   },
 
   async createLibraryAsset(asset: Partial<LibraryAsset>): Promise<LibraryAsset> {
-    const res = await fetch('/api/library', {
+    const res = await apiFetch('/api/library', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(asset),
@@ -200,7 +233,7 @@ export const api = {
   },
 
   async deleteLibraryAsset(id: string): Promise<boolean> {
-    const res = await fetch(`/api/library/${id}`, { method: 'DELETE' });
+    const res = await apiFetch(`/api/library/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Falha ao excluir item da biblioteca');
     const data = await res.json();
     return data.success;
@@ -221,7 +254,7 @@ export const api = {
     participants: { name: string; type: string; role: string }[];
     segments: { title: string; type: string; estimatedDurationMin: number; objective: string }[];
   }> {
-    const res = await fetch('/api/ai/interpret-idea', {
+    const res = await apiFetch('/api/ai/interpret-idea', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -240,7 +273,7 @@ export const api = {
     programTitle?: string;
     additionalInfo?: string;
   }): Promise<EditorialDiagnosis> {
-    const res = await fetch('/api/ai/diagnose', {
+    const res = await apiFetch('/api/ai/diagnose', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -250,7 +283,7 @@ export const api = {
   },
 
   async aiAssist(params: any): Promise<{ answer: string; suggestionApplied?: any }> {
-    const res = await fetch('/api/ai/assist', {
+    const res = await apiFetch('/api/ai/assist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -268,7 +301,7 @@ export const api = {
     guestName?: string;
     company?: string;
   }): Promise<ResearchData> {
-    const res = await fetch('/api/ai/research', {
+    const res = await apiFetch('/api/ai/research', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -288,7 +321,7 @@ export const api = {
     cameras?: any[];
     guestName?: string;
   }): Promise<{ segments: Segment[]; questions: QuestionItem[] }> {
-    const res = await fetch('/api/ai/outline', {
+    const res = await apiFetch('/api/ai/outline', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -298,7 +331,7 @@ export const api = {
   },
 
   async aiScript(params: { episode: Episode; program?: Program }): Promise<{ script: ScriptItem[] }> {
-    const res = await fetch('/api/ai/script', {
+    const res = await apiFetch('/api/ai/script', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -318,7 +351,7 @@ export const api = {
     format?: string;
     guestName?: string;
   }): Promise<{ followUps: FollowUpItem[] }> {
-    const res = await fetch('/api/ai/repiques', {
+    const res = await apiFetch('/api/ai/repiques', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -328,7 +361,7 @@ export const api = {
   },
 
   async aiShorts(params: { episode: Episode }): Promise<{ shorts: PlannedShort[] }> {
-    const res = await fetch('/api/ai/shorts', {
+    const res = await apiFetch('/api/ai/shorts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
@@ -338,7 +371,7 @@ export const api = {
   },
 
   async aiEditorScript(params: { episode: Episode }): Promise<{ editorScript: string }> {
-    const res = await fetch('/api/ai/editor-script', {
+    const res = await apiFetch('/api/ai/editor-script', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
