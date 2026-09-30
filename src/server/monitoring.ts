@@ -380,7 +380,7 @@ export function getSliSloDefinitions() {
  * Check if alerts should be triggered based on current metrics
  */
 export function checkAlertConditions(): Alert[] {
-  const alerts = [];
+  const alerts: Alert[] = [];
   const metrics = getMetrics();
   
   // Alert: High error rate
