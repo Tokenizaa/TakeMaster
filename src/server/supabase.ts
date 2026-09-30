@@ -40,13 +40,19 @@ let client: SupabaseClient | null = null;
  * Cliente unico do processo. `auth: { persistSession: false }` porque nao ha
  * login: sem sessao, sem refresh automatico, sem nada guardado em storage.
  */
-export function getSupabase(): SupabaseClient {
+export function getSupabase(accessToken?: string): SupabaseClient {
   if (!supabaseConfigured) {
     throw new Error(
       'Supabase nao configurado. Defina no ambiente do servidor: ' +
         missing.join(', ') +
         '. (Valores vao por variavel de ambiente; nunca em VITE_* e nunca no bundle do navegador.)'
     );
+  }
+  if (accessToken) {
+    return createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { headers: { 'X-Client-Info': 'takemaster-backend-user', Authorization: `Bearer ${accessToken}` } },
+    });
   }
   if (!client) {
     client = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
@@ -55,6 +61,13 @@ export function getSupabase(): SupabaseClient {
     });
   }
   return client;
+}
+
+export async function getAuthenticatedUser(accessToken: string) {
+  const scoped = getSupabase(accessToken);
+  const { data, error } = await scoped.auth.getUser(accessToken);
+  if (error || !data.user) return null;
+  return data.user;
 }
 
 /**
