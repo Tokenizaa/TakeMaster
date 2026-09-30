@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { api } from '../services/api';
 import {
   BookMarked,
   Plus,
@@ -36,6 +38,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
   const [newType, setNewType] = useState<LibraryAsset['type']>('lower_third');
   const [newContent, setNewContent] = useState('');
   const [newTags, setNewTags] = useState('');
+  const [newFile, setNewFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const filteredAssets = assets.filter(a => {
     const matchesType = selectedType === 'all' || a.type === selectedType;
@@ -43,9 +47,21 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     return matchesType && matchesSearch;
   });
 
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
+    setUploading(true);
+    let filePath: string | undefined;
+    try {
+      if (newFile) {
+        const me = await api.getAuthMe();
+        const organizationId = me.organizations?.[0]?.organization_id;
+        if (!organizationId) throw new Error('Organização não encontrada');
+        const safeName = newFile.name.replace(/[^a-zA-Z0-9._-]+/g, '-');
+        filePath = `org/${organizationId}/${crypto.randomUUID()}-${safeName}`;
+        const { error } = await supabase.storage.from('takemaster-library').upload(filePath, newFile, { contentType: newFile.type || 'application/octet-stream', upsert: false });
+        if (error) throw error;
+      }
 
     const newAsset: LibraryAsset = {
       id: `lib-${Date.now()}`,
@@ -54,7 +70,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
       content: newContent,
       tags: newTags.split(',').map(t => t.trim()).filter(Boolean),
       createdAt: new Date().toISOString(),
-      programId: selectedProgramId || undefined
+      programId: selectedProgramId || undefined,
+      url: filePath
     };
 
     onAddAsset(newAsset);
@@ -63,6 +80,18 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     setNewContent('');
     setNewTags('');
     setSelectedProgramId('');
+    setNewFile(null);
+    } catch (error: any) {
+      alert(error.message || 'Falha no upload');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleOpenFile = async (path: string) => {
+    const { data, error } = await supabase.storage.from('takemaster-library').createSignedUrl(path, 900);
+    if (error) { alert(error.message); return; }
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -163,6 +192,11 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 </div>
 
               <div>
+                <label className="text-xs text-slate-300 font-semibold block mb-1">Arquivo (opcional)</label>
+                <input type="file" onChange={e => setNewFile(e.target.files?.[0] || null)} className="w-full text-xs text-slate-400" />
+              </div>
+
+              <div>
                 <label className="text-xs text-slate-300 font-semibold block mb-1">Conteúdo / Texto / Link</label>
                 <textarea
                   value={newContent}
@@ -196,7 +230,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                   type="submit"
                   className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg text-xs"
                 >
-                  Salvar Asset
+                  {uploading ? 'Enviando...' : 'Salvar Asset'}
                 </button>
               </div>
             </form>
@@ -236,6 +270,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 </div>
 
                 <h3 className="text-sm font-bold text-white">{asset.title}</h3>
+                {asset.url && <button onClick={() => handleOpenFile(asset.url!)} className="text-xs text-purple-300 hover:text-purple-200">Abrir arquivo</button>}
                 {asset.content && (
                   <p className="text-xs text-slate-300 bg-slate-950 p-2.5 rounded border border-slate-800 font-mono">
                     {asset.content}
