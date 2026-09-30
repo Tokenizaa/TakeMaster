@@ -1,7 +1,7 @@
 import { db, DbError } from './src/server/db';
 import { checkSupabaseConnection, describeNimConfig, describeSupabaseConfig } from './src/server/supabase';
 import { ai, parseAIJson } from './src/server/ai';
-import { initializeMonitoring, recordRequest, incrementErrorCount, getHealthStatus, isReady, runRecoveryTests, getSliSloDefinitions, checkAlertConditions } from './src/server/monitoring';
+import { initializeMonitoring, recordRequest, getHealthStatus, isReady, runRecoveryTests, getSliSloDefinitions, checkAlertConditions, deliverAlerts, getMetrics } from './src/server/monitoring';
 import type { ExportedHandler } from '@cloudflare/workers-types';
 
 interface Env {
@@ -15,6 +15,7 @@ interface Env {
   SUPABASE_URL: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
   NIM_API_KEY: string;
+  ALERT_WEBHOOK_URL?: string;
 }
 
 type FetchHandler = ExportedHandler<Env>['fetch'];
@@ -40,7 +41,7 @@ const workerStartedAt = Date.now();
 // Initialize monitoring service
 initializeMonitoring();
 
-const handleRequest = async (request: any, env: Env, ctx: any) => {
+const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;
@@ -60,7 +61,12 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
     
     // --- Recovery test endpoint ---
     if (path === '/api/recovery-test' && method === 'POST') {
-      const results = await runRecoveryTests();
+      const results = await runRecoveryTests({
+        baseUrl: env.NIM_BASE_URL,
+        apiKey: env.NIM_API_KEY,
+        primaryModel: env.NIM_PRIMARY_MODEL,
+        timeoutMs: Math.min(Number(env.NIM_TIMEOUT_MS || 10000), 15000),
+      });
       return jsonResponse(results, results.summary.failed === 0 ? 200 : 503);
     }
     
@@ -69,6 +75,7 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       const metricsData = getMetrics();
       const sloData = getSliSloDefinitions();
       const alerts = checkAlertConditions();
+      const alertDelivery = await deliverAlerts(alerts, env.ALERT_WEBHOOK_URL);
       
       // Format as Prometheus-like metrics for simplicity
       let prometheusMetrics = `# HELP takemaster_requests_total Total number of requests\n# TYPE takemaster_requests_total counter\n`;
@@ -121,9 +128,6 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
           const saved = await db.saveProgram(newProgram);
           return jsonResponse(saved, 201);
         } catch (error: any) {
-          // Record error in monitoring
-          incrementErrorCount();
-          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -182,9 +186,6 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveParticipant(newParticipant), 201);
         } catch (error: any) {
-          // Record error in monitoring
-          incrementErrorCount();
-          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -243,9 +244,6 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveEpisode(ep), 201);
         } catch (error: any) {
-          // Record error in monitoring
-          incrementErrorCount();
-          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -296,9 +294,6 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveAgendaEvent(event), 201);
         } catch (error: any) {
-          // Record error in monitoring
-          incrementErrorCount();
-          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -330,9 +325,6 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveLibraryAsset(asset), 201);
         } catch (error: any) {
-          // Record error in monitoring
-          incrementErrorCount();
-          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -662,15 +654,21 @@ Retorne em formato JSON:
     if (env.ASSETS) return env.ASSETS.fetch(request);
     return new Response(null, { status: 404 });
   } catch (error: any) {
-    // Record error in monitoring
-    incrementErrorCount();
-    
     if (error instanceof DbError) {
       return errorResponse(error.message, error.status, error.code);
     }
     console.error('[worker] erro:', error);
     return errorResponse(error?.message || 'Erro interno');
   }
+};
+
+const handleRequest = async (request: any, env: Env, ctx: any) => {
+  const startedAt = Date.now();
+  const path = new URL(request.url).pathname;
+  const method = request.method;
+  const response = await handleRequestInternal(request, env, ctx);
+  recordRequest(path, method, response.status, Date.now() - startedAt);
+  return response;
 };
 
 export default {
