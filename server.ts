@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
+import pino from "pino";
+const logger = pino({ level: process.env.NODE_ENV === "production" ? "info" : "debug" });
 import { SupabaseDatabase } from './src/server/supabase-db';
 import { ai, parseAIJson } from './src/server/ai';
 import {
@@ -109,7 +111,7 @@ Retorne JSON:
     const parsed = parseAIJson<{ answer: string; suggestionApplied?: any }>(response.text);
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error in AI assistant:', error);
+    logger.error("Error in AI assistant:", error);
     res.status(500).json({ error: error.message || 'Falha no Copiloto IA' });
   }
 });
@@ -168,7 +170,7 @@ Responda ESTRITAMENTE em formato JSON:
 
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error in interpret-idea:', error);
+    logger.error("Error in interpret-idea:", error);
     res.status(500).json({ error: error.message || 'Falha ao interpretar ideia' });
   }
 });
@@ -213,7 +215,7 @@ Responda ESTRITAMENTE em formato JSON com o schema:
 
     res.json(diagnosis);
   } catch (error: any) {
-    console.error('Error generating diagnosis:', error);
+    logger.error("Error generating diagnosis:", error);
     res.status(500).json({ error: error.message || 'Falha ao gerar diagnóstico editorial' });
   }
 });
@@ -267,7 +269,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 
     res.json(research);
   } catch (error: any) {
-    console.error('Error generating research:', error);
+    logger.error("Error generating research:", error);
     res.status(500).json({ error: error.message || 'Falha ao gerar pesquisa' });
   }
 });
@@ -346,7 +348,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
 
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error generating outline:', error);
+    logger.error("Error generating outline:", error);
     res.status(500).json({ error: error.message || 'Falha ao gerar pauta e quadros' });
   }
 });
@@ -411,7 +413,7 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
     const parsed = parseAIJson<{ script: ScriptItem[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error generating script:', error);
+    logger.error("Error generating script:", error);
     res.status(500).json({ error: error.message || 'Falha ao escrever roteiro' });
   }
 });
@@ -452,7 +454,7 @@ Retorne em formato JSON:
     const parsed = parseAIJson<{ followUps: FollowUpItem[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error generating repiques:', error);
+    logger.error("Error generating repiques:", error);
     res.status(500).json({ error: error.message || 'Falha ao gerar repiques' });
   }
 });
@@ -498,7 +500,7 @@ Retorne em formato JSON:
     const parsed = parseAIJson<{ shorts: PlannedShort[] }>(response.text);
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error generating shorts:', error);
+    logger.error("Error generating shorts:", error);
     res.status(500).json({ error: error.message || 'Falha ao planejar shorts' });
   }
 });
@@ -537,7 +539,7 @@ Retorne em formato JSON:
     const parsed = parseAIJson<{ editorScript: string }>(response.text);
     res.json(parsed);
   } catch (error: any) {
-    console.error('Error generating editor script:', error);
+    logger.error("Error generating editor script:", error);
     res.status(500).json({ error: error.message || 'Falha ao sintetizar roteiro de edição' });
   }
 });
@@ -562,10 +564,10 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`TakeMaster Audiovisual Production Server running at http://0.0.0.0:${PORT}`);
+    logger.info(`TakeMaster Audiovisual Production Server running at http://0.0.0.0:${PORT}`);
   });
 }
 
 startServer().catch(err => {
-  console.error('Failed to start server:', err);
+  logger.error("Failed to start server:", err);
 });

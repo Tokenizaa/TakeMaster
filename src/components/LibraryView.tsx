@@ -185,7 +185,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
   >
     <option value="">Nenhum (Geral)</option>
-    {programs.map(program => (
+    {programs.map((program: Program) => (
       <option key={program.id} value={program.id}>{program.name || program.title || 'Programa sem nome'}</option>
     ))}
   </select>

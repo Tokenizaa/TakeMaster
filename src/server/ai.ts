@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 type GenerateOptions = { model?: string; contents: string; config?: { responseMimeType?: string } };
+import pino from "pino";
+const logger = pino({ level: process.env.NODE_ENV === "production" ? "info" : "debug" });
 type GenerateResponse = { text?: string };
 
 const NIM_BASE_URL = (process.env.NIM_BASE_URL || 'https://integrate.api.nvidia.com').replace(/\/$/, '');
@@ -37,7 +39,7 @@ async function generateWithFallback(options: GenerateOptions): Promise<GenerateR
   const primary = options.model || NIM_PRIMARY_MODEL;
   try { return await callNim(primary, options.contents, options.config?.responseMimeType); }
   catch (primaryError: any) {
-    console.warn('[AI] Modelo principal falhou (' + primary + '). Tentando fallback ' + NIM_FALLBACK_MODEL + '.');
+    logger.warn('[AI] Modelo principal falhou (' + primary + '). Tentando fallback ' + NIM_FALLBACK_MODEL + '.');
     if (!NIM_FALLBACK_MODEL || NIM_FALLBACK_MODEL === primary) throw primaryError;
     try { return await callNim(NIM_FALLBACK_MODEL, options.contents, options.config?.responseMimeType); }
     catch (fallbackError: any) { throw new Error('IA indisponível. Modelo principal: ' + (primaryError?.message || primaryError) + '. Fallback: ' + (fallbackError?.message || fallbackError) + '.'); }

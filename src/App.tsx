@@ -75,7 +75,7 @@ export default function App() {
           setActiveEpisode(epData[0]);
         }
       } catch (err) {
-        console.error('Falha ao carregar dados iniciais:', err);
+        console.error("Falha ao carregar dados iniciais:", err);
       } finally {
         setLoadingInitial(false);
       }
@@ -101,7 +101,7 @@ export default function App() {
           await api.updateEpisode(updatedEpisode.id, updatedEpisode);
           setSavingStatus('saved');
         } catch (err) {
-          console.error('Falha ao autosalvar episódio:', err);
+          console.error("Falha ao autosalvar episódio:", err);
           setSavingStatus('saved');
         }
       }, 700);
