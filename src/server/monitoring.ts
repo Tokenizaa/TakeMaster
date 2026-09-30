@@ -264,7 +264,7 @@ export async function runRecoveryTests(nimOptions?: { baseUrl?: string; apiKey?:
     const nim = describeNimConfig();
     const baseUrl = (nimOptions?.baseUrl || 'https://integrate.api.nvidia.com').replace(/\/$/, '');
     const apiKey = nimOptions?.apiKey || '';
-    const primaryModel = nimOptions?.primaryModel || nim.primaryModel || '';
+    const primaryModel = nimOptions?.primaryModel || process.env.NIM_PRIMARY_MODEL || '';
     const timeoutMs = nimOptions?.timeoutMs || 10000;
 
     if (nim.configured && apiKey && primaryModel) {
