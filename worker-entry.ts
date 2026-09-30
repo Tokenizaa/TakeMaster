@@ -1,5 +1,5 @@
-import { db, DbError } from './src/server/db';
-import { checkSupabaseConnection, describeNimConfig, describeSupabaseConfig } from './src/server/supabase';
+import { Database, db, DbError } from './src/server/db';
+import { checkSupabaseConnection, describeNimConfig, describeSupabaseConfig, getAuthenticatedUser, getSupabase } from './src/server/supabase';
 import { ai, parseAIJson } from './src/server/ai';
 import { initializeMonitoring, recordRequest, getHealthStatus, isReady, runRecoveryTests, getSliSloDefinitions, checkAlertConditions, deliverAlerts, getMetrics } from './src/server/monitoring';
 import type { ExportedHandler } from '@cloudflare/workers-types';
@@ -14,6 +14,7 @@ interface Env {
   NIM_TIMEOUT_MS: string;
   SUPABASE_URL: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
+  SUPABASE_PUBLISHABLE_KEY?: string;
   NIM_API_KEY: string;
   ALERT_WEBHOOK_URL?: string;
 }
@@ -107,6 +108,83 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
         status: 200,
         headers: { 'content-type': 'text/plain' }
       });
+    }
+
+    const accessToken = (request.headers.get('Authorization') || '').replace(/^Bearer\\s+/i, '').trim() || undefined;
+
+    if (path === '/api/catalog/programs' && method === 'GET') {
+      const { data, error } = await getSupabase().from('program_catalog')
+        .select('id,slug,name,description,host,format,source_name,source_url,contractable')
+        .eq('active', true).eq('contractable', true).order('name');
+      if (error) return errorResponse(error.message, 500);
+      return jsonResponse(data || []);
+    }
+
+    if (path === '/api/auth/me' && method === 'GET') {
+      if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
+      const user = await getAuthenticatedUser(accessToken);
+      if (!user) return errorResponse('Sessão inválida', 401, 'INVALID_SESSION');
+      const scoped = getSupabase(accessToken);
+      const { data: memberships, error } = await scoped.from('organization_members')
+        .select('organization_id,role,active,organizations(id,name,slug,status)')
+        .eq('user_id', user.id).eq('active', true);
+      if (error) return errorResponse(error.message, 500);
+      return jsonResponse({ user: { id: user.id, email: user.email }, organizations: memberships || [] });
+    }
+
+    if (path === '/api/auth/bootstrap' && method === 'POST') {
+      if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
+      const user = await getAuthenticatedUser(accessToken);
+      if (!user) return errorResponse('Sessão inválida', 401, 'INVALID_SESSION');
+      const body = await parseBody(request);
+      const { data, error } = await getSupabase(accessToken).rpc('bootstrap_organization', { p_name: body.name });
+      if (error) return errorResponse(error.message, 400, error.code);
+      return jsonResponse({ organizationId: data });
+    }
+
+    if (path.startsWith('/api/') &&
+        !['/api/health','/api/ready','/api/metrics','/api/recovery-test','/api/catalog/programs','/api/auth/me','/api/auth/bootstrap'].includes(path) &&
+        !accessToken) {
+      return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
+    }
+
+    const db = new Database(accessToken);
+
+    const contractMatch = path.match(/^\\/api\\/contract\\/program\\/([^/]+)$/);
+    if (contractMatch && method === 'POST') {
+      if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
+      const user = await getAuthenticatedUser(accessToken);
+      if (!user) return errorResponse('Sessão inválida', 401, 'INVALID_SESSION');
+      const scoped = getSupabase(accessToken);
+      const catalogId = decodeURIComponent(contractMatch[1]);
+      const { data: membership, error: memberError } = await scoped.from('organization_members')
+        .select('organization_id,role').eq('user_id', user.id).eq('active', true).order('created_at').limit(1).maybeSingle();
+      if (memberError || !membership) return errorResponse('Organização não encontrada', 400, 'ORG_REQUIRED');
+      if (!['owner','admin'].includes(membership.role)) return errorResponse('Permissão insuficiente', 403, 'FORBIDDEN');
+      const { data: catalog, error: catalogError } = await scoped.from('program_catalog')
+        .select('id,slug,name,description,host,format').eq('id', catalogId).eq('active', true).eq('contractable', true).maybeSingle();
+      if (catalogError || !catalog) return errorResponse('Programa de catálogo não encontrado', 404);
+      const { data: planLink, error: planError } = await scoped.from('plan_programs').select('plan_id').eq('catalog_program_id', catalogId).limit(1).maybeSingle();
+      if (planError || !planLink) return errorResponse('Plano comercial não configurado para o programa', 409);
+      const { data: existing } = await scoped.from('organization_programs').select('organization_id,catalog_program_id,status')
+        .eq('organization_id', membership.organization_id).eq('catalog_program_id', catalogId).maybeSingle();
+      if (existing && existing.status !== 'revoked') return errorResponse('Programa já contratado', 409, 'ALREADY_CONTRACTED');
+      const { data: subscription, error: subError } = await scoped.from('organization_subscriptions')
+        .insert({ organization_id: membership.organization_id, plan_id: planLink.plan_id, status: 'active' }).select('id').single();
+      if (subError) return errorResponse(subError.message, 400, subError.code);
+      const legacyId = 'org-' + membership.organization_id + '-catalog-' + catalog.slug;
+      const { data: program, error: programError } = await scoped.from('programs').insert({
+        legacy_id: legacyId, name: catalog.name, title: catalog.name, description: catalog.description || '',
+        host: catalog.host, format: catalog.format || 'Programa', organization_id: membership.organization_id,
+        catalog_program_id: catalog.id, standard_structure: [], default_segments: [], standard_segments: []
+      }).select('id,legacy_id,name,title,description,host,format,organization_id,catalog_program_id').single();
+      if (programError) return errorResponse(programError.message, 400, programError.code);
+      const { error: entitlementError } = await scoped.from('organization_programs').upsert({
+        organization_id: membership.organization_id, catalog_program_id: catalog.id,
+        subscription_id: subscription.id, program_id: program.id, status: 'active'
+      }, { onConflict: 'organization_id,catalog_program_id' });
+      if (entitlementError) return errorResponse(entitlementError.message, 400, entitlementError.code);
+      return jsonResponse({ success: true, subscriptionId: subscription.id, program }, 201);
     }
 
     // --- Programs / Shows ---
