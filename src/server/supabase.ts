@@ -1,10 +1,9 @@
 /**
  * Conexão com o Supabase (PostgreSQL) usada pelo backend Express.
  *
- * Por que service_role e nao anon: as 15 tabelas estao com RLS ligado e
- * ZERO policies (decisao da fase 1), entao `anon` cai em deny-all. O backend
- * e a unica superficie de escrita do produto hoje e entra por `service_role`,
- * que tem BYPASSRLS verificado no catalogo. Nao ha usuario no produto ainda.
+ * O backend mantém um cliente administrativo para tarefas internas e cria
+ * clientes por requisição com o JWT do usuário para que as policies RLS façam
+ * o isolamento por organização. A service role nunca chega ao navegador.
  *
  * Por que nada de VITE_*: VITE_* e injetado no bundle do navegador. A service
  * role key nao pode chegar no cliente sob nenhuma hipotese. As duas variaveis
@@ -37,8 +36,8 @@ export function describeSupabaseConfig(): { configured: boolean; missing: string
 let client: SupabaseClient | null = null;
 
 /**
- * Cliente unico do processo. `auth: { persistSession: false }` porque nao ha
- * login: sem sessao, sem refresh automatico, sem nada guardado em storage.
+ * Cliente administrativo sem sessão persistida. Quando há accessToken, um
+ * cliente separado é criado com o JWT do usuário no Authorization header.
  */
 export function getSupabase(accessToken?: string): SupabaseClient {
   if (!supabaseConfigured) {
