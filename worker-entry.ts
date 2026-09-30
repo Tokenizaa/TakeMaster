@@ -13,7 +13,6 @@ interface Env {
   NIM_FALLBACK_MODEL: string;
   NIM_TIMEOUT_MS: string;
   SUPABASE_URL: string;
-  SUPABASE_SERVICE_ROLE_KEY: string;
   SUPABASE_PUBLISHABLE_KEY?: string;
   NIM_API_KEY: string;
   ALERT_WEBHOOK_URL?: string;
@@ -132,7 +131,7 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
     }
 
     if (path.startsWith('/api/') &&
-        !['/api/health','/api/ready','/api/metrics','/api/recovery-test','/api/catalog/programs','/api/auth/me','/api/auth/bootstrap'].includes(path) &&
+        !['/api/health','/api/ready','/api/metrics','/api/recovery-test','/api/auth/me'].includes(path) &&
         !accessToken) {
       return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
     }
