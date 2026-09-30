@@ -150,7 +150,7 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
 
     const db = new Database(accessToken);
 
-    const contractMatch = path.match(/^\\/api\\/contract\\/program\\/([^/]+)$/);
+    const contractMatch = path.match(/^\/api\/contract\/program\/([^/]+)$/);
     if (contractMatch && method === 'POST') {
       if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
       const user = await getAuthenticatedUser(accessToken);
