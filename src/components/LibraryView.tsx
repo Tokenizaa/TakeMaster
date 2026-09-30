@@ -11,7 +11,7 @@ import {
   ExternalLink,
   Tag
 } from 'lucide-react';
-import { LibraryAsset } from '../types';
+import { LibraryAsset, Program } from '../types';
 
 interface LibraryViewProps {
   assets: LibraryAsset[];
@@ -24,6 +24,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
   assets,
   onAddAsset,
   onDeleteAsset,
+  programs,
 }) => {
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
