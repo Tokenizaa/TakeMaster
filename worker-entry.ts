@@ -131,16 +131,6 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
       return jsonResponse({ user: { id: user.id, email: user.email }, organizations: memberships || [] });
     }
 
-    if (path === '/api/auth/bootstrap' && method === 'POST') {
-      if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
-      const user = await getAuthenticatedUser(accessToken);
-      if (!user) return errorResponse('Sessão inválida', 401, 'INVALID_SESSION');
-      const body = await parseBody(request);
-      const { data, error } = await getSupabase(accessToken).rpc('bootstrap_organization', { p_name: body.name });
-      if (error) return errorResponse(error.message, 400, error.code);
-      return jsonResponse({ organizationId: data });
-    }
-
     if (path.startsWith('/api/') &&
         !['/api/health','/api/ready','/api/metrics','/api/recovery-test','/api/catalog/programs','/api/auth/me','/api/auth/bootstrap'].includes(path) &&
         !accessToken) {
@@ -154,36 +144,23 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
       if (!accessToken) return errorResponse('Autenticação obrigatória', 401, 'AUTH_REQUIRED');
       const user = await getAuthenticatedUser(accessToken);
       if (!user) return errorResponse('Sessão inválida', 401, 'INVALID_SESSION');
-      const scoped = getSupabase(accessToken);
       const catalogId = decodeURIComponent(contractMatch[1]);
-      const { data: membership, error: memberError } = await scoped.from('organization_members')
-        .select('organization_id,role').eq('user_id', user.id).eq('active', true).order('created_at').limit(1).maybeSingle();
-      if (memberError || !membership) return errorResponse('Organização não encontrada', 400, 'ORG_REQUIRED');
-      if (!['owner','admin'].includes(membership.role)) return errorResponse('Permissão insuficiente', 403, 'FORBIDDEN');
-      const { data: catalog, error: catalogError } = await scoped.from('program_catalog')
-        .select('id,slug,name,description,host,format').eq('id', catalogId).eq('active', true).eq('contractable', true).maybeSingle();
-      if (catalogError || !catalog) return errorResponse('Programa de catálogo não encontrado', 404);
-      const { data: planLink, error: planError } = await scoped.from('plan_programs').select('plan_id').eq('catalog_program_id', catalogId).limit(1).maybeSingle();
-      if (planError || !planLink) return errorResponse('Plano comercial não configurado para o programa', 409);
-      const { data: existing } = await scoped.from('organization_programs').select('organization_id,catalog_program_id,status')
-        .eq('organization_id', membership.organization_id).eq('catalog_program_id', catalogId).maybeSingle();
-      if (existing && existing.status !== 'revoked') return errorResponse('Programa já contratado', 409, 'ALREADY_CONTRACTED');
-      const { data: subscription, error: subError } = await scoped.from('organization_subscriptions')
-        .insert({ organization_id: membership.organization_id, plan_id: planLink.plan_id, status: 'active' }).select('id').single();
-      if (subError) return errorResponse(subError.message, 400, subError.code);
-      const legacyId = 'org-' + membership.organization_id + '-catalog-' + catalog.slug;
-      const { data: program, error: programError } = await scoped.from('programs').insert({
-        legacy_id: legacyId, name: catalog.name, title: catalog.name, description: catalog.description || '',
-        host: catalog.host, format: catalog.format || 'Programa', organization_id: membership.organization_id,
-        catalog_program_id: catalog.id, standard_structure: [], default_segments: [], standard_segments: []
-      }).select('id,legacy_id,name,title,description,host,format,organization_id,catalog_program_id').single();
-      if (programError) return errorResponse(programError.message, 400, programError.code);
-      const { error: entitlementError } = await scoped.from('organization_programs').upsert({
-        organization_id: membership.organization_id, catalog_program_id: catalog.id,
-        subscription_id: subscription.id, program_id: program.id, status: 'active'
-      }, { onConflict: 'organization_id,catalog_program_id' });
-      if (entitlementError) return errorResponse(entitlementError.message, 400, entitlementError.code);
-      return jsonResponse({ success: true, subscriptionId: subscription.id, program }, 201);
+      const { data, error } = await getSupabase(accessToken).rpc('contract_program_for_user', {
+        p_catalog_program_id: catalogId,
+      });
+      if (error) {
+        const code = error.code || '';
+        const messageMap: Record<string, [string, number]> = {
+          AUTH_REQUIRED: ['Autenticação obrigatória', 401],
+          PROGRAM_NOT_FOUND: ['Programa não encontrado', 404],
+          COMMERCIAL_PLAN_NOT_CONFIGURED: ['Plano comercial não configurado para este programa', 409],
+          PROGRAM_NOT_AVAILABLE: ['Programa indisponível para contratação', 409],
+          RS_PLAY_ORGANIZATION_NOT_CONFIGURED: ['Organização RS Play TV não configurada', 503],
+        };
+        const mapped = messageMap[error.message] || messageMap[code];
+        return errorResponse(mapped?.[0] || error.message || 'Falha ao contratar programa', mapped?.[1] || 400, code || undefined);
+      }
+      return jsonResponse(data, 201);
     }
 
     // --- Programs / Shows ---
