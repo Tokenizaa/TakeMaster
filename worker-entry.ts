@@ -49,14 +49,14 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
   try {
     // --- Healthcheck ---
     if (path === '/api/health' && method === 'GET') {
-      const health = await getHealthStatus();
+      const health = await getHealthStatus({ primaryModel: env.NIM_PRIMARY_MODEL, apiKey: env.NIM_API_KEY });
       return jsonResponse(health, health.status === 'ok' ? 200 : 503);
     }
     
     // --- Readiness check ---
     if (path === '/api/ready' && method === 'GET') {
-      const isReady = await isReady(); // This calls our monitoring isReady function
-      return jsonResponse({ status: isReady ? 'ready' : 'not-ready' }, isReady ? 200 : 503);
+      const ready = await isReady(); // This calls our monitoring isReady function
+      return jsonResponse({ status: ready ? 'ready' : 'not-ready' }, ready ? 200 : 503);
     }
     
     // --- Recovery test endpoint ---
@@ -381,9 +381,7 @@ Retorne JSON:
             });
             return jsonResponse(parseAIJson(response.text));
           } catch (error: any) {
-            // Record error in monitoring
-            incrementErrorCount();
-            console.error('Error in AI assistant:', error);
+  console.error('Error in AI assistant:', error);
             return errorResponse(error.message || 'Falha no Copiloto IA');
           }
         }
@@ -422,9 +420,7 @@ Responda ESTRITAMENTE em formato JSON:
             });
             return jsonResponse(parseAIJson(response.text));
           } catch (error: any) {
-            // Record error in monitoring
-            incrementErrorCount();
-            console.error('Error in interpret-idea:', error);
+  console.error('Error in interpret-idea:', error);
             return errorResponse(error.message || 'Falha ao interpretar ideia');
           }
         }
