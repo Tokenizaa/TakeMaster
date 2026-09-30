@@ -74,7 +74,6 @@ const handleRequestInternal = async (request: any, env: Env, ctx: any) => {
     // --- Metrics endpoint ---
     if (path === '/api/metrics' && method === 'GET') {
       const metricsData = getMetrics();
-      const sloData = getSliSloDefinitions();
       const alerts = checkAlertConditions();
       const alertDelivery = await deliverAlerts(alerts, env.ALERT_WEBHOOK_URL);
       
