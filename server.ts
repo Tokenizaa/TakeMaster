@@ -54,7 +54,7 @@ app.get('/api/episodes/:id', async (req: Request, res: Response) => {
   try { const ep=await db.getEpisode(req.params.id); if(!ep)return res.status(404).json({error:'Episódio não encontrado'}); res.json(ep); } catch(e:any){res.status(500).json({error:e.message});}
 });
 app.post('/api/episodes', async (req: Request, res: Response) => {
-  try { const ep=req.body as Episode; const saved=await db.saveEpisode({...ep,id:ep.id||`ep-${crypto.randomUUID()}`,legacy_id:ep.legacy_id||ep.id||`ep-${crypto.randomUUID()}`,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}); res.status(201).json(saved); } catch(e:any){res.status(500).json({error:e.message});}
+  try { const ep=req.body as Episode & { legacy_id?: string }; const saved=await db.saveEpisode({...ep,id:ep.id||`ep-${crypto.randomUUID()}`,legacy_id:ep.legacy_id||ep.id||`ep-${crypto.randomUUID()}`,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()} as Episode); res.status(201).json(saved); } catch(e:any){res.status(500).json({error:e.message});}
 });
 app.put('/api/episodes/:id', async (req: Request, res: Response) => {
   try { res.json(await db.saveEpisode({...req.body,id:req.params.id,legacy_id:req.body.legacy_id||req.params.id})); } catch(e:any){res.status(500).json({error:e.message});}
