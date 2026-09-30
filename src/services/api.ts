@@ -29,12 +29,6 @@ export const api = {
     return res.json();
   },
 
-  async bootstrapOrganization(name: string): Promise<string> {
-    const res = await apiFetch('/api/auth/bootstrap', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
-    if (!res.ok) throw new Error((await res.json().catch(()=>({}))).error || 'Falha ao criar organização');
-    return (await res.json()).organizationId;
-  },
-
   async getCatalogPrograms(): Promise<any[]> {
     const res = await apiFetch('/api/catalog/programs');
     if (!res.ok) throw new Error('Falha ao carregar catálogo');
