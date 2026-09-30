@@ -16,9 +16,6 @@ NIM_PRIMARY_MODEL = "nvidia/nemotron-3-super-120b-a12b"
 NIM_FALLBACK_MODEL = "nvidia/nemotron-3-ultra-550b-a55b"
 NIM_TIMEOUT_MS = "60000"
 SUPABASE_URL = "https://cvyoumtywnyayceoezru.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2eW91bXR5d255YXljZW9lenJ1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDU1NjE0NywiZXhwIjoyMTA2MTMyMTQ3fQ.s3aedozbSDJpXCsyb5rthqfQyVVWaoGVXm-pedvf1GA"
-
-
 
 [observability]
 enabled = true

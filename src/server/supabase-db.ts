@@ -251,7 +251,7 @@ export class SupabaseDatabase {
       request(`/segment_participants?select=segment_id,participant_id,order_pos`)
     ]);
     const filteredFollowUps = followUps.filter((f: any) => questions.some((q: any) => q.id === f.question_id));
-    const participantLegacyById = new Map(participantRows.map((p: any) => [p.id, p.legacy_id || p.id]));
+    const participantLegacyById = new Map<string, string>(participantRows.map((p: any) => [String(p.id), String(p.legacy_id || p.id)]));
     const segmentParticipantMap = new Map<string, string[]>();
     for (const sp of segmentParticipantRows) {
       const legacy = participantLegacyById.get(sp.participant_id);

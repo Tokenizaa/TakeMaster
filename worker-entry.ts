@@ -35,6 +35,8 @@ async function parseBody(request: any): Promise<any> {
   try { return JSON.parse(text); } catch { return {}; }
 }
 
+const workerStartedAt = Date.now();
+
 const handleRequest = async (request: any, env: Env, ctx: any) => {
   const url = new URL(request.url);
   const path = url.pathname;
@@ -50,7 +52,7 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       const ok = supabaseCfg.configured && dbState.connected;
       return jsonResponse({
         status: ok ? 'ok' : 'degraded',
-        uptimeSeconds: Math.round((Date.now() - Date.now()) / 1000),
+        uptimeSeconds: Math.max(0, Math.round((Date.now() - workerStartedAt) / 1000)),
         database: {
           provider: 'supabase',
           url: env.SUPABASE_URL || null,
@@ -459,6 +461,7 @@ Retorne em formato JSON:
       return errorResponse('Endpoint IA não encontrado', 404);
     }
 
+    if (env.ASSETS) return env.ASSETS.fetch(request);
     return new Response(null, { status: 404 });
   } catch (error: any) {
     if (error instanceof DbError) {
