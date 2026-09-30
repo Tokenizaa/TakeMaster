@@ -1,6 +1,7 @@
 import { db, DbError } from './src/server/db';
 import { checkSupabaseConnection, describeNimConfig, describeSupabaseConfig } from './src/server/supabase';
 import { ai, parseAIJson } from './src/server/ai';
+import { initializeMonitoring, recordRequest, incrementErrorCount, getHealthStatus, isReady, runRecoveryTests, getSliSloDefinitions, checkAlertConditions } from './src/server/monitoring';
 import type { ExportedHandler } from '@cloudflare/workers-types';
 
 interface Env {
@@ -36,6 +37,8 @@ async function parseBody(request: any): Promise<any> {
 }
 
 const workerStartedAt = Date.now();
+// Initialize monitoring service
+initializeMonitoring();
 
 const handleRequest = async (request: any, env: Env, ctx: any) => {
   const url = new URL(request.url);
@@ -45,26 +48,58 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
   try {
     // --- Healthcheck ---
     if (path === '/api/health' && method === 'GET') {
-      const supabaseCfg = describeSupabaseConfig();
-      const nim = describeNimConfig();
-      const dbState = supabaseCfg.configured ? await checkSupabaseConnection() : { connected: false, latencyMs: 0 };
-
-      const ok = supabaseCfg.configured && dbState.connected;
-      return jsonResponse({
-        status: ok ? 'ok' : 'degraded',
-        uptimeSeconds: Math.max(0, Math.round((Date.now() - workerStartedAt) / 1000)),
-        database: {
-          provider: 'supabase',
-          url: env.SUPABASE_URL || null,
-          configured: supabaseCfg.configured,
-          missing: supabaseCfg.missing,
-          connected: dbState.connected,
-          latencyMs: dbState.latencyMs,
-          ...(dbState.error ? { error: dbState.error } : {}),
-        },
-        ai: { provider: 'nvidia-nim', configured: nim.configured },
-        env: { node: 'worker', production: true },
-      }, ok ? 200 : 503);
+      const health = await getHealthStatus();
+      return jsonResponse(health, health.status === 'ok' ? 200 : 503);
+    }
+    
+    // --- Readiness check ---
+    if (path === '/api/ready' && method === 'GET') {
+      const isReady = await isReady(); // This calls our monitoring isReady function
+      return jsonResponse({ status: isReady ? 'ready' : 'not-ready' }, isReady ? 200 : 503);
+    }
+    
+    // --- Recovery test endpoint ---
+    if (path === '/api/recovery-test' && method === 'POST') {
+      const results = await runRecoveryTests();
+      return jsonResponse(results, results.summary.failed === 0 ? 200 : 503);
+    }
+    
+    // --- Metrics endpoint ---
+    if (path === '/api/metrics' && method === 'GET') {
+      const metricsData = getMetrics();
+      const sloData = getSliSloDefinitions();
+      const alerts = checkAlertConditions();
+      
+      // Format as Prometheus-like metrics for simplicity
+      let prometheusMetrics = `# HELP takemaster_requests_total Total number of requests\n# TYPE takemaster_requests_total counter\n`;
+      prometheusMetrics += `takemaster_requests_total ${metricsData.requestsTotal}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_error_count Total number of errors\n# TYPE takemaster_error_count counter\n`;
+      prometheusMetrics += `takemaster_error_count ${metricsData.errorCount}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_programs_total Total number of programs\n# TYPE takemaster_programs_total gauge\n`;
+      prometheusMetrics += `takemaster_programs_total ${metricsData.programsTotal}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_participants_total Total number of participants\n# TYPE takemaster_participants_total gauge\n`;
+      prometheusMetrics += `takemaster_participants_total ${metricsData.participantsTotal}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_episodes_total Total number of episodes\n# TYPE takemaster_episodes_total gauge\n`;
+      prometheusMetrics += `takemaster_episodes_total ${metricsData.episodesTotal}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_supabase_connected Supabase connection status (1=connected, 0=disconnected)\n# TYPE takemaster_supabase_connected gauge\n`;
+      prometheusMetrics += `takemaster_supabase_connected ${metricsData.supabaseConnectionStatus === true ? 1 : 0}\n`;
+      
+      prometheusMetrics += `# HELP takemaster_nim_configured NIM configuration status (1=configured, 0=not configured)\n# TYPE takemaster_nim_configured gauge\n`;
+      prometheusMetrics += `takemaster_nim_configured ${(metricsData.nimPrimaryConfigured || metricsData.nimFallbackConfigured) ? 1 : 0}\n`;
+      
+      // Add alert information
+      prometheusMetrics += `# HELP takemaster_alerts_active Number of active alerts\n# TYPE takemaster_alerts_active gauge\n`;
+      prometheusMetrics += `takemaster_alerts_active ${alerts.length}\n`;
+      
+      return new Response(prometheusMetrics, {
+        status: 200,
+        headers: { 'content-type': 'text/plain' }
+      });
     }
 
     // --- Programs / Shows ---
@@ -86,6 +121,9 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
           const saved = await db.saveProgram(newProgram);
           return jsonResponse(saved, 201);
         } catch (error: any) {
+          // Record error in monitoring
+          incrementErrorCount();
+          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -144,6 +182,9 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveParticipant(newParticipant), 201);
         } catch (error: any) {
+          // Record error in monitoring
+          incrementErrorCount();
+          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -202,6 +243,9 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveEpisode(ep), 201);
         } catch (error: any) {
+          // Record error in monitoring
+          incrementErrorCount();
+          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -252,6 +296,9 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveAgendaEvent(event), 201);
         } catch (error: any) {
+          // Record error in monitoring
+          incrementErrorCount();
+          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -283,6 +330,9 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
         try {
           return jsonResponse(await db.saveLibraryAsset(asset), 201);
         } catch (error: any) {
+          // Record error in monitoring
+          incrementErrorCount();
+          
           if (error instanceof DbError) {
             return errorResponse(error.message, error.status, error.code);
           }
@@ -308,8 +358,8 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       const body = await parseBody(request);
 
 if (path === '/api/ai/assist' && method === 'POST') {
-         const { episode, userPrompt, currentTab, activeBlockId, activeQuestionId } = body;
-         const prompt = `Você é o Copiloto Editorial e de Direção do TakeMaster.
+          const { episode, userPrompt, currentTab, activeBlockId, activeQuestionId } = body;
+          const prompt = `Você é o Copiloto Editorial e de Direção do TakeMaster.
 Responda de forma prática, curta e acionável ao produtor/apresentador.
 
 CONTEXTO DA PRODUÇÃO:
@@ -331,22 +381,24 @@ Não invente fatos sobre pessoas reais. Quando faltar informação, diga o que p
 Retorne JSON:
 {"answer":"string","suggestionApplied":null}`;
 
-         try {
-           const response = await ai.models.generateContent({
-             model: env.NIM_PRIMARY_MODEL,
-             contents: prompt,
-             config: { responseMimeType: 'application/json' },
-           });
-           return jsonResponse(parseAIJson(response.text));
-         } catch (error: any) {
-           console.error('Error in AI assistant:', error);
-           return errorResponse(error.message || 'Falha no Copiloto IA');
-         }
-       }
+          try {
+            const response = await ai.models.generateContent({
+              model: env.NIM_PRIMARY_MODEL,
+              contents: prompt,
+              config: { responseMimeType: 'application/json' },
+            });
+            return jsonResponse(parseAIJson(response.text));
+          } catch (error: any) {
+            // Record error in monitoring
+            incrementErrorCount();
+            console.error('Error in AI assistant:', error);
+            return errorResponse(error.message || 'Falha no Copiloto IA');
+          }
+        }
 
 if (path === '/api/ai/interpret-idea' && method === 'POST') {
-         const { idea, programTitle, programFormat, durationMin, existingParticipants } = body;
-         const prompt = `Você é um Produtor Executivo e Diretor Audiovisual sênior de televisão e streaming.
+          const { idea, programTitle, programFormat, durationMin, existingParticipants } = body;
+          const prompt = `Você é um Produtor Executivo e Diretor Audiovisual sênior de televisão e streaming.
 O usuário descreveu uma ideia para produzir um episódio:
 
 IDEIA DO PRODUTOR: "${idea}"
@@ -370,18 +422,20 @@ Responda ESTRITAMENTE em formato JSON:
   "segments": [{"title": "string", "type": "string", "estimatedDurationMin": number, "objective": "string"}]
 }`;
 
-         try {
-           const response = await ai.models.generateContent({
-             model: env.NIM_PRIMARY_MODEL,
-             contents: prompt,
-             config: { responseMimeType: 'application/json' },
-           });
-           return jsonResponse(parseAIJson(response.text));
-         } catch (error: any) {
-           console.error('Error in interpret-idea:', error);
-           return errorResponse(error.message || 'Falha ao interpretar ideia');
-         }
-       }
+          try {
+            const response = await ai.models.generateContent({
+              model: env.NIM_PRIMARY_MODEL,
+              contents: prompt,
+              config: { responseMimeType: 'application/json' },
+            });
+            return jsonResponse(parseAIJson(response.text));
+          } catch (error: any) {
+            // Record error in monitoring
+            incrementErrorCount();
+            console.error('Error in interpret-idea:', error);
+            return errorResponse(error.message || 'Falha ao interpretar ideia');
+          }
+        }
 
 if (path === '/api/ai/diagnose' && method === 'POST') {
          const { idea, participants, format, durationMin, objective, programTitle } = body;
@@ -608,6 +662,9 @@ Retorne em formato JSON:
     if (env.ASSETS) return env.ASSETS.fetch(request);
     return new Response(null, { status: 404 });
   } catch (error: any) {
+    // Record error in monitoring
+    incrementErrorCount();
+    
     if (error instanceof DbError) {
       return errorResponse(error.message, error.status, error.code);
     }
