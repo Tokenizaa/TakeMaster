@@ -118,8 +118,10 @@ function episodeQuestionSource(e: Episode): QuestionItem[] {
 }
 
 export class Database {
+  constructor(private readonly accessToken?: string) {}
+
   private get sb() {
-    return getSupabase();
+    return getSupabase(this.accessToken);
   }
 
   // ===========================================================================
