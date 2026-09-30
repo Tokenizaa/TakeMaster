@@ -2,6 +2,15 @@ import { db } from './db';
 import { checkSupabaseConnection, describeSupabaseConfig } from './supabase';
 import { describeNimConfig } from './ai';
 
+export type Alert = {
+  id: string;
+  severity: 'critical' | 'warning';
+  message: string;
+  timestamp: string;
+  value: number;
+  threshold: number;
+};
+
 /**
  * Monitoring service for TakeMaster
  * Provides metrics, health checks, alerting, and observability capabilities
@@ -202,7 +211,7 @@ export async function isReady(): Promise<boolean> {
  * Perform recovery tests
  * This would test various failure scenarios and recovery mechanisms
  */
-export async function runRecoveryTests() {
+export async function runRecoveryTests(nimOptions?: { baseUrl?: string; apiKey?: string; primaryModel?: string; timeoutMs?: number }) {
   const results = {
     timestamp: new Date().toISOString(),
     tests: [] as Array<{
@@ -247,17 +256,43 @@ export async function runRecoveryTests() {
     });
   }
 
-  // Test 2: NIM API accessibility
+  // Test 2: NIM API accessibility (real request)
   const nimTestStart = Date.now();
   try {
     const nim = describeNimConfig();
-    if (nim.configured && nim.primaryModel) {
-      // Simple test - just check if we can reach the API (we won't actually make a call to avoid costs)
-      results.tests.push({
-        name: 'nim-api-accessibility',
-        passed: true, // Assuming configured means accessible for this test
-        durationMs: Date.now() - nimTestStart
-      });
+    const baseUrl = (nimOptions?.baseUrl || 'https://integrate.api.nvidia.com').replace(/\\/$/, '');
+    const apiKey = nimOptions?.apiKey || '';
+    const primaryModel = nimOptions?.primaryModel || nim.primaryModel || '';
+    const timeoutMs = nimOptions?.timeoutMs || 10000;
+
+    if (nim.configured && apiKey && primaryModel) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(baseUrl + '/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + apiKey,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: primaryModel,
+            messages: [{ role: 'user', content: 'Reply only with OK.' }],
+            max_tokens: 1,
+            temperature: 0,
+          }),
+          signal: controller.signal,
+        });
+        const raw = await response.text();
+        results.tests.push({
+          name: 'nim-api-accessibility',
+          passed: response.ok,
+          durationMs: Date.now() - nimTestStart,
+          error: response.ok ? undefined : 'NIM HTTP ' + response.status + ': ' + raw.slice(0, 300),
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
     } else {
       results.tests.push({
         name: 'nim-api-accessibility',
@@ -342,7 +377,7 @@ export function getSliSloDefinitions() {
 /**
  * Check if alerts should be triggered based on current metrics
  */
-export function checkAlertConditions() {
+export function checkAlertConditions(): Alert[] {
   const alerts = [];
   const metrics = getMetrics();
   
@@ -404,4 +439,31 @@ export function checkAlertConditions() {
   }
   
   return alerts;
+}
+
+/**
+ * Deliver active alerts to an operational webhook.
+ * Returns false when no webhook is configured or delivery fails.
+ */
+export async function deliverAlerts(alerts: Alert[], webhookUrl?: string): Promise<{ configured: boolean; delivered: boolean; error?: string }> {
+  if (alerts.length === 0) return { configured: !!webhookUrl, delivered: true };
+  if (!webhookUrl) return { configured: false, delivered: false, error: 'ALERT_WEBHOOK_URL not configured' };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        source: 'takemaster',
+        timestamp: new Date().toISOString(),
+        alerts,
+      }),
+    });
+    if (!response.ok) {
+      return { configured: true, delivered: false, error: 'Alert webhook HTTP ' + response.status };
+    }
+    return { configured: true, delivered: true };
+  } catch (error) {
+    return { configured: true, delivered: false, error: error instanceof Error ? error.message : String(error) };
+  }
 }
