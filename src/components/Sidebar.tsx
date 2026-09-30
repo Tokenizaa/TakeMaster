@@ -42,8 +42,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const mainNav = [
     { id: 'dashboard', label: 'Início', icon: LayoutDashboard },
-    { id: 'programs', label: 'Programas', icon: Tv },
-    { id: 'episodes', label: 'Episódios', icon: Film },
+    { id: 'shows', label: 'Programas', icon: Tv },
+    { id: 'episodes', label: 'Produções', icon: Film },
     { id: 'agenda', label: 'Agenda', icon: Calendar },
     { id: 'library', label: 'Biblioteca', icon: BookMarked },
     { id: 'settings', label: 'Configurações', icon: Sliders },
@@ -100,7 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* Active Episode Workspace (Section 16: Consolidates the 9 steps into 4) */}
+        {programs.length > 0 && (\n          <div className="px-2 -mt-2">\n            <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block mb-1.5 font-bold">Programa em foco</label>\n            <select value={activeProgramId} onChange={(e) => onSelectProgramId(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2.5 py-2 text-xs text-zinc-200">\n              {programs.map((program) => <option key={program.id} value={program.id}>{program.name}</option>)}\n            </select>\n          </div>\n        )}\n\n        {/* Active Episode Workspace (Section 16: Consolidates the 9 steps into 4) */}
         {activeEpisode && (
           <div className="pt-2 border-t border-zinc-800/80">
             <div className="flex items-center justify-between px-2 mb-2">
