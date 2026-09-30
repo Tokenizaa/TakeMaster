@@ -35,25 +35,27 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
   const [newEpisodeId, setNewEpisodeId] = useState('');
   const [newNotes, setNewNotes] = useState('');
 
-  const handleCreate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTitle.trim()) return;
+const handleCreate = (e: React.FormEvent) => {
+  console.log('handleCreate called');
+  e.preventDefault();
+  if (!newTitle.trim()) return;
 
-    const event: AgendaEvent = {
-      id: `ev-${Date.now()}`,
-      title: newTitle,
-      type: newType,
-      scheduledDate: newDate,
-      scheduledTime: newTime,
-      episodeId: newEpisodeId || undefined,
-      notes: newNotes
-    };
-
-    onAddEvent(event);
-    setIsAdding(false);
-    setNewTitle('');
-    setNewNotes('');
+  const event: AgendaEvent = {
+    id: `ev-${Date.now()}`,
+    title: newTitle,
+    type: newType,
+    scheduledDate: newDate,
+    scheduledTime: newTime,
+    episodeId: newEpisodeId || undefined,
+    notes: newNotes
   };
+
+  console.log('Event created:', event);
+  onAddEvent(event);
+  setIsAdding(false);
+  setNewTitle('');
+  setNewNotes('');
+};
 
   return (
     <div className="space-y-6">
@@ -84,82 +86,100 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <h2 className="text-lg font-bold text-white">Agendar Diária / Gravação</h2>
             <form onSubmit={handleCreate} className="space-y-3">
-              <div>
-                <label className="text-xs text-slate-300 font-semibold block mb-1">Título do Evento</label>
-                <input
-                  type="text"
-                  required
-                  value={newTitle}
-                  onChange={e => setNewTitle(e.target.value)}
-                  placeholder="Ex: Gravação Ep 04 - Estúdio Principal"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
-                />
-              </div>
+<div>
+  <label htmlFor="agenda-title" className="text-xs text-slate-300 font-semibold block mb-1">
+    Título do Evento
+  </label>
+  <input
+    id="agenda-title"
+    type="text"
+    required
+    value={newTitle}
+    onChange={e => setNewTitle(e.target.value)}
+    placeholder="Ex: Gravação Ep 04 - Estúdio Principal"
+    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+  />
+</div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs text-slate-300 font-semibold block mb-1">Data</label>
-                  <input
-                    type="date"
-                    required
-                    value={newDate}
-                    onChange={e => setNewDate(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-                  />
-                </div>
+<div className="grid grid-cols-2 gap-3">
+  <div>
+    <label htmlFor="agenda-date" className="text-xs text-slate-300 font-semibold block mb-1">
+      Data
+    </label>
+    <input
+      id="agenda-date"
+      type="date"
+      required
+      value={newDate}
+      onChange={e => setNewDate(e.target.value)}
+      className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+    />
+  </div>
 
-                <div>
-                  <label className="text-xs text-slate-300 font-semibold block mb-1">Horário (Call Time)</label>
-                  <input
-                    type="time"
-                    required
-                    value={newTime}
-                    onChange={e => setNewTime(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-                  />
-                </div>
-              </div>
+  <div>
+    <label htmlFor="agenda-time" className="text-xs text-slate-300 font-semibold block mb-1">
+      Horário (Call Time)
+    </label>
+    <input
+      id="agenda-time"
+      type="time"
+      required
+      value={newTime}
+      onChange={e => setNewTime(e.target.value)}
+      className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
+    />
+  </div>
+</div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs text-slate-300 font-semibold block mb-1">Tipo</label>
-                  <select
-                    value={newType}
-                    onChange={e => setNewType(e.target.value as any)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white"
-                  >
-                    <option value="recording">Gravação no Estúdio</option>
-                    <option value="rehearsal">Passagem / Ensaio</option>
-                    <option value="meeting">Reunião de Pauta</option>
-                    <option value="deadline">Prazo de Entrega Edição</option>
-                  </select>
-                </div>
+<div className="grid grid-cols-2 gap-3">
+  <div>
+    <label htmlFor="agenda-type" className="text-xs text-slate-300 font-semibold block mb-1">
+      Tipo
+    </label>
+    <select
+      id="agenda-type"
+      value={newType}
+      onChange={e => setNewType(e.target.value as any)}
+      className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white"
+    >
+      <option value="recording">Gravação no Estúdio</option>
+      <option value="rehearsal">Passagem / Ensaio</option>
+      <option value="meeting">Reunião de Pauta</option>
+      <option value="deadline">Prazo de Entrega Edição</option>
+    </select>
+  </div>
 
-                <div>
-                  <label className="text-xs text-slate-300 font-semibold block mb-1">Vincular a Episódio</label>
-                  <select
-                    value={newEpisodeId}
-                    onChange={e => setNewEpisodeId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white"
-                  >
-                    <option value="">Nenhum (Geral)</option>
-                    {episodes.map(ep => (
-                      <option key={ep.id} value={ep.id}>{ep.title}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+  <div>
+    <label htmlFor="agenda-episode" className="text-xs text-slate-300 font-semibold block mb-1">
+      Vincular a Episódio
+    </label>
+    <select
+      id="agenda-episode"
+      value={newEpisodeId}
+      onChange={e => setNewEpisodeId(e.target.value)}
+      className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white"
+    >
+      <option value="">Nenhum (Geral)</option>
+      {episodes.map(ep => (
+        <option key={ep.id} value={ep.id}>{ep.title}</option>
+      ))}
+    </select>
+  </div>
+</div>
 
-              <div>
-                <label className="text-xs text-slate-300 font-semibold block mb-1">Notas de Produção (Call Sheet)</label>
-                <textarea
-                  value={newNotes}
-                  onChange={e => setNewNotes(e.target.value)}
-                  placeholder="Instruções para equipe técnica, figurino, alimentação e chegada de convidados..."
-                  rows={3}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
-                />
-              </div>
+<div>
+  <label htmlFor="agenda-notes" className="text-xs text-slate-300 font-semibold block mb-1">
+    Notas de Produção (Call Sheet)
+  </label>
+  <textarea
+    id="agenda-notes"
+    value={newNotes}
+    onChange={e => setNewNotes(e.target.value)}
+    placeholder="Instruções para equipe técnica, figurino, alimentação e chegada de convidados..."
+    rows={3}
+    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+  />
+</div>
 
               <div className="flex justify-end gap-2 pt-2">
                 <button

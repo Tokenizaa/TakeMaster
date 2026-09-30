@@ -15,6 +15,7 @@ import { LibraryAsset } from '../types';
 
 interface LibraryViewProps {
   assets: LibraryAsset[];
+  programs: Program[];
   onAddAsset: (asset: LibraryAsset) => void;
   onDeleteAsset: (id: string) => void;
 }
@@ -27,6 +28,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [isAdding, setIsAdding] = useState(false);
+  const [selectedProgramId, setSelectedProgramId] = useState<string>('');
 
   // New asset form
   const [newTitle, setNewTitle] = useState('');
@@ -50,7 +52,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
       type: newType,
       content: newContent,
       tags: newTags.split(',').map(t => t.trim()).filter(Boolean),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      programId: selectedProgramId || undefined
     };
 
     onAddAsset(newAsset);
@@ -58,6 +61,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     setNewTitle('');
     setNewContent('');
     setNewTags('');
+    setSelectedProgramId('');
   };
 
   return (
@@ -128,20 +132,34 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="text-xs text-slate-300 font-semibold block mb-1">Tipo</label>
-                <select
-                  value={newType}
-                  onChange={e => setNewType(e.target.value as any)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
-                >
-                  <option value="lower_third">GC / Lower Third</option>
-                  <option value="video_bumper">Vinheta / Bumper</option>
-                  <option value="audio_cue">Trilha / Efeito Sonoro</option>
-                  <option value="overlay_graphic">Overlay Gráfico</option>
-                  <option value="template">Template de Roteiro</option>
-                </select>
-              </div>
+<div>
+  <label className="text-xs text-slate-300 font-semibold block mb-1">Tipo</label>
+  <select
+    value={newType}
+    onChange={e => setNewType(e.target.value as any)}
+    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+  >
+    <option value="lower_third">GC / Lower Third</option>
+    <option value="video_bumper">Vinheta / Bumper</option>
+    <option value="audio_cue">Trilha / Efeito Sonoro</option>
+    <option value="overlay_graphic">Overlay Gráfico</option>
+    <option value="template">Template de Roteiro</option>
+  </select>
+</div>
+
+<div>
+  <label className="text-xs text-slate-300 font-semibold block mb-1">Programa (Tenancy)</label>
+  <select
+    value={selectedProgramId}
+    onChange={e => setSelectedProgramId(e.target.value)}
+    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+  >
+    <option value="">Nenhum (Geral)</option>
+    {programs.map(program => (
+      <option key={program.id} value={program.id}>{program.name || program.title || 'Programa sem nome'}</option>
+    ))}
+  </select>
+</div>
 
               <div>
                 <label className="text-xs text-slate-300 font-semibold block mb-1">Conteúdo / Texto / Link</label>

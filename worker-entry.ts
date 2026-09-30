@@ -72,13 +72,23 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'POST') {
         const body = await parseBody(request);
+        const now = new Date().toISOString();
         const newProgram = {
           ...body,
-          id: body.id || `prog-${Date.now()}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          id: body.id || `prog-${crypto.randomUUID()}`,
+          legacy_id: body.legacy_id || body.id || `prog-${crypto.randomUUID()}`,
+          createdAt: now,
+          updatedAt: now,
         };
-        return jsonResponse(await db.saveProgram(newProgram), 201);
+        try {
+          const saved = await db.saveProgram(newProgram);
+          return jsonResponse(saved, 201);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -92,10 +102,25 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'PUT') {
         const body = await parseBody(request);
-        return jsonResponse(await db.saveProgram({ ...body, id }));
+        try {
+          const saved = await db.saveProgram({ ...body, id });
+          return jsonResponse(saved);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
       if (method === 'DELETE') {
-        return jsonResponse({ success: await db.deleteProgram(id) });
+        try {
+          return jsonResponse({ success: await db.deleteProgram(id) });
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -107,12 +132,21 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'POST') {
         const body = await parseBody(request);
+        const now = new Date().toISOString();
         const newParticipant = {
           ...body,
-          id: body.id || `part-${Date.now()}`,
-          createdAt: new Date().toISOString(),
+          id: body.id || `part-${crypto.randomUUID()}`,
+          legacy_id: body.legacy_id || body.id || `part-${crypto.randomUUID()}`,
+          createdAt: now,
         };
-        return jsonResponse(await db.saveParticipant(newParticipant), 201);
+        try {
+          return jsonResponse(await db.saveParticipant(newParticipant), 201);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -126,10 +160,24 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'PUT') {
         const body = await parseBody(request);
-        return jsonResponse(await db.saveParticipant({ ...body, id }));
+        try {
+          return jsonResponse(await db.saveParticipant({ ...body, id }));
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
       if (method === 'DELETE') {
-        return jsonResponse({ success: await db.deleteParticipant(id) });
+        try {
+          return jsonResponse({ success: await db.deleteParticipant(id) });
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -141,13 +189,22 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'POST') {
         const body = await parseBody(request);
+        const now = new Date().toISOString();
         const ep = {
           ...body,
-          id: body.id || `ep-${Date.now()}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          id: body.id || `ep-${crypto.randomUUID()}`,
+          legacy_id: body.legacy_id || body.id || `ep-${crypto.randomUUID()}`,
+          createdAt: now,
+          updatedAt: now,
         };
-        return jsonResponse(await db.saveEpisode(ep), 201);
+        try {
+          return jsonResponse(await db.saveEpisode(ep), 201);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -161,10 +218,24 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'PUT') {
         const body = await parseBody(request);
-        return jsonResponse(await db.saveEpisode({ ...body, id }));
+        try {
+          return jsonResponse(await db.saveEpisode({ ...body, id }));
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
       if (method === 'DELETE') {
-        return jsonResponse({ success: await db.deleteEpisode(id) });
+        try {
+          return jsonResponse({ success: await db.deleteEpisode(id) });
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
@@ -175,14 +246,28 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'POST') {
         const body = await parseBody(request);
-        const event = { ...body, id: body.id || `ag-${Date.now()}` };
-        return jsonResponse(await db.saveAgendaEvent(event), 201);
+        const event = { ...body, id: body.id || `ag-${crypto.randomUUID()}` };
+        try {
+          return jsonResponse(await db.saveAgendaEvent(event), 201);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
     const agendaMatch = path.match(/^\/api\/agenda\/([^/]+)$/);
     if (agendaMatch && method === 'DELETE') {
-      return jsonResponse({ success: await db.deleteAgendaEvent(agendaMatch[1]) });
+      try {
+        return jsonResponse({ success: await db.deleteAgendaEvent(agendaMatch[1]) });
+      } catch (error: any) {
+        if (error instanceof DbError) {
+          return errorResponse(error.message, error.status, error.code);
+        }
+        return errorResponse(error.message || 'Erro interno');
+      }
     }
 
     // --- Library ---
@@ -192,23 +277,37 @@ const handleRequest = async (request: any, env: Env, ctx: any) => {
       }
       if (method === 'POST') {
         const body = await parseBody(request);
-        const asset = { ...body, id: body.id || `lib-${Date.now()}` };
-        return jsonResponse(await db.saveLibraryAsset(asset), 201);
+        const asset = { ...body, id: body.id || `lib-${crypto.randomUUID()}` };
+        try {
+          return jsonResponse(await db.saveLibraryAsset(asset), 201);
+        } catch (error: any) {
+          if (error instanceof DbError) {
+            return errorResponse(error.message, error.status, error.code);
+          }
+          return errorResponse(error.message || 'Erro interno');
+        }
       }
     }
 
     const libraryMatch = path.match(/^\/api\/library\/([^/]+)$/);
     if (libraryMatch && method === 'DELETE') {
-      return jsonResponse({ success: await db.deleteLibraryAsset(libraryMatch[1]) });
+      try {
+        return jsonResponse({ success: await db.deleteLibraryAsset(libraryMatch[1]) });
+      } catch (error: any) {
+        if (error instanceof DbError) {
+          return errorResponse(error.message, error.status, error.code);
+        }
+        return errorResponse(error.message || 'Erro interno');
+      }
     }
 
     // --- AI Endpoints ---
     if (path.startsWith('/api/ai/')) {
       const body = await parseBody(request);
 
-      if (path === '/api/ai/assist' && method === 'POST') {
-        const { episode, userPrompt, currentTab, activeBlockId, activeQuestionId } = body;
-        const prompt = `Você é o Copiloto Editorial e de Direção do TakeMaster.
+if (path === '/api/ai/assist' && method === 'POST') {
+         const { episode, userPrompt, currentTab, activeBlockId, activeQuestionId } = body;
+         const prompt = `Você é o Copiloto Editorial e de Direção do TakeMaster.
 Responda de forma prática, curta e acionável ao produtor/apresentador.
 
 CONTEXTO DA PRODUÇÃO:
@@ -230,17 +329,22 @@ Não invente fatos sobre pessoas reais. Quando faltar informação, diga o que p
 Retorne JSON:
 {"answer":"string","suggestionApplied":null}`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error in AI assistant:', error);
+           return errorResponse(error.message || 'Falha no Copiloto IA');
+         }
+       }
 
-      if (path === '/api/ai/interpret-idea' && method === 'POST') {
-        const { idea, programTitle, programFormat, durationMin, existingParticipants } = body;
-        const prompt = `Você é um Produtor Executivo e Diretor Audiovisual sênior de televisão e streaming.
+if (path === '/api/ai/interpret-idea' && method === 'POST') {
+         const { idea, programTitle, programFormat, durationMin, existingParticipants } = body;
+         const prompt = `Você é um Produtor Executivo e Diretor Audiovisual sênior de televisão e streaming.
 O usuário descreveu uma ideia para produzir um episódio:
 
 IDEIA DO PRODUTOR: "${idea}"
@@ -264,17 +368,22 @@ Responda ESTRITAMENTE em formato JSON:
   "segments": [{"title": "string", "type": "string", "estimatedDurationMin": number, "objective": "string"}]
 }`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error in interpret-idea:', error);
+           return errorResponse(error.message || 'Falha ao interpretar ideia');
+         }
+       }
 
-      if (path === '/api/ai/diagnose' && method === 'POST') {
-        const { idea, participants, format, durationMin, objective, programTitle } = body;
-        const prompt = `Você é um Produtor Executivo e Supervisor de Conteúdo Audiovisual sênior.
+if (path === '/api/ai/diagnose' && method === 'POST') {
+         const { idea, participants, format, durationMin, objective, programTitle } = body;
+         const prompt = `Você é um Produtor Executivo e Supervisor de Conteúdo Audiovisual sênior.
 Analise esta proposta de produção para o programa "${programTitle || 'TakeMaster'}":
 
 FORMATO: "${format}"
@@ -282,7 +391,7 @@ DURAÇÃO ALVO: ${durationMin || 45} minutos
 IDEIA: "${idea}"
 PARTICIPANTES: ${JSON.stringify(participants || [])}
 OBJETIVO: "${objective || 'Engajar e impactar a audiência'}"
-
+ 
 Gere um DIAGNÓSTICO EDITORIAL aprofundado.
 Responda ESTRITAMENTE em formato JSON com o schema:
 {
@@ -297,17 +406,22 @@ Responda ESTRITAMENTE em formato JSON com o schema:
   "approved": false
 }`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating diagnosis:', error);
+           return errorResponse(error.message || 'Falha ao gerar diagnóstico editorial');
+         }
+       }
 
-      if (path === '/api/ai/research' && method === 'POST') {
-        const { participants, programTitle, format, idea, diagnosis } = body;
-        const prompt = `Você é um Pesquisador Jornalístico e de Produção Audiovisual.
+if (path === '/api/ai/research' && method === 'POST') {
+         const { participants, programTitle, format, idea, diagnosis } = body;
+         const prompt = `Você é um Pesquisador Jornalístico e de Produção Audiovisual.
 Com base nas informações abaixo, estruture um Dossiê de Pesquisa e Checagem Factual.
 
 PROGRAMA: "${programTitle || ''}"
@@ -329,18 +443,23 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
   "sources": [{"id": "string", "title": "string", "url": "string", "detail": "string", "status": "CONFIRMADO" | "NÃO CONFIRMADO" | "PERGUNTAR AO CONVIDADO", "category": "string"}]
 }`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating research:', error);
+           return errorResponse(error.message || 'Falha ao gerar pesquisa');
+         }
+       }
 
-      if (path === '/api/ai/outline' && method === 'POST') {
-        const { idea, programTitle, format, targetDurationMin, participants, diagnosis, research, cameras } = body;
-        const targetMinutes = targetDurationMin || 45;
-        const prompt = `Você é um Roteirista Chefe e Diretor de TV.
+if (path === '/api/ai/outline' && method === 'POST') {
+         const { idea, programTitle, format, targetDurationMin, participants, diagnosis, research, cameras } = body;
+         const targetMinutes = targetDurationMin || 45;
+         const prompt = `Você é um Roteirista Chefe e Diretor de TV.
 Gere os QUADROS / SEGMENTOS NARRATIVOS e as PERGUNTAS / DINÂMICAS COM REPIQUES INTELIGENTES.
 
 PROGRAMA: "${programTitle || 'TakeMaster'}"
@@ -358,17 +477,22 @@ Retorne ESTRITAMENTE em formato JSON com o schema:
   "questions": [{"id": "string", "segmentId": "string", "targetParticipantName": "string", "order": 1, "text": "string", "objective": "string", "suggestedCamera": "string", "eyeDirection": "string", "followUps": [{"id": "string", "triggerCondition": "string", "actionOrQuestion": "string", "tag": "string"}]}]
 }`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating outline:', error);
+           return errorResponse(error.message || 'Falha ao gerar pauta e quadros');
+         }
+       }
 
-      if (path === '/api/ai/script' && method === 'POST') {
-        const { episode, program } = body;
-        const prompt = `Você é um Diretor de TV e Roteirista Chefe de Produção Audiovisual.
+if (path === '/api/ai/script' && method === 'POST') {
+         const { episode, program } = body;
+         const prompt = `Você é um Diretor de TV e Roteirista Chefe de Produção Audiovisual.
 Escreva o ROTEIRO COMPLETO, cronológico e com DIREÇÃO DE CÂMERAS CONTEXTUAL.
 
 PROGRAMA: "${program?.title || episode?.title}"
@@ -382,37 +506,47 @@ CÂMERAS DISPONÍVEIS: ${JSON.stringify(episode?.cameras || program?.cameras || 
 Retorne ESTRITAMENTE em formato JSON com o schema:
 {"script": [{"id": "string", "segmentId": "string", "timestamp": "00:00", "type": "string", "camera": "string", "alternativeCamera": "string", "speaker": "string", "targetPerson": "string", "eyeDirection": "string", "shotType": "string", "content": "string", "directionalMarkers": ["string"], "isTeleprompter": boolean, "questionRefId": "string"}]} `;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating script:', error);
+           return errorResponse(error.message || 'Falha ao escrever roteiro');
+         }
+       }
 
-      if (path === '/api/ai/repiques' && method === 'POST') {
-        const { questionText, targetParticipant, context, format } = body;
-        const prompt = `Você é um entrevistador investigativo e diretor audiovisual.
+if (path === '/api/ai/repiques' && method === 'POST') {
+         const { questionText, targetParticipant, context, format } = body;
+         const prompt = `Você é um entrevistador investigativo e diretor audiovisual.
 Para a pergunta: "${questionText}"
 Destinada a: "${targetParticipant || 'Participante'}"
 Contexto: "${context || ''}"
 Formato do programa: "${format || 'Entrevista'}"
-
+ 
 Gere 3 a 5 REPIQUES INTELIGENTES.
 Retorne em formato JSON:
 {"followUps": [{"id": "string", "triggerCondition": "string", "actionOrQuestion": "string", "tag": "string"}]}`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating repiques:', error);
+           return errorResponse(error.message || 'Falha ao gerar repiques');
+         }
+       }
 
-      if (path === '/api/ai/shorts' && method === 'POST') {
-        const { episode } = body;
-        const prompt = `Você é um Estrategista de Conteúdo Digital e Produtor de Cortes/Shorts.
+if (path === '/api/ai/shorts' && method === 'POST') {
+         const { episode } = body;
+         const prompt = `Você é um Estrategista de Conteúdo Digital e Produtor de Cortes/Shorts.
 Analise o roteiro e os participantes reais deste episódio e planeje 4 CORTES DE ALTO IMPACTO.
 
 EPISÓDIO: "${episode.title}"
@@ -424,17 +558,22 @@ PERGUNTAS: ${JSON.stringify(episode.questions || [])}
 Retorne em formato JSON:
 {"shorts": [{"id": "string", "title": "string", "hook": "string", "generatingQuestion": "string", "targetParticipant": "string", "estimatedDuration": "30-60s", "status": "Planejado", "notes": "string"}]}`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating shorts:', error);
+           return errorResponse(error.message || 'Falha ao planejar shorts');
+         }
+       }
 
-      if (path === '/api/ai/editor-script' && method === 'POST') {
-        const { episode } = body;
-        const prompt = `Você é um Diretor de Pós-Produção e Montador de Vídeo Sênior.
+if (path === '/api/ai/editor-script' && method === 'POST') {
+         const { episode } = body;
+         const prompt = `Você é um Diretor de Pós-Produção e Montador de Vídeo Sênior.
 Sintetize um ROTEIRO DE EDIÇÃO cronológico, técnico e enxuto.
 
 EPISÓDIO: "${episode.title}"
@@ -448,13 +587,18 @@ B-ROLL & MATERIAIS: ${JSON.stringify(episode.assets || [])}
 Retorne em formato JSON:
 {"editorScript": "string formatada"}`;
 
-        const response = await ai.models.generateContent({
-          model: env.NIM_PRIMARY_MODEL,
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        return jsonResponse(parseAIJson(response.text));
-      }
+         try {
+           const response = await ai.models.generateContent({
+             model: env.NIM_PRIMARY_MODEL,
+             contents: prompt,
+             config: { responseMimeType: 'application/json' },
+           });
+           return jsonResponse(parseAIJson(response.text));
+         } catch (error: any) {
+           console.error('Error generating editor script:', error);
+           return errorResponse(error.message || 'Falha ao sintetizar roteiro de edição');
+         }
+       }
 
       return errorResponse('Endpoint IA não encontrado', 404);
     }

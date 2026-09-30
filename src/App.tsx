@@ -296,13 +296,14 @@ export default function App() {
             />
           )}
 
-          {currentView === 'library' && (
-            <LibraryView
-              assets={libraryAssets}
-              onAddAsset={handleAddLibraryAsset}
-              onDeleteAsset={handleDeleteLibraryAsset}
-            />
-          )}
+{currentView === 'library' && (
+  <LibraryView
+    assets={libraryAssets}
+    programs={programs}
+    onAddAsset={handleAddLibraryAsset}
+    onDeleteAsset={handleDeleteLibraryAsset}
+  />
+)}
 
           {currentView === 'studio-setup' && (
             <StudioSetupView
