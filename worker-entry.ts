@@ -461,7 +461,8 @@ Retorne em formato JSON:
       return errorResponse('Endpoint IA não encontrado', 404);
     }
 
-    if (env.ASSETS) return env.ASSETS.fetch(request);\n    return new Response(null, { status: 404 });
+    if (env.ASSETS) return env.ASSETS.fetch(request);
+    return new Response(null, { status: 404 });
   } catch (error: any) {
     if (error instanceof DbError) {
       return errorResponse(error.message, error.status, error.code);
